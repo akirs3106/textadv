@@ -31,7 +31,7 @@ public class Player {
             this.baseSpeed = 125;
             this.maxhp = 75;
         }
-            this.activeSpeed = this.baseSpeed;
+            this.activeSpeed = calculateActiveSpeed();
             this.currenthp = this.maxhp;
     }
 
@@ -55,8 +55,62 @@ public class Player {
         System.out.println(str);
     }
 
+    
+    /**
+     * Cosmetic setter for Player.currenthp
+     * @param wpn
+     */
     public void takeDamage(Weapon wpn) {
         this.currenthp -= wpn.getDmg();
+
+        System.out.println("You took " + wpn.getDmg() + "!");
+        System.out.println(String.format("Remaining health: %s / %s", this.currenthp, this.maxhp));
+    }
+    
+
+    /**
+     * Cosmetic setter for Player.xp additionally invokes Player.levelUp() if this.xp is divisible by 100 & level is less than 10
+     * @param gainedXp
+     */
+    public void gainXp(int gainedXp) {
+        this.xp += gainedXp;
+        System.out.println("You received " + gainedXp + "XP!\n");
+        if(this.xp % 100 == 0 && this.level < 10) {
+            levelUp();
+        }
+    }
+
+    private void levelUp() {
+        this.level++;
+        this.maxhp += 10;
+        this.currenthp = maxhp;
+        this.baseSpeed += 5;
+        this.activeSpeed = calculateActiveSpeed();
+
+        System.out.println("You levelled up to level " + this.level + "!");
+        System.out.println("\nYour max HP has been increased to " + maxhp + "!");
+        System.out.println("You have been fully healed!");
+        System.out.println("You base speed has been increased to " + baseSpeed + "!");
+
+
+
+    }
+
+    private int calculateActiveSpeed() {
+
+        return this.baseSpeed - this.equippedWeapon.getSpeedPenalty();
+
+    }
+
+
+    /**
+     * Cosmetically invokes Enemy.takeDamage()
+     * @param enemy
+     * @param plr
+     */
+    public void attackEnemy(Enemy enemy, Player plr) {
+        System.out.println(String.format("\nYou attacked %s with your %s!\n", enemy.getName(), this.equippedWeapon.getName()));
+        enemy.takeDamage(this.equippedWeapon, plr);
     }
     
 }

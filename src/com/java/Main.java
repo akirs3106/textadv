@@ -4,31 +4,40 @@ import java.util.*;
 class Main {
     public static void main(String args[]) {
 
-        System.out.print("Classes:\n\nWarrior\nBarbarian\nRogue\n\nChoose your class: ");
+        String plrClasses[] = {"Warrior" , "Barbarian", "Rogue"};
+
+        System.out.print("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
         
         Scanner scanner = new Scanner(System.in);
-        String plrClass = scanner.next();
+
+        String plrClass = plrClasses[scanner.nextInt()-1];
+        scanner.close();
 
         Player plr = new Player(plrClass);
+        // Enemy enemy = new Enemy("Skeleton Footman", new Sword("Steel Longsword", 10, "longsword", 10), "skeleton", 100, 100, 100);
 
-        plr.inspectWeapon();
-        plr.viewStats();
+        // plr.inspectWeapon();
+        // plr.viewStats();
 
-        plr.takeDamage(new Sword("yes", 11, "longsword", 13));
+        // enemy.attackPlayer(plr);
 
-        plr.viewStats();
+        // plr.attackEnemy(enemy, plr);
+        // plr.attackEnemy(enemy, plr);
+        // plr.attackEnemy(enemy, plr);
+        // plr.attackEnemy(enemy, plr);
+        // plr.attackEnemy(enemy, plr);
 
-        // Player p1 = new Player("Rogue");
-        // Player p2 = new Player("Barbarian");
-        // Player p3 = new Player("Warrior");
+        // plr.viewStats();
 
-        // p1.inspectWeapon();
-        // p2.inspectWeapon();
-        // p3.inspectWeapon();
+    }
 
-        // p1.viewStats();
-        // p2.viewStats();
-        // p3.viewStats();
+    public void startEncounter(Enemy enemy) {
 
+        System.out.println(String.format("%s approaches you!", enemy.getName()));
+
+    }
+
+    public Enemy createRandomSkeleton() {
+        
     }
 }
