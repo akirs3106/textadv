@@ -19,11 +19,11 @@ public class Player {
         this.playerClass = playerClass;
 
         if(playerClass.toLowerCase().equals("warrior")){
-            this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 0);
+            this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20);
             this.baseSpeed = 100;
             this.maxhp = 100;
         } else if (playerClass.toLowerCase().equals("barbarian")) {
-            this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 0);
+            this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 30);
             this.baseSpeed = 75;
             this.maxhp = 125;
         } else if (playerClass.toLowerCase().equals("rogue")) {
