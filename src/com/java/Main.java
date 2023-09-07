@@ -52,9 +52,40 @@ class Main {
 
     }
 
-    public void startEncounter(Enemy enemy) {
+    public void startEncounter(Enemy enemy, Player plr) {
 
         System.out.println(String.format("%s approaches you!", enemy.getName()));
+
+        if(plr.getSpeed() < enemy.getSpeed()) { 
+            while(plr.getHp() > 0 && enemy.getHp() > 0) {
+                enemy.attackPlayer(plr);
+                if(plr.getHp() <= 0) {
+                    System.out.println("You died to a " + enemy.getName() + ".");
+                    System.exit(0);
+                }
+                plr.attackEnemy(enemy, plr);
+                if(enemy.getHp() <= 0) {
+                    System.out.println("You won the fight!");
+                    break;
+                }
+            }
+        } else if (plr.getSpeed() > enemy.getSpeed()) {
+            while(plr.getHp() > 0 && enemy.getHp() > 0) {
+                plr.attackEnemy(enemy, plr);
+                if(enemy.getHp() <= 0) {
+                    System.out.println("You won the fight!");
+                    break;
+                }
+                enemy.attackPlayer(plr);
+                if(plr.getHp() <= 0) {
+                    System.out.println("You died to a " + enemy.getName() + ".");
+                    System.exit(0);
+                    
+                }
+            }
+        } else {
+
+        }
 
     }
 

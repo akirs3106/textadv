@@ -17,8 +17,16 @@ public class Enemy {
         this.race = race;
         this.maxHealth = maxHealth;
         this.currentHealth = this.maxHealth;
-        this.speed = speed;
+        this.speed = speed - this.weapon.getSpeedPenalty();
         this.xpValue = xpValue;
+    }
+
+    public int getHp() {
+        return this.currentHealth;
+    }
+
+    public int getSpeed() {
+        return this.speed;
     }
 
     /**

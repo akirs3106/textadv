@@ -38,6 +38,14 @@ public class Player {
     }
 
 
+    public int getHp() {
+        return this.currenthp;
+    }
+
+    public int getSpeed() {
+        return this.activeSpeed;
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */
@@ -74,7 +82,7 @@ public class Player {
      * Cosmetic setter for Player.xp additionally invokes Player.levelUp() if this.xp is divisible by 100 & level is less than 10
      * @param gainedXp
      */
-    public void gainXp(int gainedXp) {
+    public void gainXp(double gainedXp) {
         this.xp += gainedXp;
         System.out.println("You received " + gainedXp + "XP!\n");
         if(this.xp >= xpRequiredForLevel && this.level < 10) {
