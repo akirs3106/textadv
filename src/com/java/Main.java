@@ -202,26 +202,37 @@ class Main {
         String skelName = skeletonNames[randSelector];
         int skelHp;
         int skelSpeed;
+        double skelXp;
 
         switch(randSelector) {
             case 0:
                 skelWeapon = createRandomWeapon("sword");
                 skelHp = random.nextInt((120 - 90) + 1) + 90;
-
+                skelSpeed = random.nextInt((115 - 80) + 1) + 85;
             break;
             case 1: 
                 skelWeapon = createRandomWeapon("axe");
                 skelHp = random.nextInt((150 - 115) + 1) + 115;
+                skelSpeed = random.nextInt((90 - 60) + 1) + 60;
             break;
             case 2:
                 skelWeapon = createRandomWeapon("dagger");
                 skelHp = random.nextInt((100 - 50) + 1) + 50;
+                skelSpeed = random.nextInt((140 - 110) + 1) + 115;
             break;
+            default:
+            skelHp = 0;
+            skelSpeed = 0;
+            skelWeapon = createRandomWeapon(null);
+            throw new IllegalStateException("randSelector is not within required range.");
+
         }
 
+        skelXp = (skelHp + skelSpeed + skelWeapon.getDmg()) / 3;
 
 
-        Enemy x = new Enemy(skelName, skelWeapon, "skeleton", )
+
+        return new Enemy(skelName, skelWeapon, "skeleton", skelHp, skelSpeed, skelXp);
 
         
     }

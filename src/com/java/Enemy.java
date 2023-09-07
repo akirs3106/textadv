@@ -8,10 +8,10 @@ public class Enemy {
     protected int maxHealth;
     protected int currentHealth;
     protected int speed;
-    protected int xpValue;
+    protected double xpValue;
 
 
-    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, int xpValue) {
+    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue) {
         this.name = name;
         this.weapon = weapon;
         this.race = race;

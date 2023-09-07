@@ -3,9 +3,10 @@ package src.com.java;
 public class Player {
     private int maxhp;
     private int currenthp;
-    private int xp;
+    private double xp;
     private int level;
     private int baseSpeed;
+    private int xpRequiredForLevel;
     protected int activeSpeed;
     private Weapon equippedWeapon;
     private String playerClass;
@@ -17,6 +18,7 @@ public class Player {
         this.xp = 0;
         this.level = 0;
         this.playerClass = playerClass;
+        this.xpRequiredForLevel = 100;
 
         if(playerClass.toLowerCase().equals("warrior")){
             this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20);
@@ -75,7 +77,7 @@ public class Player {
     public void gainXp(int gainedXp) {
         this.xp += gainedXp;
         System.out.println("You received " + gainedXp + "XP!\n");
-        if(this.xp % 100 == 0 && this.level < 10) {
+        if(this.xp >= xpRequiredForLevel && this.level < 10) {
             levelUp();
         }
     }
@@ -86,6 +88,8 @@ public class Player {
         this.currenthp = maxhp;
         this.baseSpeed += 5;
         this.activeSpeed = calculateActiveSpeed();
+        this.xp -= xpRequiredForLevel;
+        this.xpRequiredForLevel += 100;
 
         System.out.println("You levelled up to level " + this.level + "!");
         System.out.println("\nYour max HP has been increased to " + maxhp + "!");
