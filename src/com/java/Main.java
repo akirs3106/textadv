@@ -1,21 +1,22 @@
 package src.com.java;
 
+import java.text.DecimalFormat;
 import java.util.*;
 class Main {
 
-    public final String[][] swordNames  = {
+    public static final String[][] swordNames  = {
         {"Rusty Longsword", "Bronze Longsword", "Steel Longsword"},
         {"Rusty Shortsword", "Bronze Shortsword", "Steel Shortsword"},
         {"Rusty Rapier", "Bronze Rapier", "Steel Rapier"}
     };
 
-    public final String[][] axeNames = {
+    public static final String[][] axeNames = {
         {"Rusty Battleaxe", "Bronze Battleaxe", "Steel Battleaxe"},
         {"Rusty Felling Axe", "Bronze Felling Axe", "Steel Felling Axe"},
         {"Rusty Halberd", "Bronze Halberd", "Steel Halberd"}
     };
 
-    public final String[][] daggerNames = {
+    public static final String[][] daggerNames = {
         {"Rusty Rondel Dagger", "Bronze Rondel Dagger", "Steel Rondel Dagger"},
         {"Rusty Stiletto Dagger", "Bronze Stiletto Dagger", "Steel Stiletto Dagger"},
         {"Rusty Castillon Dagger", "Bronze Castillon Dagger", "Steel Castillon Dagger"}
@@ -35,6 +36,8 @@ class Main {
 
         Player plr = new Player(plrClass);
 
+        startEncounter(createRandomSkeleton(), plr);
+
         // Enemy enemy = new Enemy("Skeleton Footman", new Sword("Steel Longsword", 10, "longsword", 10), "skeleton", 100, 100, 100);
 
         // plr.inspectWeapon();
@@ -52,7 +55,7 @@ class Main {
 
     }
 
-    public void startEncounter(Enemy enemy, Player plr) {
+    public static void startEncounter(Enemy enemy, Player plr) {
 
         System.out.println(String.format("%s approaches you!", enemy.getName()));
 
@@ -102,7 +105,7 @@ class Main {
 
     }
 
-    public Weapon createRandomWeapon(String type) {
+    public static Weapon createRandomWeapon(String type) {
 
         Random rand = new Random();
 
@@ -192,7 +195,7 @@ class Main {
                 weapon = new Axe(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
                 break;
             case "dagger": 
-                weaponName = axeNames[randWeaponSubTypeSelector][randWeaponTierSelector];
+                weaponName = daggerNames[randWeaponSubTypeSelector][randWeaponTierSelector];
 
                 switch(randWeaponSubTypeSelector) {
                     case 0: 
@@ -233,7 +236,7 @@ class Main {
         return weapon;
     }
 
-    public Enemy createRandomSkeleton() {
+    public static Enemy createRandomSkeleton() {
 
 
 
@@ -243,7 +246,7 @@ class Main {
         int randSelector = random.nextInt((2-0) + 1);
 
         Weapon skelWeapon;
-        String skelName = skeletonNames[randSelector];
+        String skelName;
         int skelHp;
         int skelSpeed;
         double skelXp;
@@ -253,16 +256,19 @@ class Main {
                 skelWeapon = createRandomWeapon("sword");
                 skelHp = random.nextInt((120 - 90) + 1) + 90;
                 skelSpeed = random.nextInt((115 - 80) + 1) + 85;
+                skelName = skeletonNames[randSelector];
             break;
             case 1: 
                 skelWeapon = createRandomWeapon("axe");
                 skelHp = random.nextInt((150 - 115) + 1) + 115;
                 skelSpeed = random.nextInt((90 - 60) + 1) + 60;
+                skelName = skeletonNames[randSelector];
             break;
             case 2:
                 skelWeapon = createRandomWeapon("dagger");
                 skelHp = random.nextInt((100 - 50) + 1) + 50;
                 skelSpeed = random.nextInt((140 - 110) + 1) + 115;
+                skelName = skeletonNames[randSelector];
             break;
             default:
             skelHp = 0;
@@ -272,7 +278,8 @@ class Main {
 
         }
 
-        skelXp = (skelHp + skelSpeed + skelWeapon.getDmg()) / 3;
+
+        skelXp = Math.round(((skelHp + skelSpeed + skelWeapon.getDmg()) / 3) * 100) / 100;
 
 
 

@@ -44,9 +44,16 @@ public class Enemy {
      * @param wpn
      * @param plr
      */
-    public void takeDamage(Weapon wpn, Player plr) {
-        this.currentHealth -= wpn.getDmg();
-        System.out.println(String.format("%s took %s damage!", this.name, wpn.getDmg()));
+    public void takeDamage(Weapon wpn, Player plr, boolean crit) {
+
+        if(crit) {
+            this.currentHealth -= wpn.getDmg()*2;
+            System.out.println(String.format("%s took %s damage!", this.name, wpn.getDmg()*2));
+        } else {
+            this.currentHealth -= wpn.getDmg();
+            System.out.println(String.format("%s took %s damage!", this.name, wpn.getDmg()));
+        }
+        
 
         if(this.currentHealth > 0) {
             System.out.println(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));

@@ -1,5 +1,7 @@
 package src.com.java;
 
+import java.util.Random;
+
 public class Player {
     private int maxhp;
     private int currenthp;
@@ -121,8 +123,17 @@ public class Player {
      * @param plr
      */
     public void attackEnemy(Enemy enemy, Player plr) {
-        System.out.println(String.format("\nYou attacked %s with your %s!\n", enemy.getName(), this.equippedWeapon.getName()));
-        enemy.takeDamage(this.equippedWeapon, plr);
+
+        Random random = new Random();
+        int critChance = random.nextInt((10 - 1) + 1) + 1;
+        boolean crit = false;
+
+        System.out.println(String.format("\nYou attacked %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
+        if(critChance == 1) {
+            crit = true;
+            System.out.println("CRITICAL HIT!\n");
+        }
+        enemy.takeDamage(this.equippedWeapon, plr, crit);
     }
     
 }
