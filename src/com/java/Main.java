@@ -84,6 +84,19 @@ class Main {
                 }
             }
         } else {
+            while(plr.getHp() > 0 && enemy.getHp() > 0) {
+                plr.attackEnemy(enemy, plr);
+                if(enemy.getHp() <= 0) {
+                    System.out.println("You won the fight!");
+                    break;
+                }
+                enemy.attackPlayer(plr);
+                if(plr.getHp() <= 0) {
+                    System.out.println("You died to a " + enemy.getName() + ".");
+                    System.exit(0);
+                    
+                }
+            }
 
         }
 
