@@ -3,11 +3,11 @@ package src.com.java;
 public class Weapon {
     
     protected String name;
-    protected float dmg;
+    protected int dmg;
     protected String type;
     protected int speedPenalty;
 
-    public Weapon(String name, float dmg, String type, int speedPenalty) {
+    public Weapon(String name, int dmg, String type, int speedPenalty) {
         this.name = name;
         this.dmg = dmg;
         this.type = type;
