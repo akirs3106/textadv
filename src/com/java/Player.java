@@ -12,6 +12,9 @@ public class Player {
     protected int activeSpeed;
     private Weapon equippedWeapon;
     private String playerClass;
+    protected int availableHeals;
+    protected int usedHeals;
+    protected int healAmount;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
@@ -21,19 +24,24 @@ public class Player {
         this.level = 0;
         this.playerClass = playerClass;
         this.xpRequiredForLevel = 100;
+        this.availableHeals = 2;
+        this.usedHeals = 0;
 
         if(playerClass.toLowerCase().equals("warrior")){
             this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20);
             this.baseSpeed = 100;
             this.maxhp = 100;
+            this.healAmount = 30;
         } else if (playerClass.toLowerCase().equals("barbarian")) {
             this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 30);
             this.baseSpeed = 75;
             this.maxhp = 125;
+            this.healAmount = 20;
         } else if (playerClass.toLowerCase().equals("rogue")) {
             this.equippedWeapon = new Dagger("Rusty Dagger", 8, "rusty dagger", 0);
             this.baseSpeed = 125;
             this.maxhp = 75;
+            this.healAmount = 40;
         }
             this.activeSpeed = calculateActiveSpeed();
             this.currenthp = this.maxhp;
@@ -134,6 +142,17 @@ public class Player {
             System.out.println("CRITICAL HIT!\n");
         }
         enemy.takeDamage(this.equippedWeapon, plr, crit);
+    }
+
+    public boolean heal() {
+        if(usedHeals < availableHeals) {
+            this.currenthp += this.healAmount;
+            System.out.println("\nYou healed for " + this.healAmount + "HP!");
+            System.out.println("You have " + (availableHeals - usedHeals) + " heals remaining!");
+            return true;
+        } else {
+            System.out.println("")
+        }
     }
     
 }
