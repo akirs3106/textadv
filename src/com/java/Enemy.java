@@ -9,9 +9,10 @@ public class Enemy {
     protected int currentHealth;
     protected int speed;
     protected double xpValue;
+    protected String type;
 
 
-    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue) {
+    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, String type) {
         this.name = name;
         this.weapon = weapon;
         this.race = race;
@@ -19,6 +20,7 @@ public class Enemy {
         this.currentHealth = this.maxHealth;
         this.speed = speed - this.weapon.getSpeedPenalty();
         this.xpValue = xpValue;
+        this.type = type;
     }
 
     public int getHp() {
@@ -36,7 +38,7 @@ public class Enemy {
     public void attackPlayer(Player plr) {
         System.out.println(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
 
-        plr.takeDamage(this.weapon);
+        plr.takeDamage(this.weapon.getDmg());
     }
 
     /**

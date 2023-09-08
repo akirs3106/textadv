@@ -36,7 +36,7 @@ class Main {
 
         Player plr = new Player(plrClass);
 
-        startEncounter(createRandomSkeleton(), plr);
+        // startEncounter(createRandomSkeleton(), plr);
 
         // Enemy enemy = new Enemy("Skeleton Footman", new Sword("Steel Longsword", 10, "longsword", 10), "skeleton", 100, 100, 100);
 
@@ -283,7 +283,7 @@ class Main {
 
 
 
-        return new Enemy(skelName, skelWeapon, "skeleton", skelHp, skelSpeed, skelXp);
+        return new Enemy(skelName, skelWeapon, "skeleton", skelHp, skelSpeed, skelXp, "normal");
 
         
     }

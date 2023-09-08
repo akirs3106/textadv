@@ -72,10 +72,10 @@ public class Player {
      * Cosmetic setter for Player.currenthp
      * @param wpn
      */
-    public void takeDamage(Weapon wpn) {
-        this.currenthp -= wpn.getDmg();
+    public void takeDamage(int dmg) {
+        this.currenthp -= dmg;
 
-        System.out.println("You took " + wpn.getDmg() + "!");
+        System.out.println("You took " + dmg + "!");
         System.out.println(String.format("Remaining health: %s / %s", this.currenthp, this.maxhp));
     }
     

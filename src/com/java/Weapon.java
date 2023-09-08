@@ -18,7 +18,7 @@ public class Weapon {
         return this.name;
     }
 
-    public float getDmg(){
+    public int getDmg(){
         return this.dmg;
     }
 
