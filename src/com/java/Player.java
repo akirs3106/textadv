@@ -148,10 +148,11 @@ public class Player {
         if(usedHeals < availableHeals) {
             this.currenthp += this.healAmount;
             System.out.println("\nYou healed for " + this.healAmount + "HP!");
-            System.out.println("You have " + (availableHeals - usedHeals) + " heals remaining!");
+            System.out.println("You have " + (availableHeals - usedHeals) + " heals remaining!\n");
             return true;
         } else {
-            System.out.println("")
+            System.out.println("\nYou have no heals remaining!");
+            return false;
         }
     }
     

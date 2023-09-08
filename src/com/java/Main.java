@@ -20,24 +20,26 @@ class Main {
         {"Rusty Stiletto Dagger", "Bronze Stiletto Dagger", "Steel Stiletto Dagger"},
         {"Rusty Castillon Dagger", "Bronze Castillon Dagger", "Steel Castillon Dagger"}
     };
+
+    public static boolean choosing;
+    public static Scanner scanner = new Scanner(System.in);
     
     public static void main(String args[]) {
 
 
         String plrClasses[] = {"Warrior" , "Barbarian", "Rogue"};
 
-        boolean choosing = true;
+        choosing = true;
+        Player plr;
 
-        while(choosing) {
+        do {
 
             System.out.print("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
-            Player plr;
+            
         
-            Scanner scanner = new Scanner(System.in);
             int input = scanner.nextInt()-1;
 
             if(input >= 0 && input <= 2) {
-                scanner.close();
 
                 String plrClass = plrClasses[input];
 
@@ -46,14 +48,19 @@ class Main {
 
 
             } else {
+                plr = null;
                 System.out.println("Please input the number next to the class you wish to choose!");
             }
 
-        }
+        } while(choosing) ;
+
+            
 
         
 
-        // startEncounter(createRandomSkeleton(), plr);
+        
+
+        startEncounter(createRandomSkeleton(), plr);
 
         // Enemy enemy = new Enemy("Skeleton Footman", new Sword("Steel Longsword", 10, "longsword", 10), "skeleton", 100, 100, 100);
 
@@ -78,12 +85,40 @@ class Main {
 
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
+                choosing = true;
                 enemy.attackPlayer(plr);
                 if(plr.getHp() <= 0) {
                     System.out.println("You died to a " + enemy.getName() + ".");
                     System.exit(0);
                 }
-                plr.attackEnemy(enemy, plr);
+
+                while(choosing) {
+                    System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+
+                    String in = scanner.next();
+                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                        switch(Integer.parseInt(in)) {
+                            case 1:
+                                plr.attackEnemy(enemy, plr);
+                                choosing = false;
+                            break;
+                            case 2: 
+                                plr.heal();
+                                choosing = false;
+                            break;
+                            case 3:
+                            plr.viewStats();
+                            break;
+                        }
+                        
+                    } else {
+                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                    }
+
+
+                }
+
+                // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     System.out.println("You won the fight!");
                     break;
@@ -91,7 +126,35 @@ class Main {
             }
         } else if (plr.getSpeed() > enemy.getSpeed()) {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                plr.attackEnemy(enemy, plr);
+                choosing = true;
+                while(choosing) {
+                    System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+
+                    String in = scanner.next();
+                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                        switch(Integer.parseInt(in)) {
+                            case 1:
+                                plr.attackEnemy(enemy, plr);
+                                choosing = false;
+                            break;
+                            case 2: 
+                                plr.heal();
+                                choosing = false;
+                            break;
+                            case 3:
+                            plr.viewStats();
+                            break;
+                        }
+                        
+                    } else {
+                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                    }
+
+
+                }
+                
+
+                // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     System.out.println("You won the fight!");
                     break;
@@ -105,7 +168,35 @@ class Main {
             }
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                plr.attackEnemy(enemy, plr);
+                choosing = true;
+                while(choosing) {
+                    System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+
+                    String in = scanner.next();
+                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                        switch(Integer.parseInt(in)) {
+                            case 1:
+                                plr.attackEnemy(enemy, plr);
+                                choosing = false;
+                            break;
+                            case 2: 
+                                plr.heal();
+                                choosing = false;
+                            break;
+                            case 3:
+                            plr.viewStats();
+                            break;
+                        }
+                        
+                    } else {
+                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                    }
+
+
+                }
+
+
+                // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     System.out.println("You won the fight!");
                     break;
