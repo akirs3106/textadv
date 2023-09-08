@@ -39,4 +39,24 @@ public class Boss extends Enemy {
         }
     }
     
+    public void useMove3(Player plr) {
+        System.out.println(String.format("\n%s %s", this.name, this.move3.getMoveDialogue()));
+        if(move3.getMoveEffect() == "heal" && availableHeals > usedHeals) {
+            this.currentHealth += move3.getMoveDmg();
+            System.out.println(String.format("%s healed for %s!\n", this.name, this.move3.getMoveDmg()));
+        } else {
+            plr.takeDamage(move3.getMoveDmg());
+        }
+    }
+
+    public void useMove4(Player plr) {
+        System.out.println(String.format("\n%s %s", this.name, this.move4.getMoveDialogue()));
+        if(move4.getMoveEffect() == "heal" && availableHeals > usedHeals) {
+            this.currentHealth += move4.getMoveDmg();
+            System.out.println(String.format("%s healed for %s!\n", this.name, this.move4.getMoveDmg()));
+        } else {
+            plr.takeDamage(move4.getMoveDmg());
+        }
+    }
+    
 }

@@ -26,14 +26,32 @@ class Main {
 
         String plrClasses[] = {"Warrior" , "Barbarian", "Rogue"};
 
-        System.out.print("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
+        boolean choosing = true;
+
+        while(choosing) {
+
+            System.out.print("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
+            Player plr;
         
-        Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
+            int input = scanner.nextInt()-1;
 
-        String plrClass = plrClasses[scanner.nextInt()-1];
-        scanner.close();
+            if(input >= 0 && input <= 2) {
+                scanner.close();
 
-        Player plr = new Player(plrClass);
+                String plrClass = plrClasses[input];
+
+                plr = new Player(plrClass);
+                choosing = false;
+
+
+            } else {
+                System.out.println("Please input the number next to the class you wish to choose!");
+            }
+
+        }
+
+        
 
         // startEncounter(createRandomSkeleton(), plr);
 
