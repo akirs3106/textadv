@@ -1,5 +1,7 @@
 package src.com.java;
 
+import java.util.Random;
+
 public class Boss extends Enemy {
 
     protected Move move1;
@@ -35,25 +37,11 @@ public class Boss extends Enemy {
         }
     }
 
-    public void useMove1(Player plr) {
-        System.out.println(String.format("\n%s %s", this.name, this.move1.getMoveDialogue()));
-            plr.takeDamage(move1.getMoveDmg());
+    public void useMove(Player plr, Move move) {
+        System.out.println(String.format("\n%s %s", this.name, move.getMoveDialogue()));
+            plr.takeDamage(move.getMoveDmg());
     }
 
-    public void useMove2(Player plr) {
-        System.out.println(String.format("\n%s %s", this.name, this.move2.getMoveDialogue()));
-            plr.takeDamage(move2.getMoveDmg());
-    }
-    
-    public void useMove3(Player plr) {
-        System.out.println(String.format("\n%s %s", this.name, this.move3.getMoveDialogue()));
-            plr.takeDamage(move3.getMoveDmg());
-    }
-
-    public void useMove4(Player plr) {
-        System.out.println(String.format("\n%s %s", this.name, this.move4.getMoveDialogue()));
-            plr.takeDamage(move4.getMoveDmg());
-    }
 
     public void useHealMove() {
         System.out.println(String.format("\n%s %s", this.name, this.healMove.getMoveDialogue()));
@@ -63,6 +51,19 @@ public class Boss extends Enemy {
             this.currentHealth = this.maxHealth;
         }
         System.out.println(String.format("%s healed for %s\n", this.name, this.healMove.getMoveDmg()));
+    }
+
+    public void chooseMove(Player plr) {
+        Random random = new Random();
+        int num = random.nextInt(3);
+
+        if(this.currentHealth < this.maxHealth*0.5 && this.usedHeals < this.availableHeals) {
+            useHealMove();
+            return;
+        } else {
+            useMove(plr, this.nonHealMoves[num]);
+        }
+            
     }
     
 }
