@@ -52,7 +52,27 @@ class Main {
                 System.out.println("Please input the number next to the class you wish to choose!");
             }
 
-        } while(choosing) ;
+        } while(choosing);
+
+        do {
+            String dungeons[] = {"Underground Ruins"};
+            choosing = true;
+
+            System.out.print("\nDungeons:\n\n1. Underground Ruins\n\nChoose a dungeon:");
+            int input = scanner.nextInt()-1;
+
+            if(input >= 0 && input < dungeons.length) {
+                String dungeon = dungeons[input];
+
+                choosing = false;
+                System.out.println("\nYou are now entering the " + dungeons[input] + ".");
+            } else {
+                String dungeon = null;
+                System.out.println("Please input then number next to the dungeon you wish to enter!");
+            }
+
+        } while (choosing);
+
 
             
 
