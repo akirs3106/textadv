@@ -39,7 +39,7 @@ class Main {
         
             int input = scanner.nextInt()-1;
 
-            if(input >= 0 && input <= 2) {
+            if(input >= 0 && input < plrClasses.length) {
 
                 String plrClass = plrClasses[input];
 
