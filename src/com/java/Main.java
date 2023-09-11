@@ -23,6 +23,8 @@ class Main {
 
     public static boolean choosing;
     public static Scanner scanner = new Scanner(System.in);
+
+    public static Boss boss;
     
     public static void main(String args[]) {
 
