@@ -1,6 +1,7 @@
 package src.com.java;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 class Main {
 
     public static final String[][] swordNames  = {
@@ -67,6 +68,16 @@ class Main {
                 String dungeon = dungeons[input];
 
                 choosing = false;
+                switch(dungeon) {
+                    case "Underground Ruins": 
+                    Weapon bossWeapon = new Dagger("Sacrificial Dagger", 30, "dagger", 0);
+                    Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
+                    Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
+                    Move bossMove3 = new Move("Summon Undead Army", "damage", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
+                    Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
+                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 500, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3);
+                    break;
+                }
                 System.out.println("\nYou are now entering the " + dungeon + ".");
             } else {
                 String dungeon = null;
