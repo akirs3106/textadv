@@ -147,7 +147,12 @@ public class Player {
     public boolean heal() {
         if(usedHeals < availableHeals) {
             this.currenthp += this.healAmount;
+            if(this.currenthp > this.maxhp) {
+                this.currenthp = this.maxhp;
+            }
+            usedHeals++;
             System.out.println("\nYou healed for " + this.healAmount + "HP!");
+            System.out.println("Remaining HP: " + this.currenthp + " / " + this.maxhp);
             System.out.println("You have " + (availableHeals - usedHeals) + " heals remaining!\n");
             return true;
         } else {

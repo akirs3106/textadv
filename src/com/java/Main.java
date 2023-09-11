@@ -65,7 +65,7 @@ class Main {
                 String dungeon = dungeons[input];
 
                 choosing = false;
-                System.out.println("\nYou are now entering the " + dungeons[input] + ".");
+                System.out.println("\nYou are now entering the " + dungeon + ".");
             } else {
                 String dungeon = null;
                 System.out.println("Please input then number next to the dungeon you wish to enter!");
@@ -103,6 +103,7 @@ class Main {
 
         System.out.println(String.format("%s approaches you!", enemy.getName()));
 
+            //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
@@ -123,8 +124,11 @@ class Main {
                                 choosing = false;
                             break;
                             case 2: 
-                                plr.heal();
-                                choosing = false;
+                                if(plr.heal()) {
+                                    choosing = false;
+                                } else {
+                                    choosing = true;
+                                }
                             break;
                             case 3:
                             plr.viewStats();
@@ -137,13 +141,12 @@ class Main {
 
 
                 }
-
-                // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     System.out.println("You won the fight!");
                     break;
                 }
             }
+            //Player moves first if speed is greater than enemy's
         } else if (plr.getSpeed() > enemy.getSpeed()) {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
@@ -158,8 +161,11 @@ class Main {
                                 choosing = false;
                             break;
                             case 2: 
-                                plr.heal();
-                                choosing = false;
+                                if(plr.heal()) {
+                                    choosing = false;
+                                } else {
+                                    choosing = true;
+                                }
                             break;
                             case 3:
                             plr.viewStats();
@@ -174,7 +180,6 @@ class Main {
                 }
                 
 
-                // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     System.out.println("You won the fight!");
                     break;
@@ -186,6 +191,7 @@ class Main {
                     
                 }
             }
+            //Player takes priority over moving first is speeds are equal
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
