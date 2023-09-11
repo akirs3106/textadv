@@ -25,6 +25,7 @@ public class Boss extends Enemy {
         this.nonHealMoves = new Move[4];
 
         Move moves[] = {this.move1, this.move2, this.move3, this.move4};
+        int position = 0;
         for(int i = 0; i < 4; i++) {
             Move move = moves[i];
 
@@ -32,7 +33,8 @@ public class Boss extends Enemy {
                 this.healMove = move;
                 this.hasHealMove = true;
             } else {
-                this.nonHealMoves[i] = move;
+                this.nonHealMoves[position] = move;
+                position++;
             }
         }
     }
@@ -56,6 +58,7 @@ public class Boss extends Enemy {
     public void chooseMove(Player plr) {
         Random random = new Random();
         int num = random.nextInt(3);
+        System.out.println(num);
 
         if(this.currentHealth < this.maxHealth*0.5 && this.usedHeals < this.availableHeals) {
             useHealMove();

@@ -70,7 +70,7 @@ class Main {
                 choosing = false;
                 switch(dungeon) {
                     case "Underground Ruins": 
-                    Weapon bossWeapon = new Dagger("Sacrificial Dagger", 30, "dagger", 0);
+                    Weapon bossWeapon = new Dagger("Sacrificial Dagger", 30, "sacrificial dagger", 0);
                     Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "damage", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
@@ -91,9 +91,9 @@ class Main {
 
         
 
-        
+        startBossEncounter(plr);
 
-        startEncounter(createRandomSkeleton(), plr);
+        // startEncounter(createRandomSkeleton(), plr);
 
         // Enemy enemy = new Enemy("Skeleton Footman", new Sword("Steel Longsword", 10, "longsword", 10), "skeleton", 100, 100, 100);
 
@@ -250,6 +250,52 @@ class Main {
 
         }
 
+    }
+
+    public static void startBossEncounter(Player plr) {
+        System.out.println("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
+        while(plr.getHp() > 0 && boss.getHp() > 0) {
+            choosing = true;
+            while(choosing) {
+                System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+
+                    String in = scanner.next();
+                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                        switch(Integer.parseInt(in)) {
+                            case 1:
+                                plr.attackEnemy(boss, plr);
+                                choosing = false;
+                            break;
+                            case 2: 
+                                if(plr.heal()) {
+                                    choosing = false;
+                                } else {
+                                    choosing = true;
+                                }
+                            break;
+                            case 3:
+                            plr.viewStats();
+                            break;
+                        }
+                        
+                    } else {
+                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                    }
+
+
+            }
+            if(boss.getHp() <= 0) {
+                System.out.println("You won the fight!");
+                break;
+            }
+
+            boss.chooseMove(plr);
+            
+            if(plr.getHp() <= 0) {
+                System.out.println("You died to " + boss.getName() + ".");
+                System.exit(0);
+            }
+        }
     }
 
     public static Weapon createRandomWeapon(String type) {
