@@ -56,6 +56,14 @@ public class Player {
         return this.activeSpeed;
     }
 
+    public Weapon getWeapon() {
+        return this.equippedWeapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.equippedWeapon = weapon;
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */
