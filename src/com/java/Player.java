@@ -60,7 +60,7 @@ public class Player {
      * Prints visual representation of the player's weapon's stats.
      */
     public void inspectWeapon(){
-        String str = String.format("\nName: %s \nDamage: %s \nSpeed Reduction: %s\n", this.equippedWeapon.name, this.equippedWeapon.dmg, this.equippedWeapon.speedPenalty);
+        String str = String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.equippedWeapon.name, this.equippedWeapon.dmg, this.equippedWeapon.speedPenalty);
 
         System.out.println(str);
 

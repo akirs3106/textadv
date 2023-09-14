@@ -145,6 +145,7 @@ class Main {
                             break;
                             case 3:
                             plr.viewStats();
+                            plr.inspectWeapon();
                             break;
                         }
                         
@@ -182,6 +183,7 @@ class Main {
                             break;
                             case 3:
                             plr.viewStats();
+                            plr.inspectWeapon();
                             break;
                         }
                         
@@ -224,6 +226,7 @@ class Main {
                             break;
                             case 3:
                             plr.viewStats();
+                            plr.inspectWeapon();
                             break;
                         }
                         
@@ -275,6 +278,7 @@ class Main {
                             break;
                             case 3:
                             plr.viewStats();
+                            plr.inspectWeapon();
                             break;
                         }
                         
