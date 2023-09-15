@@ -93,8 +93,8 @@ class Main {
 
 
             
-        createRandomChest(plr).interact(plr);
-        startEncounter(createRandomSkeleton(), plr);
+        createRandomChest(plr, 3).interact(plr);
+        // startEncounter(createRandomSkeleton(), plr);
         startBossEncounter(plr);
         
 
@@ -164,6 +164,7 @@ class Main {
                 }
                 if(enemy.getHp() <= 0) {
                     System.out.println("You won the fight!");
+                    plr.setUsedHeals(0);
                     break;
                 }
             }
@@ -651,6 +652,66 @@ class Main {
             chestName = rareChestNames[rand.nextInt(2)];
         } else {
             rarity = 3;
+            chestName = legendaryChestNames[rand.nextInt(2)];
+        }
+
+        if(rarity < 3) {
+            switch(plrClass) {
+                case "Warrior": 
+                    weapon = createRandomWeapon("sword", rarity);
+                break;
+                case "Barbarian":
+                    weapon = createRandomWeapon("axe", rarity);
+                break;
+                case "Rogue":
+                    weapon = createRandomWeapon("dagger", rarity);
+                break;
+                default:
+                    weapon = null;
+            }
+        } else {
+            switch(plrClass) {
+                case "Warrior":
+                    weapon = new Sword("Excalibur", 40, "excalibur", 35);
+                break;
+                case "Barbarian":
+                    weapon = new Axe("The Labrys", 55, "the labrys", 45);
+                break;
+                case "Rogue":
+                    weapon = new Dagger("Sacrifical Dagger", 30, "sacrifical dagger", 20);
+                break;
+                default:
+                weapon = null;
+            }
+        }
+        
+        return new Chest(weapon, chestName, rarity);
+
+
+    }
+
+    public static Chest createRandomChest(Player plr, int rarity) {
+        String commonChestNames[] = {"Rotted Chest", "Rusty Chest", "Scratched Chest"};
+        String uncommonChestNames[] = {"Oak Chest", "Maple Chest", "Stone Chest"};
+        String rareChestNames[] = {"Silver Chest", "Large Oak Chest"};
+        String legendaryChestNames[] = {"Gilded Chest", "Regal Chest"};
+
+        String chestName;
+        Weapon weapon;
+        Random rand = new Random();
+        String plrClass = plr.getPlayerClass();
+        
+        //Common 50% chance
+        //Uncommon 30% chance
+        //Rare 15% chance
+        //Legendary 5% chance
+        if(rarity == 0) {
+            chestName = commonChestNames[rand.nextInt(3)];
+        } else if(rarity == 1) {
+            chestName = uncommonChestNames[rand.nextInt(3)];
+        } else if(rarity == 2){
+            chestName = rareChestNames[rand.nextInt(2)];
+        } else {
             chestName = legendaryChestNames[rand.nextInt(2)];
         }
 

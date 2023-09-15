@@ -58,7 +58,6 @@ public class Boss extends Enemy {
     public void chooseMove(Player plr) {
         Random random = new Random();
         int num = random.nextInt(3);
-        System.out.println(num);
 
         if(this.currentHealth < this.maxHealth*0.5 && this.usedHeals < this.availableHeals) {
             useHealMove();
