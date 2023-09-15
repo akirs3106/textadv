@@ -2,7 +2,7 @@ package src.com.java;
 
 public class Sword extends Weapon {
 
-    private String[] validSubtypes = {"rusty sword", "longsword", "shortsword", "rapier", "executioner's sword"};
+    private String[] validSubtypes = {"rusty sword", "longsword", "shortsword", "rapier", "excalibur"};
     protected String subType; 
 
     public Sword(String name, int dmg, String subType, int speedPenalty) {

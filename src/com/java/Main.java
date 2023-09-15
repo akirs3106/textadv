@@ -22,6 +22,12 @@ class Main {
         {"Rusty Castillon Dagger", "Bronze Castillon Dagger", "Steel Castillon Dagger"}
     };
 
+    public static final String[][] legendaryNames = {
+        {"Excalibur"}, 
+        {"The Labrys"}, 
+        {"Sacrifical Dagger"}
+    };
+
     public static boolean choosing;
     public static Scanner scanner = new Scanner(System.in);
 
@@ -32,11 +38,10 @@ class Main {
 
         String plrClasses[] = {"Warrior" , "Barbarian", "Rogue"};
 
-        choosing = true;
         Player plr;
 
         do {
-
+            choosing = true;
             System.out.print("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
             
         
@@ -75,7 +80,7 @@ class Main {
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "damage", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 500, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3);
+                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3);
                     break;
                 }
                 System.out.println("\nYou are now entering the " + dungeon + ".");
@@ -88,10 +93,12 @@ class Main {
 
 
             
-
+        createRandomChest(plr).interact(plr);
+        startEncounter(createRandomSkeleton(), plr);
+        startBossEncounter(plr);
         
 
-        startBossEncounter(plr);
+        // startBossEncounter(plr);
 
         // startEncounter(createRandomSkeleton(), plr);
 
@@ -433,6 +440,137 @@ class Main {
         return weapon;
     }
 
+    public static Weapon createRandomWeapon(String type, int rarity) {
+
+        Random rand = new Random();
+
+        int randWeaponSubTypeSelector = rand.nextInt((2-0) + 1);
+        int weaponTier = rarity;
+
+        Weapon weapon;
+        String weaponName;
+        String weaponSubType;
+        int weaponDamage;
+        int weaponSpeedPenalty;
+
+        switch(type) {
+            case "sword": 
+                weaponName = swordNames[randWeaponSubTypeSelector][weaponTier];
+
+                switch(randWeaponSubTypeSelector) {
+                    case 0: 
+                        weaponSubType = "longsword";
+                    break;
+                    case 1:
+                        weaponSubType = "shortsword";
+                    break;
+                    case 2: 
+                        weaponSubType = "rapier";
+                    break;
+                    default:
+                        weaponSubType = null;
+                    
+                }
+
+                switch(weaponTier) {
+                    case 0: 
+                        weaponDamage = rand.nextInt((15 - 10) + 1) + 10;
+                        weaponSpeedPenalty = rand.nextInt((30 - 20) + 20);
+                    break;
+                    case 1: 
+                        weaponDamage = rand.nextInt((20 - 15) + 1) + 15;
+                        weaponSpeedPenalty = rand.nextInt((35 - 25) + 25);
+                    break;
+                    case 2:
+                        weaponDamage = rand.nextInt((25 - 20) + 1) + 20;
+                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 30);
+                    break;
+                    default:
+                        weaponDamage = 0;
+                        weaponSpeedPenalty = 0;
+
+                }
+                weapon = new Sword(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+                break;
+            case "axe":
+                weaponName = axeNames[randWeaponSubTypeSelector][weaponTier];
+
+                switch(randWeaponSubTypeSelector) {
+                    case 0: 
+                        weaponSubType = "battleaxe";
+                    break;
+                    case 1:
+                        weaponSubType = "felling axe";
+                    break;
+                    case 2: 
+                        weaponSubType = "halberd";
+                    break;
+                    default:
+                        weaponSubType = null;
+                }
+
+                switch(weaponTier) {
+                    case 0: 
+                        weaponDamage = rand.nextInt((25 - 20) + 1) + 20;
+                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 30);
+                    break;
+                    case 1: 
+                        weaponDamage = rand.nextInt((30 - 25) + 1) + 25;
+                        weaponSpeedPenalty = rand.nextInt((45 - 35) + 35);
+                    break;
+                    case 2:
+                        weaponDamage = rand.nextInt((35 - 30) + 1) + 30;
+                        weaponSpeedPenalty = rand.nextInt((50 - 45) + 45);
+                    break;
+                    default:
+                        weaponDamage = 0;
+                        weaponSpeedPenalty = 0;
+                }
+
+                weapon = new Axe(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+                break;
+            case "dagger": 
+                weaponName = daggerNames[randWeaponSubTypeSelector][weaponTier];
+
+                switch(randWeaponSubTypeSelector) {
+                    case 0: 
+                        weaponSubType = "rondel dagger";
+                    break;
+                    case 1:
+                        weaponSubType = "stiletto dagger";
+                    break;
+                    case 2: 
+                        weaponSubType = "castillon dagger";
+                    break;
+                    default:
+                        weaponSubType = null;
+                }
+
+                switch(weaponTier) {
+                    case 0: 
+                        weaponDamage = rand.nextInt((13 - 8) + 1) + 8;
+                        weaponSpeedPenalty = rand.nextInt((15 - 10) + 10);
+                    break;
+                    case 1: 
+                        weaponDamage = rand.nextInt((18 - 13) + 1) + 13;
+                        weaponSpeedPenalty = rand.nextInt((20 - 15) + 15);
+                    break;
+                    case 2:
+                        weaponDamage = rand.nextInt((23 - 18) + 1) + 18;
+                        weaponSpeedPenalty = rand.nextInt((25 - 20) + 20);
+                    break;
+                    default:
+                        weaponDamage = 0;
+                        weaponSpeedPenalty = 0;
+                }
+                weapon = new Dagger(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+            break;
+            default:
+                weapon = null;
+        }
+        return weapon;
+    }
+
     public static Enemy createRandomSkeleton() {
 
 
@@ -452,7 +590,7 @@ class Main {
             case 0:
                 skelWeapon = createRandomWeapon("sword");
                 skelHp = random.nextInt((120 - 90) + 1) + 90;
-                skelSpeed = random.nextInt((115 - 80) + 1) + 85;
+                skelSpeed = random.nextInt((115 - 85) + 1) + 85;
                 skelName = skeletonNames[randSelector];
             break;
             case 1: 
@@ -483,5 +621,71 @@ class Main {
         return new Enemy(skelName, skelWeapon, "skeleton", skelHp, skelSpeed, skelXp, "normal");
 
         
+    }
+
+    public static Chest createRandomChest(Player plr) {
+        String commonChestNames[] = {"Rotted Chest", "Rusty Chest", "Scratched Chest"};
+        String uncommonChestNames[] = {"Oak Chest", "Maple Chest", "Stone Chest"};
+        String rareChestNames[] = {"Silver Chest", "Large Oak Chest"};
+        String legendaryChestNames[] = {"Gilded Chest", "Regal Chest"};
+
+        int rarity;
+        String chestName;
+        Weapon weapon;
+        Random rand = new Random();
+        int result = rand.nextInt(100) + 1;
+        String plrClass = plr.getPlayerClass();
+        
+        //Common 50% chance
+        //Uncommon 30% chance
+        //Rare 15% chance
+        //Legendary 5% chance
+        if(result <= 50) {
+            rarity = 0;
+            chestName = commonChestNames[rand.nextInt(3)];
+        } else if(result <= 80) {
+            rarity = 1;
+            chestName = uncommonChestNames[rand.nextInt(3)];
+        } else if(result <= 95){
+            rarity = 2;
+            chestName = rareChestNames[rand.nextInt(2)];
+        } else {
+            rarity = 3;
+            chestName = legendaryChestNames[rand.nextInt(2)];
+        }
+
+        if(rarity < 3) {
+            switch(plrClass) {
+                case "Warrior": 
+                    weapon = createRandomWeapon("sword", rarity);
+                break;
+                case "Barbarian":
+                    weapon = createRandomWeapon("axe", rarity);
+                break;
+                case "Rogue":
+                    weapon = createRandomWeapon("dagger", rarity);
+                break;
+                default:
+                    weapon = null;
+            }
+        } else {
+            switch(plrClass) {
+                case "Warrior":
+                    weapon = new Sword("Excalibur", 40, "excalibur", 35);
+                break;
+                case "Barbarian":
+                    weapon = new Axe("The Labrys", 55, "the labrys", 45);
+                break;
+                case "Rogue":
+                    weapon = new Dagger("Sacrifical Dagger", 30, "sacrifical dagger", 20);
+                break;
+                default:
+                weapon = null;
+            }
+        }
+        
+        return new Chest(weapon, chestName, rarity);
+
+
     }
 }

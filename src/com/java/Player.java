@@ -43,7 +43,7 @@ public class Player {
             this.maxhp = 75;
             this.healAmount = 40;
         }
-            this.activeSpeed = calculateActiveSpeed();
+            calculateActiveSpeed();
             this.currenthp = this.maxhp;
     }
 
@@ -62,6 +62,22 @@ public class Player {
 
     public void setWeapon(Weapon weapon) {
         this.equippedWeapon = weapon;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public String getPlayerClass() {
+        return this.playerClass;
+    }
+
+    public void setUsedHeals(int x) {
+        this.usedHeals = x;
+    }
+
+    public void setHp(int x) {
+        this.currenthp = x;
     }
 
     /**
@@ -91,7 +107,10 @@ public class Player {
     public void takeDamage(int dmg) {
         this.currenthp -= dmg;
 
-        System.out.println("You took " + dmg + "!");
+        System.out.println("You took " + dmg + " damage!");
+        if(this.currenthp < 0) {
+            this.currenthp = 0;
+        }
         System.out.println(String.format("Remaining health: %s / %s", this.currenthp, this.maxhp));
     }
     
@@ -103,7 +122,7 @@ public class Player {
     public void gainXp(double gainedXp) {
         this.xp += gainedXp;
         System.out.println("You received " + gainedXp + "XP!\n");
-        if(this.xp >= xpRequiredForLevel && this.level < 10) {
+        while(this.xp >= xpRequiredForLevel && this.level < 10) {
             levelUp();
         }
     }
@@ -113,22 +132,24 @@ public class Player {
         this.maxhp += 10;
         this.currenthp = maxhp;
         this.baseSpeed += 5;
-        this.activeSpeed = calculateActiveSpeed();
+        calculateActiveSpeed();
         this.xp -= xpRequiredForLevel;
         this.xpRequiredForLevel += 100;
+        this.healAmount = (int)Math.floor((double)(this.healAmount*1.2));
 
         System.out.println("You levelled up to level " + this.level + "!");
         System.out.println("\nYour max HP has been increased to " + maxhp + "!");
         System.out.println("You have been fully healed!");
-        System.out.println("You base speed has been increased to " + baseSpeed + "!");
+        System.out.println("Your base speed has been increased to " + baseSpeed + "!");
+        System.out.println("You can now heal yourself for " + this.healAmount + " HP!");
 
 
 
     }
 
-    private int calculateActiveSpeed() {
+    private void calculateActiveSpeed() {
 
-        return this.baseSpeed - this.equippedWeapon.getSpeedPenalty();
+        this.activeSpeed = this.baseSpeed - this.equippedWeapon.getSpeedPenalty();
 
     }
 
