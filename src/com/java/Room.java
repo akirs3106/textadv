@@ -85,7 +85,7 @@ public class Room {
             if(hasChests) {
                 System.out.println("\nYou discovered a " + this.chest.getName() + " in the room!");
                 this.searched = true;
-                plr.gainXp(10.0);
+                plr.gainXp(25.0);
             } else {
                 System.out.println("\nThis room appears to have nothing of interest.");
                 this.searched = true;
@@ -94,9 +94,7 @@ public class Room {
         } else if(this.type.equals("rest")){
             System.out.println("\nYou discovered a campfire in the center of the room!\nIt seems like you might be able to rest here.");
             this.searched = true;
-            plr.gainXp(10.0);
-        } else {
-            
+            plr.gainXp(25.0);
         }
     }
     
