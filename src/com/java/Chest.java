@@ -13,6 +13,10 @@ public class Chest {
         this.rarity = rarity;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     private void swapItems(Player plr) {
         Weapon temp = plr.getWeapon();
         plr.setWeapon(item);

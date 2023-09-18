@@ -78,6 +78,13 @@ public class Player {
 
     public void setHp(int x) {
         this.currenthp = x;
+        if(this.currenthp >= this.maxhp) {
+            this.currenthp = this.maxhp;
+        }
+    }
+
+    public int getMaxHP() {
+        return this.maxhp;
     }
 
     /**

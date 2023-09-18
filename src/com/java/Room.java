@@ -8,6 +8,8 @@ public class Room {
     protected String type;
     protected int enemiesRemaining;
     protected boolean hasChests;
+    protected boolean hasRested;
+    protected boolean searched;
 
     public Room(Enemy[] enemies, Chest chest, String description, String type) {
         this.enemies = enemies;
@@ -20,6 +22,8 @@ public class Room {
         this.description = description;
         this.type = type;
         this.enemiesRemaining = enemies.length;
+        this.hasRested = false;
+        this.searched = false;
     }
 
     public Room(Enemy[] enemies, Chest chest, String description) {
@@ -39,17 +43,61 @@ public class Room {
 
     }
 
-    public void playerDecideEncounter(Player plr) {
+
+    /**
+     * Should be called whenver an action is made within a generic room type.
+     * Decides whether the player encounters an enemy.
+     * @param plr
+     */
+    public boolean playerDecideEncounter(Player plr) {
         if(this.enemiesRemaining >= 0 && this.type != "boss") {
             Random random = new Random();
             int decider = random.nextInt(100) + 1;
+            //25% to encounter enemy
             if(decider <= 25) {
                 Main.startEncounter(Main.createRandomSkeleton(), plr);
+                return true;
             } else {
-                return;
+                return false;
             }
         } 
-        return;
+        return false;
+    }
+
+    public void useRestRoom(Player plr) {
+        if(this.type.equals("rest") && !this.hasRested) {
+            System.out.println("\nYou take a seat by the campfire and light it.");
+            System.out.println("You begin to feel rejuvinated.");
+            plr.setHp(plr.getMaxHP());
+            System.out.println("Your HP has been fully restored!");
+        } else {
+            System.out.println("\nYou have already used up the campfire in this room, making you unable to rest here again.");
+        }
+    }
+
+    public void searchRoom(Player plr) {
+        System.out.println("\nYou begin to search the room..");
+        if(this.type == "generic") {
+            if(playerDecideEncounter(plr)) {
+                System.out.println("\nBecause you were attacked, it seems like you'll have to attempt to search the room again.");
+                return;
+            }
+            if(hasChests) {
+                System.out.println("\nYou discovered a " + this.chest.getName() + " in the room!");
+                this.searched = true;
+                plr.gainXp(10.0);
+            } else {
+                System.out.println("\nThis room appears to have nothing of interest.");
+                this.searched = true;
+                plr.gainXp(10.0);
+            }
+        } else if(this.type.equals("rest")){
+            System.out.println("\nYou discovered a campfire in the center of the room!\nIt seems like you might be able to rest here.");
+            this.searched = true;
+            plr.gainXp(10.0);
+        } else {
+            
+        }
     }
     
 }
