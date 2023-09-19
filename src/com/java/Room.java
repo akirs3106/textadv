@@ -26,6 +26,15 @@ public class Room {
         this.searched = false;
     }
 
+    public Room(String description) {
+        this.enemiesRemaining = 0;
+        this.type = "start";
+        this.description = description;
+        this.hasChests = false;
+        this.searched = false;
+        this.hasRested = false;
+    }
+
     public Room(Enemy[] enemies, Chest chest, String description) {
         this.enemies = enemies;
         this.chest = chest;
@@ -50,7 +59,7 @@ public class Room {
      * @param plr
      */
     public boolean playerDecideEncounter(Player plr) {
-        if(this.enemiesRemaining >= 0 && this.type != "boss") {
+        if(this.enemiesRemaining > 0 && !this.type.equals("boss") && !this.type.equals("start")) {
             Random random = new Random();
             int decider = random.nextInt(100) + 1;
             //25% to encounter enemy
