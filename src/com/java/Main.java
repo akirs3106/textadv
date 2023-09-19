@@ -74,7 +74,7 @@ class Main {
                 String bossRoomDesc;
                 String restRoomDescs[] = new String[3];
                 String dungeonName = dungeons[input];
-                Room[] rooms;
+                Room[] rooms = null;
 
                 choosing = false;
                 switch(dungeonName) {
