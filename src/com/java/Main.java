@@ -70,22 +70,83 @@ class Main {
             int input = scanner.nextInt()-1;
 
             if(input >= 0 && input < dungeons.length) {
-                String dungeon = dungeons[input];
+                String startRoomDesc;
+                String bossRoomDesc;
+                String restRoomDescs[] = new String[3];
+                String dungeonName = dungeons[input];
+                Room[] rooms;
 
                 choosing = false;
-                switch(dungeon) {
+                switch(dungeonName) {
                     case "Underground Ruins": 
+                    startRoomDesc = "As you descend into the cold and dark ruins, the ancient entryway collapses behind you.";
+                    bossRoomDesc = "The room is lined with an abundance of ritualistic symbols and candles. You notice a mutlitude of human skulls in piles around the room. And in the center, stands a figure wearing a cloak infused with dark magic, wielding a unique dagger.";
+                    restRoomDescs[0] = "This room seems to be in much better condition than the others and feels much warmer.";
+                    restRoomDescs[1] = "The roof of this room seems to have collapsed, however the night sky shines above you, comforting you for a moment.";
+                    restRoomDescs[2] = "A sweet smell comes from this room, making you realize how hungry you actually are.";
                     Weapon bossWeapon = new Dagger("Sacrificial Dagger", 30, "sacrificial dagger", 0);
                     Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "damage", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
                     boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3);
-                    break;
+                break;
+                default:
+                    dungeonName = null;
+                    startRoomDesc = null;
+                    bossRoomDesc = null;
+                    rooms = new Room[0];
+                break;
                 }
-                System.out.println("\nYou are now entering the " + dungeon + ".");
+                do {
+                        choosing = true;
+                        String mapSizes[] = {"Small", "Medium", "Large"};
+                        System.out.print("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large");
+                        int mapSizeChoice = scanner.nextInt()-1;
+                        if(mapSizeChoice < 3) {
+                            String mapSize = mapSizes[mapSizeChoice];
+                            choosing = false;
+                            Random random = new Random();
+                            switch(mapSizes[mapSizeChoice]) {
+                                case "Small":
+                                    rooms = new Room[random.nextInt((15 - 10) + 1) + 10];
+                                break;
+                                case "Medium":
+                                    rooms = new Room[random.nextInt((25 - 20) + 1) + 20];
+                                break;
+                                case "Large":
+                                    rooms = new Room[random.nextInt((35 - 30) + 1) + 30];
+                                break;
+                                default:
+                                    rooms = new Room[3];
+                                break;
+                            }
+                            int restRoomDesc = 0;
+                            for(int i = 0; i < rooms.length; i++) {
+                                if(i == 0) {
+                                    rooms[i] = new Room(startRoomDesc);
+                                } else if (i == rooms.length-1) {
+                                    rooms[i] = new Room(bossRoomDesc, "boss");
+                                } else if (i == rooms.length-2) {
+                                    rooms[i] = new Room("Upon entering the room, you feel as though a great challenge is approaching.", "rest");
+                                } else if (i % 5 == 0) {
+                                    rooms[i] = new Room(restRoomDescs[restRoomDesc], "rest");
+                                    restRoomDesc++;
+                                    if(restRoomDesc >= 3) {
+                                        restRoomDesc = 0;
+                                    }
+                                } else {
+                                    rooms[i] = createRandomRoom(plr);
+                                }
+                            }
+                        }
+                        
+                        
+                } while(choosing);
+                Dungeon dungeon = new Dungeon(rooms, dungeonName);
+                System.out.println("\nYou are now entering the " + dungeonName + ".");
             } else {
-                String dungeon = null;
+                Dungeon dungeon = null;
                 System.out.println("Please input then number next to the dungeon you wish to enter!");
             }
 
@@ -748,5 +809,37 @@ class Main {
         return new Chest(weapon, chestName, rarity);
 
 
+    }
+
+    public static Room createRandomRoom(Player plr) {
+        String[] genericRoomDescriptions = {
+            "The room is incredibly dark and damp. your eyes slowly adjust to the lack of light as you remain in it.",
+            "The room contains various cells with decomposed corpses inside of them, infested with rats.",
+            "You can feel the room's rotted wood floor beneath your feet.",
+            "The room's cold stone brick walls appear to extend upwards forever.",
+            "In the room, you notice an iron grate beneath your feet. As you peer down into the pit below it, you can make out spikes with impaled corpses on them.",
+            "As you gaze around the room, you notice multiple torture devices lining the walls, along with a wodden chair with steel cuffs in the center of the room.",
+            "Peering upwards, you notice cages hanging from the room's ceiling, some containing decayed corpses. Near them are also what seem to be broken spears.",
+            "An assortment of pots and pans litters the floor of this room, accompanied by the smell of rotted food.",
+            "The room is mostly empty, besides a few ritualistic symbols and candles lining the floor and walls."
+        };
+        Random random = new Random();
+
+        //Up to 3 enemies in a single room.
+        Enemy[] enemies = new Enemy[random.nextInt(3) + 1];
+        for(int i = 0; i < enemies.length; i++) {
+            enemies[i] = createRandomSkeleton();
+        }
+        Chest chest;
+        int chestChance = random.nextInt(100) + 1;
+        if(chestChance <= 75) {
+            chest = createRandomChest(plr);
+        } else {
+            chest = null;
+        }
+
+            return new Room(enemies, chest, genericRoomDescriptions[random.nextInt(genericRoomDescriptions.length)], "generic");
+        
+        
     }
 }

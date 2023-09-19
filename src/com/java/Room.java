@@ -10,7 +10,15 @@ public class Room {
     protected boolean hasChests;
     protected boolean hasRested;
     protected boolean searched;
+    protected boolean activeRoom;
 
+    /**
+     * Used for "generic" type room.
+     * @param enemies
+     * @param chest
+     * @param description
+     * @param type
+     */
     public Room(Enemy[] enemies, Chest chest, String description, String type) {
         this.enemies = enemies;
         this.chest = chest;
@@ -24,8 +32,13 @@ public class Room {
         this.enemiesRemaining = enemies.length;
         this.hasRested = false;
         this.searched = false;
+        this.activeRoom = false;
     }
 
+    /**
+     * Used for "start" type room
+     * @param description
+     */
     public Room(String description) {
         this.enemiesRemaining = 0;
         this.type = "start";
@@ -33,25 +46,49 @@ public class Room {
         this.hasChests = false;
         this.searched = false;
         this.hasRested = false;
+        this.activeRoom = true;
     }
 
-    public Room(Enemy[] enemies, Chest chest, String description) {
-        this.enemies = enemies;
-        this.chest = chest;
+    
+    /**
+     * Used for "rest" and "boss" room types.
+     * @param description
+     * @param type
+     */
+    public Room(String description, String type) {
         this.description = description;
-        
-        String[] roomTypes = {"generic" , "rest"};
-        Random random = new Random();
-        int decider = random.nextInt(100) + 1;
-
-        if(decider > 70) {
-            this.type = roomTypes[1];
-        } else {
-            this.type = roomTypes[0];
-        }
+        this.type = type;
+        this.activeRoom = false;
+        this.hasChests = false;
+        this.enemiesRemaining = 0;
+        this.hasRested = false;
+        this.searched = true;
 
     }
 
+    // public Room(Enemy[] enemies, Chest chest, String description) {
+    //     this.enemies = enemies;
+    //     this.chest = chest;
+    //     this.description = description;
+    //     this.activeRoom = false;
+        
+    //     String[] roomTypes = {"generic" , "rest"};
+    //     Random random = new Random();
+    //     int decider = random.nextInt(100) + 1;
+
+    //     if(decider > 70) {
+    //         this.type = roomTypes[1];
+    //     } else {
+    //         this.type = roomTypes[0];
+    //     }
+
+    // }
+
+    
+
+    public boolean activeRoomStatus() {
+        return this.activeRoom;
+    }
 
     /**
      * Should be called whenver an action is made within a generic room type.
@@ -59,7 +96,7 @@ public class Room {
      * @param plr
      */
     public boolean playerDecideEncounter(Player plr) {
-        if(this.enemiesRemaining > 0 && !this.type.equals("boss") && !this.type.equals("start")) {
+        if(this.enemiesRemaining > 0 && !(this.type.equals("boss")) && !(this.type.equals("start"))) {
             Random random = new Random();
             int decider = random.nextInt(100) + 1;
             //25% to encounter enemy
@@ -104,6 +141,10 @@ public class Room {
             System.out.println("\nYou discovered a campfire in the center of the room!\nIt seems like you might be able to rest here.");
             this.searched = true;
             plr.gainXp(25.0);
+        } else {
+            System.out.println("\nThis room appears to have nothing of interest.");
+            this.searched = true;
+            plr.gainXp(10.0);
         }
     }
     
