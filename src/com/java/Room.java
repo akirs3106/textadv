@@ -53,6 +53,14 @@ public class Room {
     }
 
 
+    public boolean checkForChests() {
+        return this.hasChests;
+    }
+
+    public Chest getChest() {
+        return this.chest;
+    }
+
     /**
      * Should be called whenver an action is made within a generic room type.
      * Decides whether the player encounters an enemy.
@@ -78,6 +86,7 @@ public class Room {
             System.out.println("\nYou take a seat by the campfire and light it.");
             System.out.println("You begin to feel rejuvinated.");
             plr.setHp(plr.getMaxHP());
+            plr.setUsedHeals(0);
             System.out.println("Your HP has been fully restored!");
         } else {
             System.out.println("\nYou have already used up the campfire in this room, making you unable to rest here again.");

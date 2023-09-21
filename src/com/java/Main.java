@@ -2,36 +2,38 @@ package src.com.java;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.ArrayList;
 class Main {
 
-    public static final String[][] swordNames  = {
+    private static final String[][] swordNames  = {
         {"Rusty Longsword", "Bronze Longsword", "Steel Longsword"},
         {"Rusty Shortsword", "Bronze Shortsword", "Steel Shortsword"},
         {"Rusty Rapier", "Bronze Rapier", "Steel Rapier"}
     };
 
-    public static final String[][] axeNames = {
+    private static final String[][] axeNames = {
         {"Rusty Battleaxe", "Bronze Battleaxe", "Steel Battleaxe"},
         {"Rusty Felling Axe", "Bronze Felling Axe", "Steel Felling Axe"},
         {"Rusty Halberd", "Bronze Halberd", "Steel Halberd"}
     };
 
-    public static final String[][] daggerNames = {
+    private static final String[][] daggerNames = {
         {"Rusty Rondel Dagger", "Bronze Rondel Dagger", "Steel Rondel Dagger"},
         {"Rusty Stiletto Dagger", "Bronze Stiletto Dagger", "Steel Stiletto Dagger"},
         {"Rusty Castillon Dagger", "Bronze Castillon Dagger", "Steel Castillon Dagger"}
     };
 
-    public static final String[][] legendaryNames = {
+    private static final String[][] legendaryNames = {
         {"Excalibur"}, 
         {"The Labrys"}, 
         {"Sacrifical Dagger"}
     };
 
-    public static boolean choosing;
-    public static Scanner scanner = new Scanner(System.in);
+    private static boolean choosing;
+    private static Scanner scanner = new Scanner(System.in);
+    private static Dungeon dungeon;
 
-    public static Boss boss;
+    private static Boss boss;
     
     public static void main(String args[]) {
 
@@ -83,19 +85,161 @@ class Main {
                     boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3);
                     break;
                 }
+<<<<<<< Updated upstream
                 System.out.println("\nYou are now entering the " + dungeon + ".");
             } else {
                 String dungeon = null;
+=======
+                do {
+                        choosing = true;
+                        String mapSizes[] = {"Small", "Medium", "Large"};
+                        System.out.print("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n\n> ");
+                        int mapSizeChoice = scanner.nextInt()-1;
+                        if(mapSizeChoice < 3) {
+                            String mapSize = mapSizes[mapSizeChoice];
+                            choosing = false;
+                            Random random = new Random();
+                            switch(mapSize) {
+                                case "Small":
+                                    rooms = new Room[random.nextInt((15 - 10) + 1) + 10];
+                                break;
+                                case "Medium":
+                                    rooms = new Room[random.nextInt((25 - 20) + 1) + 20];
+                                break;
+                                case "Large":
+                                    rooms = new Room[random.nextInt((35 - 30) + 1) + 30];
+                                break;
+                                default:
+                                    rooms = new Room[3];
+                                break;
+                            }
+                            int restRoomDesc = 0;
+                            for(int i = 0; i < rooms.length; i++) {
+                                if(i == 0) {
+                                    rooms[i] = new Room(startRoomDesc);
+                                } else if (i == rooms.length-1) {
+                                    rooms[i] = new Room(bossRoomDesc, "boss");
+                                } else if (i == rooms.length-2) {
+                                    rooms[i] = new Room("Upon entering the room, you feel as though a great challenge is approaching.", "rest");
+                                } else if (i % 5 == 0) {
+                                    rooms[i] = new Room(restRoomDescs[restRoomDesc], "rest");
+                                    restRoomDesc++;
+                                    if(restRoomDesc >= 3) {
+                                        restRoomDesc = 0;
+                                    }
+                                } else {
+                                    rooms[i] = createRandomRoom(plr);
+                                }
+                            }
+                        }    
+                    } while(choosing);
+                dungeon = new Dungeon(rooms, dungeonName);
+                System.out.println("\nYou are now entering the " + dungeonName + ".");
+                choosing = false;
+            } else {
+                dungeon = null;
+>>>>>>> Stashed changes
                 System.out.println("Please input then number next to the dungeon you wish to enter!");
             }
 
         } while (choosing);
 
+        boolean gameActive = true;
+        System.out.println(dungeon.getActiveRoom().getDescription());
+        while (gameActive) {
+            boolean choosing = true;
+            while(choosing) {
+                String allRoomChoices[] = {"Search", "Open Chest", "Heal", "Rest", "Enter next room", "Enter previous room", "View Stats"};
+                String questionString = "\nWhat would you like to do?\n";
+                int choiceNumber = 1;
+                ArrayList<String> curatedQuestions = new ArrayList<String>();
+                if(!dungeon.getActiveRoom().getSearched()) {
+                    questionString += String.format("\n%s. %s", choiceNumber, allRoomChoices[0]);
+                    curatedQuestions.add(allRoomChoices[0]);
+                    choiceNumber++;
+                } else if(dungeon.getActiveRoom().checkForChests()) {
+                    questionString += String.format("\n%s. %s", choiceNumber, allRoomChoices[1]);
+                    curatedQuestions.add(allRoomChoices[1]);
+                    choiceNumber++;
+                }
+                questionString += String.format("\n%s. %s", choiceNumber, allRoomChoices[2]);
+                curatedQuestions.add(allRoomChoices[2]);
+                choiceNumber++;
+                if(dungeon.getActiveRoom().getSearched() && dungeon.getActiveRoom().getType().equals("rest")) {
+                    questionString += String.format("\n%s. %s", choiceNumber, allRoomChoices[3]);
+                    curatedQuestions.add(allRoomChoices[3]);
+                    choiceNumber++;
+                }
+                questionString += String.format("\n%s. %s", choiceNumber, allRoomChoices[4]);
+                curatedQuestions.add(allRoomChoices[4]);
+                choiceNumber++;
+                questionString += String.format("\n%s. %s", choiceNumber, allRoomChoices[5]);
+                curatedQuestions.add(allRoomChoices[5]);
+                choiceNumber++;
+                questionString += String.format("\n%s. %s ", choiceNumber, allRoomChoices[6]);
+                curatedQuestions.add(allRoomChoices[6]);
+                choiceNumber++;
 
+                System.out.println(questionString + "\n");
+                String inputStringChoice = scanner.next();
+                if(inputStringChoice.equals("exit")) {
+                    System.exit(0);
+                }
+                int inputChoice;
+                try {
+                    inputChoice = Integer.parseInt(inputStringChoice)-1;
+                    if(inputChoice >= 0 && inputChoice < curatedQuestions.size()) {
+                        switch(curatedQuestions.get(inputChoice)) {
+                            case "Search":
+                                if(!dungeon.activeRoom.getSearched()) {
+                                    dungeon.activeRoom.searchRoom(plr);
+                                    choosing = false;
+                                } else {
+                                    System.out.println("\nYou have already searched this room!");
+                                }
+                            break;
+                            case "Open Chest":
+                                dungeon.activeRoom.getChest().interact(plr);
+                                choosing = false;
+                            break;
+                            case "Heal":
+                                plr.heal();
+                                choosing = false;
+                            break;
+                            case "Rest":
+                                dungeon.activeRoom.useRestRoom(plr);
+                                choosing = false;
+                            break;
+                            case "Enter next room":
+                                dungeon.enterNextRoom(plr);
+                                choosing = false;
+                            break;
+                            case "Enter previous room":
+                                dungeon.enterPreviousRoom(plr);
+                                choosing = false;
+                            break;
+                            case "View Stats":
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                                choosing = false;
+                            break;
+                            default:
+                                System.out.println("\n\n\nIf you're seeing this I'm a bad programmer.");
+                                System.exit(0);
+                        }
+                    } else {
+                        throw new Exception("Answer not within choice range.");
+                    }
+                } catch(Exception e) {
+                    System.out.println("Please enter the number next to your desired choice.");
+                    choosing = true;
+                }
+            }
+        }
             
-        createRandomChest(plr, 3).interact(plr);
+        // createRandomChest(plr, 3).interact(plr);
         // startEncounter(createRandomSkeleton(), plr);
-        startBossEncounter(plr);
+        // startBossEncounter(plr);
         
 
         // startBossEncounter(plr);
@@ -266,6 +410,7 @@ class Main {
     public static void startBossEncounter(Player plr) {
         System.out.println("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
+            //Player always moves first against bosses
             choosing = true;
             while(choosing) {
                 System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
@@ -298,6 +443,7 @@ class Main {
             }
             if(boss.getHp() <= 0) {
                 System.out.println("You won the fight!");
+                endGame(plr);
                 break;
             }
 
@@ -590,19 +736,19 @@ class Main {
         switch(randSelector) {
             case 0:
                 skelWeapon = createRandomWeapon("sword");
-                skelHp = random.nextInt((120 - 90) + 1) + 90;
+                skelHp = random.nextInt((100 - 90) + 1) + 90;
                 skelSpeed = random.nextInt((115 - 85) + 1) + 85;
                 skelName = skeletonNames[randSelector];
             break;
             case 1: 
                 skelWeapon = createRandomWeapon("axe");
-                skelHp = random.nextInt((150 - 115) + 1) + 115;
+                skelHp = random.nextInt((125 - 115) + 1) + 115;
                 skelSpeed = random.nextInt((90 - 60) + 1) + 60;
                 skelName = skeletonNames[randSelector];
             break;
             case 2:
                 skelWeapon = createRandomWeapon("dagger");
-                skelHp = random.nextInt((100 - 50) + 1) + 50;
+                skelHp = random.nextInt((80 - 50) + 1) + 50;
                 skelSpeed = random.nextInt((140 - 110) + 1) + 115;
                 skelName = skeletonNames[randSelector];
             break;
@@ -749,4 +895,48 @@ class Main {
 
 
     }
+<<<<<<< Updated upstream
+=======
+
+    public static Room createRandomRoom(Player plr) {
+        String[] genericRoomDescriptions = {
+            "The room is incredibly dark and damp. your eyes slowly adjust to the lack of light as you remain in it.",
+            "The room contains various cells with decomposed corpses inside of them, infested with rats.",
+            "You can feel the room's rotted wood floor beneath your feet.",
+            "The room's cold stone brick walls appear to extend upwards forever.",
+            "In the room, you notice an iron grate beneath your feet. As you peer down into the pit below it, you can make out spikes with impaled corpses on them.",
+            "As you gaze around the room, you notice multiple torture devices lining the walls, along with a wodden chair with steel cuffs in the center of the room.",
+            "Peering upwards, you notice cages hanging from the room's ceiling, some containing decayed corpses. Near them are also what seem to be broken spears.",
+            "An assortment of pots and pans litters the floor of this room, accompanied by the smell of rotted food.",
+            "The room is mostly empty, besides a few ritualistic symbols and candles lining the floor and walls."
+        };
+        Random random = new Random();
+
+        //Up to 3 enemies in a single room.
+        Enemy[] enemies = new Enemy[random.nextInt(3) + 1];
+        for(int i = 0; i < enemies.length; i++) {
+            enemies[i] = createRandomSkeleton();
+        }
+        Chest chest;
+        int chestChance = random.nextInt(100) + 1;
+        if(chestChance <= 75) {
+            chest = createRandomChest(plr);
+        } else {
+            chest = null;
+        }
+
+            return new Room(enemies, chest, genericRoomDescriptions[random.nextInt(genericRoomDescriptions.length)], "generic");
+        
+        
+    }
+
+    public static void endGame(Player plr) {
+        System.out.println("\nCongratulations, you have beaten the game!");
+        System.out.println("Final game stats: ");
+        plr.viewStats();
+        plr.inspectWeapon();
+        System.out.println("Number of dungeon rooms: " + dungeon.dungeonLength());
+        System.exit(0);
+    }
+>>>>>>> Stashed changes
 }
