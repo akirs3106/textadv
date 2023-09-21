@@ -65,29 +65,30 @@ public class Room {
         this.searched = true;
 
     }
-
-    // public Room(Enemy[] enemies, Chest chest, String description) {
-    //     this.enemies = enemies;
-    //     this.chest = chest;
-    //     this.description = description;
-    //     this.activeRoom = false;
-        
-    //     String[] roomTypes = {"generic" , "rest"};
-    //     Random random = new Random();
-    //     int decider = random.nextInt(100) + 1;
-
-    //     if(decider > 70) {
-    //         this.type = roomTypes[1];
-    //     } else {
-    //         this.type = roomTypes[0];
-    //     }
-
-    // }
-
     
 
     public boolean activeRoomStatus() {
         return this.activeRoom;
+    }
+
+    public void setActiveRoomStatus(boolean x) {
+        this.activeRoom = x;
+    }
+
+    public boolean getSearched() {
+        return this.searched;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public Chest getChest() {
+        return this.chest;
     }
 
     /**

@@ -2,6 +2,7 @@ package src.com.java;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.ArrayList;
 class Main {
 
     public static final String[][] swordNames  = {
@@ -66,7 +67,7 @@ class Main {
             String dungeons[] = {"Underground Ruins"};
             choosing = true;
 
-            System.out.print("\nDungeons:\n\n1. Underground Ruins\n\nChoose a dungeon:");
+            System.out.print("\nDungeons:\n\n1. Underground Ruins\n\nChoose a dungeon: ");
             int input = scanner.nextInt()-1;
 
             if(input >= 0 && input < dungeons.length) {
@@ -80,7 +81,7 @@ class Main {
                 switch(dungeonName) {
                     case "Underground Ruins": 
                     startRoomDesc = "As you descend into the cold and dark ruins, the ancient entryway collapses behind you.";
-                    bossRoomDesc = "The room is lined with an abundance of ritualistic symbols and candles. You notice a mutlitude of human skulls in piles around the room. And in the center, stands a figure wearing a cloak infused with dark magic, wielding a unique dagger.";
+                    bossRoomDesc = "The room is lined with an abundance of ritualistic symbols and candles.\nYou notice a mutlitude of human skulls in piles around the room.\nAnd in the center, stands a figure wearing a cloak infused with dark magic, wielding a unique dagger.";
                     restRoomDescs[0] = "This room seems to be in much better condition than the others and feels much warmer.";
                     restRoomDescs[1] = "The roof of this room seems to have collapsed, however the night sky shines above you, comforting you for a moment.";
                     restRoomDescs[2] = "A sweet smell comes from this room, making you realize how hungry you actually are.";
@@ -101,13 +102,13 @@ class Main {
                 do {
                         choosing = true;
                         String mapSizes[] = {"Small", "Medium", "Large"};
-                        System.out.print("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large");
+                        System.out.print("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n\n> ");
                         int mapSizeChoice = scanner.nextInt()-1;
                         if(mapSizeChoice < 3) {
                             String mapSize = mapSizes[mapSizeChoice];
                             choosing = false;
                             Random random = new Random();
-                            switch(mapSizes[mapSizeChoice]) {
+                            switch(mapSize) {
                                 case "Small":
                                     rooms = new Room[random.nextInt((15 - 10) + 1) + 10];
                                 break;
@@ -145,38 +146,96 @@ class Main {
                 } while(choosing);
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
                 System.out.println("\nYou are now entering the " + dungeonName + ".");
+                choosing = false;
+                boolean gameActive = true;
+                System.out.println(startRoomDesc);
+                while(gameActive) {
+                    choosing = true;
+                    while(choosing) {
+                        String question = "What would you like to do?\n";
+                        String[] allQuestions = {"Search", "Open Chest", "Rest", "Heal", "Enter next room", "Enter previous room", "View stats"};
+                        ArrayList<String> curatedQuestions = new ArrayList<String>();
+                        int choiceNumber = 1;
+                        if(!(dungeon.getActiveRoom().getSearched())) {
+                            question += String.format("\n%s. %s", choiceNumber, allQuestions[0]);
+                            curatedQuestions.add(allQuestions[0]);
+                            choiceNumber++;
+                        } else if(dungeon.getActiveRoom().hasChests) {
+                            question += String.format("\n%s. %s", choiceNumber, allQuestions[1]);
+                            curatedQuestions.add(allQuestions[1]);
+                            choiceNumber++;
+                        } else if (dungeon.getActiveRoom().type.equals("rest")) {
+                            question += String.format("\n%s. %s", choiceNumber, allQuestions[2]);
+                            curatedQuestions.add(allQuestions[2]);
+                            choiceNumber++;
+                        }
+                        question += String.format("\n%s. %s", choiceNumber, allQuestions[3]);
+                        curatedQuestions.add(allQuestions[3]);
+                        choiceNumber++;
+                        question += String.format("\n%s. %s", choiceNumber, allQuestions[4]);
+                        curatedQuestions.add(allQuestions[4]);
+                        choiceNumber++;
+                        question += String.format("\n%s. %s", choiceNumber, allQuestions[5]);
+                        curatedQuestions.add(allQuestions[5]);
+                        choiceNumber++;
+                        question += String.format("\n%s. %s\n> ", choiceNumber, allQuestions[6]);
+                        curatedQuestions.add(allQuestions[6]);
+                        choiceNumber++;
+                        System.out.print(question);
+                        try {
+                            int numChoice = scanner.nextInt()-1;
+                            if(numChoice >= 0 && numChoice < curatedQuestions.size()){
+                                switch(curatedQuestions.get(numChoice)) {
+                                    case "Search":
+                                        dungeon.getActiveRoom().searchRoom(plr);
+                                        choosing = false;
+                                    break;
+                                    case "Open Chest":
+                                        dungeon.getActiveRoom().getChest().interact(plr);
+                                        choosing = false;
+                                    break;
+                                    case "Rest":
+                                        dungeon.getActiveRoom().useRestRoom(plr);
+                                        choosing = false;
+                                    break;
+                                    case "Heal":
+                                        plr.heal();
+                                        choosing = false;
+                                    break;
+                                    case "Enter next room":
+                                        dungeon.enterNextRoom(plr);
+                                        choosing = false;
+                                    break;
+                                    case "Enter previous room":
+                                        dungeon.enterPreviousRoom(plr);
+                                        choosing = false;
+                                    break;
+                                    case "View stats":
+                                        plr.viewStats();
+                                        plr.inspectWeapon();
+                                        choosing = false;
+                                    break;
+                                    default: 
+                                        System.out.println("\n\nIf you see this I'm a bad programmer :D");
+                                        System.exit(0);
+                                    break;
+                                }
+                            } else {
+                                throw new Exception("Choice not in range of permitted options.");
+                            }
+                        
+                        } catch (Exception e) {
+                            System.out.println("Please enter the number next to your desired choice.");
+                        }
+                    }
+                    
+                    
+                }
             } else {
-                Dungeon dungeon = null;
                 System.out.println("Please input then number next to the dungeon you wish to enter!");
             }
 
         } while (choosing);
-
-
-            
-        createRandomChest(plr, 3).interact(plr);
-        // startEncounter(createRandomSkeleton(), plr);
-        startBossEncounter(plr);
-        
-
-        // startBossEncounter(plr);
-
-        // startEncounter(createRandomSkeleton(), plr);
-
-        // Enemy enemy = new Enemy("Skeleton Footman", new Sword("Steel Longsword", 10, "longsword", 10), "skeleton", 100, 100, 100);
-
-        // plr.inspectWeapon();
-        // plr.viewStats();
-
-        // enemy.attackPlayer(plr);
-
-        // plr.attackEnemy(enemy, plr);
-        // plr.attackEnemy(enemy, plr);
-        // plr.attackEnemy(enemy, plr);
-        // plr.attackEnemy(enemy, plr);
-        // plr.attackEnemy(enemy, plr);
-
-        // plr.viewStats();
 
     }
 
@@ -651,19 +710,19 @@ class Main {
         switch(randSelector) {
             case 0:
                 skelWeapon = createRandomWeapon("sword");
-                skelHp = random.nextInt((120 - 90) + 1) + 90;
+                skelHp = random.nextInt((100 - 85) + 1) + 85;
                 skelSpeed = random.nextInt((115 - 85) + 1) + 85;
                 skelName = skeletonNames[randSelector];
             break;
             case 1: 
                 skelWeapon = createRandomWeapon("axe");
-                skelHp = random.nextInt((150 - 115) + 1) + 115;
+                skelHp = random.nextInt((125 - 110) + 1) + 110;
                 skelSpeed = random.nextInt((90 - 60) + 1) + 60;
                 skelName = skeletonNames[randSelector];
             break;
             case 2:
                 skelWeapon = createRandomWeapon("dagger");
-                skelHp = random.nextInt((100 - 50) + 1) + 50;
+                skelHp = random.nextInt((90 - 45) + 1) + 45;
                 skelSpeed = random.nextInt((140 - 110) + 1) + 115;
                 skelName = skeletonNames[randSelector];
             break;
