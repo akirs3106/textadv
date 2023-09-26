@@ -101,7 +101,7 @@ public class Player {
      * Prints visual representation of the player's stats.
      */
     public void viewStats(){
-        String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s \nLevel: %s \nSpeed: %s \n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.level, this.activeSpeed);
+        String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed);
 
         System.out.println(str);
     }
@@ -143,12 +143,14 @@ public class Player {
         this.xp -= xpRequiredForLevel;
         this.xpRequiredForLevel += 100;
         this.healAmount = (int)Math.floor((double)(this.healAmount*1.2));
+        this.usedHeals = 0;
 
         System.out.println("You levelled up to level " + this.level + "!");
         System.out.println("\nYour max HP has been increased to " + maxhp + "!");
         System.out.println("You have been fully healed!");
         System.out.println("Your base speed has been increased to " + baseSpeed + "!");
         System.out.println("You can now heal yourself for " + this.healAmount + " HP!");
+        System.out.println("You have regained all of your heals!");
 
 
 

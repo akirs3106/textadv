@@ -52,7 +52,7 @@ public class Boss extends Enemy {
         if(this.currentHealth > this.maxHealth) {
             this.currentHealth = this.maxHealth;
         }
-        System.out.println(String.format("%s healed for %s\n", this.name, this.healMove.getMoveDmg()));
+        System.out.println(String.format("%s healed for %s HP\n", this.name, this.healMove.getMoveDmg()));
     }
 
     public void chooseMove(Player plr) {

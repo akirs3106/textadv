@@ -117,6 +117,10 @@ public class Room {
             System.out.println("You begin to feel rejuvinated.");
             plr.setHp(plr.getMaxHP());
             System.out.println("Your HP has been fully restored!");
+            plr.setUsedHeals(0);
+            System.out.println("You have regained all of your heals!");
+            this.hasRested = true;
+            System.out.println("The embers in the campfire slowly fade out as you prepare to venture through the dungeon once again.");
         } else {
             System.out.println("\nYou have already used up the campfire in this room, making you unable to rest here again.");
         }
