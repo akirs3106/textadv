@@ -183,7 +183,12 @@ class Main {
                         choiceNumber++;
                         System.out.print(question);
                         try {
-                            int numChoice = scanner.nextInt()-1;
+                            int numChoice = 999;
+                            try {
+                                numChoice = Integer.parseInt(scanner.next())-1;
+                            } catch (NumberFormatException e) {
+                                numChoice = 999;
+                            }
                             if(numChoice >= 0 && numChoice < curatedQuestions.size()){
                                 switch(curatedQuestions.get(numChoice)) {
                                     case "Search":
