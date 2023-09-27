@@ -221,7 +221,7 @@ class Main {
                                         choosing = false;
                                     break;
                                     default: 
-                                        // System.out.println("\n\nIf you see this I'm a bad programmer :D");
+                                        System.out.println("\n\nIf you see this I'm a bad programmer :D");
                                         scanner.next();
                                         System.exit(0);
                                     break;
