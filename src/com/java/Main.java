@@ -507,15 +507,15 @@ class Main {
                 switch(randWeaponTierSelector) {
                     case 0: 
                         weaponDamage = rand.nextInt((25 - 20) + 1) + 20;
-                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 30);
+                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 1) + 30;
                     break;
                     case 1: 
                         weaponDamage = rand.nextInt((30 - 25) + 1) + 25;
-                        weaponSpeedPenalty = rand.nextInt((45 - 35) + 35);
+                        weaponSpeedPenalty = rand.nextInt((45 - 35) + 1) + 35;
                     break;
                     case 2:
                         weaponDamage = rand.nextInt((35 - 30) + 1) + 30;
-                        weaponSpeedPenalty = rand.nextInt((50 - 45) + 45);
+                        weaponSpeedPenalty = rand.nextInt((50 - 45) + 1) + 45;
                     break;
                     default:
                         weaponDamage = 0;
