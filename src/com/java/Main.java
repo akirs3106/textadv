@@ -475,15 +475,15 @@ class Main {
                 switch(randWeaponTierSelector) {
                     case 0: 
                         weaponDamage = rand.nextInt((15 - 10) + 1) + 10;
-                        weaponSpeedPenalty = rand.nextInt((30 - 20) + 20);
+                        weaponSpeedPenalty = rand.nextInt((30 - 20) + 1) + 20;
                     break;
                     case 1: 
                         weaponDamage = rand.nextInt((20 - 15) + 1) + 15;
-                        weaponSpeedPenalty = rand.nextInt((35 - 25) + 25);
+                        weaponSpeedPenalty = rand.nextInt((35 - 25) + 1) + 25;
                     break;
                     case 2:
                         weaponDamage = rand.nextInt((25 - 20) + 1) + 20;
-                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 30);
+                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 1) + 30;
                     break;
                     default:
                         weaponDamage = 0;
@@ -549,15 +549,15 @@ class Main {
                 switch(randWeaponTierSelector) {
                     case 0: 
                         weaponDamage = rand.nextInt((13 - 8) + 1) + 8;
-                        weaponSpeedPenalty = rand.nextInt((15 - 10) + 10);
+                        weaponSpeedPenalty = rand.nextInt((15 - 10) + 1) + 10;
                     break;
                     case 1: 
                         weaponDamage = rand.nextInt((18 - 13) + 1) + 13;
-                        weaponSpeedPenalty = rand.nextInt((20 - 15) + 15);
+                        weaponSpeedPenalty = rand.nextInt((20 - 15) + 1) + 15;
                     break;
                     case 2:
                         weaponDamage = rand.nextInt((23 - 18) + 1) + 18;
-                        weaponSpeedPenalty = rand.nextInt((25 - 20) + 20);
+                        weaponSpeedPenalty = rand.nextInt((25 - 20) + 1) + 20;
                     break;
                     default:
                         weaponDamage = 0;
@@ -606,15 +606,15 @@ class Main {
                 switch(weaponTier) {
                     case 0: 
                         weaponDamage = rand.nextInt((15 - 10) + 1) + 10;
-                        weaponSpeedPenalty = rand.nextInt((30 - 20) + 20);
+                        weaponSpeedPenalty = rand.nextInt((30 - 20) + 1) + 20;
                     break;
                     case 1: 
                         weaponDamage = rand.nextInt((20 - 15) + 1) + 15;
-                        weaponSpeedPenalty = rand.nextInt((35 - 25) + 25);
+                        weaponSpeedPenalty = rand.nextInt((35 - 25) + 1) + 25;
                     break;
                     case 2:
                         weaponDamage = rand.nextInt((25 - 20) + 1) + 20;
-                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 30);
+                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 1) + 30;
                     break;
                     default:
                         weaponDamage = 0;
@@ -643,15 +643,15 @@ class Main {
                 switch(weaponTier) {
                     case 0: 
                         weaponDamage = rand.nextInt((25 - 20) + 1) + 20;
-                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 30);
+                        weaponSpeedPenalty = rand.nextInt((40 - 30) + 1) + 30;
                     break;
                     case 1: 
                         weaponDamage = rand.nextInt((30 - 25) + 1) + 25;
-                        weaponSpeedPenalty = rand.nextInt((45 - 35) + 35);
+                        weaponSpeedPenalty = rand.nextInt((45 - 35) + 1) + 35;
                     break;
                     case 2:
                         weaponDamage = rand.nextInt((35 - 30) + 1) + 30;
-                        weaponSpeedPenalty = rand.nextInt((50 - 45) + 45);
+                        weaponSpeedPenalty = rand.nextInt((50 - 45) + 1) + 45;
                     break;
                     default:
                         weaponDamage = 0;
@@ -680,15 +680,15 @@ class Main {
                 switch(weaponTier) {
                     case 0: 
                         weaponDamage = rand.nextInt((13 - 8) + 1) + 8;
-                        weaponSpeedPenalty = rand.nextInt((15 - 10) + 10);
+                        weaponSpeedPenalty = rand.nextInt((15 - 10) + 1) + 10;
                     break;
                     case 1: 
                         weaponDamage = rand.nextInt((18 - 13) + 1) + 13;
-                        weaponSpeedPenalty = rand.nextInt((20 - 15) + 15);
+                        weaponSpeedPenalty = rand.nextInt((20 - 15) + 1) + 15;
                     break;
                     case 2:
                         weaponDamage = rand.nextInt((23 - 18) + 1) + 18;
-                        weaponSpeedPenalty = rand.nextInt((25 - 20) + 20);
+                        weaponSpeedPenalty = rand.nextInt((25 - 20) + 1) + 20;
                     break;
                     default:
                         weaponDamage = 0;
