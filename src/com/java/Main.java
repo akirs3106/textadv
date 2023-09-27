@@ -222,6 +222,7 @@ class Main {
                                     break;
                                     default: 
                                         System.out.println("\n\nIf you see this I'm a bad programmer :D");
+                                        scanner.next();
                                         System.exit(0);
                                     break;
                                 }
@@ -255,6 +256,7 @@ class Main {
                 enemy.attackPlayer(plr);
                 if(plr.getHp() <= 0) {
                     System.out.println("You died to a " + enemy.getName() + ".");
+                    scanner.next();
                     System.exit(0);
                 }
 
@@ -335,6 +337,7 @@ class Main {
                 enemy.attackPlayer(plr);
                 if(plr.getHp() <= 0) {
                     System.out.println("You died to a " + enemy.getName() + ".");
+                    scanner.next();
                     System.exit(0);
                     
                 }
@@ -379,6 +382,7 @@ class Main {
                 enemy.attackPlayer(plr);
                 if(plr.getHp() <= 0) {
                     System.out.println("You died to a " + enemy.getName() + ".");
+                    scanner.next();
                     System.exit(0);
                     
                 }
@@ -430,6 +434,7 @@ class Main {
             
             if(plr.getHp() <= 0) {
                 System.out.println("You died to " + boss.getName() + ".");
+                scanner.next();
                 System.exit(0);
             }
         }
