@@ -123,6 +123,7 @@ class Main {
                                 break;
                             }
                             int restRoomDesc = 0;
+                            int roomLootDropLevel = 0;
                             for(int i = 0; i < rooms.length; i++) {
                                 if(i == 0) {
                                     rooms[i] = new Room(startRoomDesc);
@@ -130,6 +131,7 @@ class Main {
                                     rooms[i] = new Room(bossRoomDesc, "boss");
                                 } else if (i == rooms.length-2) {
                                     rooms[i] = new Room("Upon entering the room, you feel as though a great challenge is approaching.", "rest");
+                                    roomLootDropLevel += 1;
                                 } else if (i % 5 == 0) {
                                     rooms[i] = new Room(restRoomDescs[restRoomDesc], "rest");
                                     restRoomDesc++;
@@ -137,7 +139,7 @@ class Main {
                                         restRoomDesc = 0;
                                     }
                                 } else {
-                                    rooms[i] = createRandomRoom(plr);
+                                    rooms[i] = createRandomRoom(plr, roomLootDropLevel);
                                 }
                             }
                         }
@@ -754,7 +756,7 @@ class Main {
         
     }
 
-    public static Chest createRandomChest(Player plr) {
+    public static Chest createRandomChest(Player plr, int dropLevel) {
         String commonChestNames[] = {"Rotted Chest", "Rusty Chest", "Scratched Chest"};
         String uncommonChestNames[] = {"Oak Chest", "Maple Chest", "Stone Chest"};
         String rareChestNames[] = {"Silver Chest", "Large Oak Chest"};
@@ -767,17 +769,17 @@ class Main {
         int result = rand.nextInt(100) + 1;
         String plrClass = plr.getPlayerClass();
         
-        //Common 50% chance
-        //Uncommon 30% chance
-        //Rare 15% chance
-        //Legendary 5% chance
-        if(result <= 50) {
+        //Common 50% chance base 
+        //Uncommon 30% chance base 
+        //Rare 15% chance base 
+        //Legendary 5% chance base
+        if(result <= 50 - (10*dropLevel)) {
             rarity = 0;
             chestName = commonChestNames[rand.nextInt(3)];
-        } else if(result <= 80) {
+        } else if(result <= 80 - (5*dropLevel)) {
             rarity = 1;
             chestName = uncommonChestNames[rand.nextInt(3)];
-        } else if(result <= 95){
+        } else if(result <= 95 - (3*dropLevel)){
             rarity = 2;
             chestName = rareChestNames[rand.nextInt(2)];
         } else {
@@ -820,7 +822,7 @@ class Main {
 
     }
 
-    public static Chest createRandomChest(Player plr, int rarity) {
+    public static Chest createRandomChestRarity(Player plr, int rarity) {
         String commonChestNames[] = {"Rotted Chest", "Rusty Chest", "Scratched Chest"};
         String uncommonChestNames[] = {"Oak Chest", "Maple Chest", "Stone Chest"};
         String rareChestNames[] = {"Silver Chest", "Large Oak Chest"};
@@ -880,7 +882,7 @@ class Main {
 
     }
 
-    public static Room createRandomRoom(Player plr) {
+    public static Room createRandomRoom(Player plr, int dropLevel) {
         String[] genericRoomDescriptions = {
             "The room is incredibly dark and damp. your eyes slowly adjust to the lack of light as you remain in it.",
             "The room contains various cells with decomposed corpses inside of them, infested with rats.",
@@ -902,7 +904,7 @@ class Main {
         Chest chest;
         int chestChance = random.nextInt(100) + 1;
         if(chestChance <= 75) {
-            chest = createRandomChest(plr);
+            chest = createRandomChest(plr, dropLevel);
         } else {
             chest = null;
         }
