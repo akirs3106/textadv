@@ -131,9 +131,9 @@ class Main {
                                     rooms[i] = new Room(bossRoomDesc, "boss");
                                 } else if (i == rooms.length-2) {
                                     rooms[i] = new Room("Upon entering the room, you feel as though a great challenge is approaching.", "rest");
-                                    roomLootDropLevel += 1;
                                 } else if (i % 5 == 0) {
                                     rooms[i] = new Room(restRoomDescs[restRoomDesc], "rest");
+                                    roomLootDropLevel += 1;
                                     restRoomDesc++;
                                     if(restRoomDesc >= 3) {
                                         restRoomDesc = 0;
