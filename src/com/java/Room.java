@@ -3,6 +3,7 @@ package src.com.java;
 import java.util.Random;
 public class Room {
     protected Enemy[] enemies;
+    protected int nextEnemyEncounter;
     protected Chest chest;
     protected String description;
     protected String type;
@@ -30,6 +31,7 @@ public class Room {
         this.description = description;
         this.type = type;
         this.enemiesRemaining = enemies.length;
+        this.nextEnemyEncounter = 0;
         this.hasRested = false;
         this.searched = false;
         this.activeRoom = false;
@@ -100,9 +102,13 @@ public class Room {
         if(this.enemiesRemaining > 0 && !(this.type.equals("boss")) && !(this.type.equals("start"))) {
             Random random = new Random();
             int decider = random.nextInt(100) + 1;
-            //25% to encounter enemy
-            if(decider <= 25) {
-                Main.startEncounter(Main.createRandomSkeleton(), plr);
+            //25% chance to encounter enemy, increases by 5% every 3 rooms.
+            if(decider <= 25 + (5*Dungeon.getEnemyEncounterMultiplier())) {
+                System.out.println(this.nextEnemyEncounter);
+                System.out.println(this.enemiesRemaining);
+                Main.startEncounter(this.enemies[this.nextEnemyEncounter], plr);
+                this.enemiesRemaining -= 1;
+                this.nextEnemyEncounter += 1;
                 return true;
             } else {
                 return false;

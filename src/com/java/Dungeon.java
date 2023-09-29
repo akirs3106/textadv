@@ -2,16 +2,18 @@ package src.com.java;
 
 import java.util.Scanner;
 public class Dungeon {
-    Room[] rooms;
-    String name;
-    Room activeRoom;
-    int activeRoomIndex;
+    protected Room[] rooms;
+    protected String name;
+    protected Room activeRoom;
+    protected int activeRoomIndex;
+    protected static int enemyEncounterMultiplier;
 
     public Dungeon(Room[] rooms, String name) {
         this.rooms = rooms;
         this.name = name;
         this.activeRoom = rooms[0];
         this.activeRoomIndex = 0;
+        Dungeon.enemyEncounterMultiplier = 0;
     }
 
     public Room getActiveRoom() {
@@ -26,6 +28,10 @@ public class Dungeon {
                 return;
             }
         }
+    }
+
+    public static int getEnemyEncounterMultiplier() {
+        return Dungeon.enemyEncounterMultiplier;
     }
     /**
      * 
@@ -62,6 +68,7 @@ public class Dungeon {
                 }
             } else {
                 System.out.println("\nYou enter the next room.");
+                Dungeon.enemyEncounterMultiplier += 1;
                 System.out.println(nextRoom.description);
                 currentRoom.setActiveRoomStatus(false);
                 nextRoom.setActiveRoomStatus(true);

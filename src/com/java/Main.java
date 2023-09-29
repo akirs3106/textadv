@@ -33,6 +33,7 @@ class Main {
     public static Scanner scanner = new Scanner(System.in);
 
     public static Boss boss;
+    public static int enemyDiffLevel = 0;
     
     public static void main(String args[]) {
 
@@ -123,7 +124,11 @@ class Main {
                                 break;
                             }
                             int restRoomDesc = 0;
+                            int roomLootDropLevel = 0;
                             for(int i = 0; i < rooms.length; i++) {
+                                if (i > 0 && i % 3 == 0) {
+                                    enemyDiffLevel += 1;
+                                }
                                 if(i == 0) {
                                     rooms[i] = new Room(startRoomDesc);
                                 } else if (i == rooms.length-1) {
@@ -132,12 +137,13 @@ class Main {
                                     rooms[i] = new Room("Upon entering the room, you feel as though a great challenge is approaching.", "rest");
                                 } else if (i % 5 == 0) {
                                     rooms[i] = new Room(restRoomDescs[restRoomDesc], "rest");
+                                    roomLootDropLevel += 1;
                                     restRoomDesc++;
                                     if(restRoomDesc >= 3) {
                                         restRoomDesc = 0;
                                     }
                                 } else {
-                                    rooms[i] = createRandomRoom(plr);
+                                    rooms[i] = createRandomRoom(plr, roomLootDropLevel, enemyDiffLevel);
                                 }
                             }
                         }
@@ -245,6 +251,11 @@ class Main {
 
     }
 
+    /**
+     * Starts an combat encounter with a provided enemy. Should only be used in Room.playerDecideEncounter().
+     * @param enemy
+     * @param plr
+     */
     public static void startEncounter(Enemy enemy, Player plr) {
 
         System.out.println(String.format("%s approaches you!", enemy.getName()));
@@ -392,6 +403,10 @@ class Main {
 
     }
 
+    /**
+     * Starts the boss encounter for the dungeon. Should only be called in Dungeon.enterNextRoom().
+     * @param plr
+     */
     public static void startBossEncounter(Player plr) {
         System.out.println("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
@@ -439,19 +454,25 @@ class Main {
             }
         }
     }
-
+    /**
+     * Creates a completely random weapon, deprecated. Instead, use createRandomWeapon(String type, int rarity).
+     * @param type | "sword" | "axe" | "dagger" |
+     * @return Weapon
+     */
     public static Weapon createRandomWeapon(String type) {
 
         Random rand = new Random();
 
         int randWeaponSubTypeSelector = rand.nextInt((2-0) + 1);
-        int randWeaponTierSelector = rand.nextInt((2-0) + 1);
+        int randWeaponTierSelector = rand.nextInt(101) + 1;
 
         Weapon weapon;
         String weaponName;
         String weaponSubType;
         int weaponDamage;
         int weaponSpeedPenalty;
+
+
 
         switch(type) {
             case "sword": 
@@ -571,6 +592,12 @@ class Main {
         return weapon;
     }
 
+    /**
+     * Creates a random weapon based on a given rarity tier
+     * @param type | "sword" | "axe" | "dagger" |
+     * @param rarity | 0 | 1 | 2 |
+     * @return Weapon
+     */
     public static Weapon createRandomWeapon(String type, int rarity) {
 
         Random rand = new Random();
@@ -702,7 +729,12 @@ class Main {
         return weapon;
     }
 
-    public static Enemy createRandomSkeleton() {
+    /**
+     * Creates a random skeleton, whose weapon rarity is decided on the dungeon's enemyLevel variable on generation.
+     * @param enemyLevel
+     * @return Enemy
+     */
+    public static Enemy createRandomSkeleton(int enemyLevel) {
 
 
 
@@ -710,28 +742,41 @@ class Main {
         Random random = new Random();
         //Used to determine the name of the skeleton, as well as the type of weapon they're using
         int randSelector = random.nextInt((2-0) + 1);
+        int weaponRaritySelector = random.nextInt(101) + 1;
 
+        int weaponTier;
         Weapon skelWeapon;
         String skelName;
         int skelHp;
         int skelSpeed;
         double skelXp;
 
+        //Rusty Weapon Skeleton 85% base
+        //Bronze Weapon Skeleton 10% base
+        //Steel Weapon Skeleton 5% base
+        if(weaponRaritySelector <= 5 + (5*enemyLevel)) {
+            weaponTier = 2;
+        } else if (weaponRaritySelector <= 15 + (15*enemyLevel)) {
+            weaponTier = 1;
+        } else {
+            weaponTier = 0;
+        }
+
         switch(randSelector) {
             case 0:
-                skelWeapon = createRandomWeapon("sword");
+                skelWeapon = createRandomWeapon("sword", weaponTier);
                 skelHp = random.nextInt((100 - 85) + 1) + 85;
                 skelSpeed = random.nextInt((115 - 85) + 1) + 85;
                 skelName = skeletonNames[randSelector];
             break;
             case 1: 
-                skelWeapon = createRandomWeapon("axe");
+                skelWeapon = createRandomWeapon("axe", weaponTier);
                 skelHp = random.nextInt((125 - 110) + 1) + 110;
                 skelSpeed = random.nextInt((90 - 60) + 1) + 60;
                 skelName = skeletonNames[randSelector];
             break;
             case 2:
-                skelWeapon = createRandomWeapon("dagger");
+                skelWeapon = createRandomWeapon("dagger", weaponTier);
                 skelHp = random.nextInt((90 - 45) + 1) + 45;
                 skelSpeed = random.nextInt((140 - 110) + 1) + 115;
                 skelName = skeletonNames[randSelector];
@@ -754,7 +799,13 @@ class Main {
         
     }
 
-    public static Chest createRandomChest(Player plr) {
+    /**
+     * Creates a chest with a randomly decided weapon inside of it.
+     * @param plr | "Warrior" | "Barbarian" | "Rogue" |
+     * @param dropLevel
+     * @return Chest
+     */
+    public static Chest createRandomChest(Player plr, int dropLevel) {
         String commonChestNames[] = {"Rotted Chest", "Rusty Chest", "Scratched Chest"};
         String uncommonChestNames[] = {"Oak Chest", "Maple Chest", "Stone Chest"};
         String rareChestNames[] = {"Silver Chest", "Large Oak Chest"};
@@ -767,17 +818,17 @@ class Main {
         int result = rand.nextInt(100) + 1;
         String plrClass = plr.getPlayerClass();
         
-        //Common 50% chance
-        //Uncommon 30% chance
-        //Rare 15% chance
-        //Legendary 5% chance
-        if(result <= 50) {
+        //Common 50% chance base 
+        //Uncommon 30% chance base 
+        //Rare 15% chance base 
+        //Legendary 5% chance base
+        if(result <= 50 - (10*dropLevel)) {
             rarity = 0;
             chestName = commonChestNames[rand.nextInt(3)];
-        } else if(result <= 80) {
+        } else if(result <= 80 - (5*dropLevel)) {
             rarity = 1;
             chestName = uncommonChestNames[rand.nextInt(3)];
-        } else if(result <= 95){
+        } else if(result <= 95 - (3*dropLevel)){
             rarity = 2;
             chestName = rareChestNames[rand.nextInt(2)];
         } else {
@@ -820,7 +871,13 @@ class Main {
 
     }
 
-    public static Chest createRandomChest(Player plr, int rarity) {
+    /**
+     * Creates a random chest with a set rarity level.
+     * @param plr
+     * @param rarity | 0 | 1 | 2 |
+     * @return Chest
+     */
+    public static Chest createRandomChestRarity(Player plr, int rarity) {
         String commonChestNames[] = {"Rotted Chest", "Rusty Chest", "Scratched Chest"};
         String uncommonChestNames[] = {"Oak Chest", "Maple Chest", "Stone Chest"};
         String rareChestNames[] = {"Silver Chest", "Large Oak Chest"};
@@ -880,7 +937,14 @@ class Main {
 
     }
 
-    public static Room createRandomRoom(Player plr) {
+    /**
+     * Creates a random room for the dungeon.
+     * @param plr
+     * @param dropLevel
+     * @param enemyLevel
+     * @return Room
+     */
+    public static Room createRandomRoom(Player plr, int dropLevel, int enemyLevel) {
         String[] genericRoomDescriptions = {
             "The room is incredibly dark and damp. your eyes slowly adjust to the lack of light as you remain in it.",
             "The room contains various cells with decomposed corpses inside of them, infested with rats.",
@@ -897,12 +961,12 @@ class Main {
         //Up to 3 enemies in a single room.
         Enemy[] enemies = new Enemy[random.nextInt(3) + 1];
         for(int i = 0; i < enemies.length; i++) {
-            enemies[i] = createRandomSkeleton();
+            enemies[i] = createRandomSkeleton(enemyLevel);
         }
         Chest chest;
         int chestChance = random.nextInt(100) + 1;
         if(chestChance <= 75) {
-            chest = createRandomChest(plr);
+            chest = createRandomChest(plr, dropLevel);
         } else {
             chest = null;
         }
