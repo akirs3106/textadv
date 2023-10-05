@@ -47,12 +47,12 @@ public class Dungeon {
                 boolean choosing = true;
                 Scanner scanner = new Scanner(System.in);
                 while(choosing) {
-                    System.out.print("\nAre you sure you wish to enter the next room? You may not be able to come back.\n\nY/N\n> ");
+                    Typer.typeString("\nAre you sure you wish to enter the next room? You may not be able to come back.\n\nY/N\n> ");
                     String input = scanner.next().toLowerCase();
-                    System.out.println(input);
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     if(input.equals("y")) {
-                        System.out.println("\nYou enter the next room.");
-                        System.out.println(nextRoom.getDescription());
+                        Typer.typeStringln("\nYou enter the next room.");
+                        Typer.typeStringln(nextRoom.getDescription());
                         currentRoom.setActiveRoomStatus(false);
                         nextRoom.setActiveRoomStatus(true);
                         this.activeRoom = nextRoom;
@@ -63,13 +63,13 @@ public class Dungeon {
                         choosing = false;
                         return false;
                     } else {
-                        System.out.println("Please input \"Y\" or \"N\".");
+                        Typer.typeStringln("Please input \"Y\" or \"N\".");
                     }
                 }
             } else {
-                System.out.println("\nYou enter the next room.");
+                Typer.typeStringln("\nYou enter the next room.");
                 Dungeon.enemyEncounterMultiplier += 1;
-                System.out.println(nextRoom.description);
+                Typer.typeStringln(nextRoom.description);
                 currentRoom.setActiveRoomStatus(false);
                 nextRoom.setActiveRoomStatus(true);
                 this.activeRoom = nextRoom;
@@ -78,7 +78,7 @@ public class Dungeon {
                 return true;
             }
         } else {
-            System.out.println("\nYou can't seem to find the entrance to next next room. Maybe try searching this one first.");
+            Typer.typeStringln("\nYou can't seem to find the entrance to next next room. Maybe try searching this one first.");
             return false;
         }
         return false;
@@ -89,8 +89,8 @@ public class Dungeon {
         int previousRoomIndex = this.activeRoomIndex - 1;
         if(previousRoomIndex >= 0 && !currentRoom.getType().equals("start")) {
             Room previousRoom = rooms[previousRoomIndex];
-            System.out.println("\nYou retreat back a room.");
-            System.out.println(previousRoom.getDescription());
+            Typer.typeStringln("\nYou retreat back a room.");
+            Typer.typeStringln(previousRoom.getDescription());
             currentRoom.setActiveRoomStatus(false);
             previousRoom.setActiveRoomStatus(true);
             this.activeRoom = previousRoom;
@@ -98,7 +98,7 @@ public class Dungeon {
             this.activeRoom.playerDecideEncounter(plr);
             return true;
         } else {
-            System.out.println("\nYou cannot exit the dungeon this way, the entrance is blocked!");
+            Typer.typeStringln("\nYou cannot exit the dungeon this way, the entrance is blocked!");
             return false;
         }
     }

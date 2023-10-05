@@ -23,6 +23,13 @@ public class Enemy {
         this.type = type;
     }
 
+    public Weapon getWeapon() {
+        return this.weapon;
+    }
+    public String getName() {
+        return this.name;
+    }
+
     public int getHp() {
         return this.currentHealth;
     }
@@ -36,7 +43,7 @@ public class Enemy {
      * @param plr
      */
     public void attackPlayer(Player plr) {
-        System.out.println(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
+        Typer.typeStringln(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
 
         plr.takeDamage(this.weapon.getDmg());
     }
@@ -50,24 +57,20 @@ public class Enemy {
 
         if(crit) {
             this.currentHealth -= wpn.getDmg()*2;
-            System.out.println(String.format("%s took %s damage!", this.name, wpn.getDmg()*2));
+            Typer.typeStringln(String.format("%s took %s damage!", this.name, wpn.getDmg()*2));
         } else {
             this.currentHealth -= wpn.getDmg();
-            System.out.println(String.format("%s took %s damage!", this.name, wpn.getDmg()));
+            Typer.typeStringln(String.format("%s took %s damage!", this.name, wpn.getDmg()));
         }
         
 
         if(this.currentHealth > 0) {
-            System.out.println(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
+            Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
         } else {
-            System.out.println(String.format("%s has been defeated!", this.name));
+            Typer.typeStringln(String.format("%s has been defeated!", this.name));
             plr.gainXp(this.xpValue);
         }
         
-    }
-
-    public String getName() {
-        return this.name;
     }
     
 }

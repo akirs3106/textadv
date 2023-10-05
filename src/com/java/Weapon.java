@@ -31,7 +31,7 @@ public class Weapon {
     }
 
     public void viewWeapon() {
-        System.out.println(String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.name, this.dmg, this.speedPenalty));
+        Typer.typeStringln(String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.name, this.dmg, this.speedPenalty));
     }
 
 

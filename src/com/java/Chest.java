@@ -22,22 +22,25 @@ public class Chest {
         plr.setWeapon(item);
         this.item = temp;
 
-        System.out.println("You equipped the " + plr.getWeapon().getName() + "!\n");
+        Typer.typeStringln("You equipped the " + plr.getWeapon().getName() + "!\n");
     }
 
     private void viewItem() {
-        System.out.println(String.format("%s Contains:\n%s", this.name, this.item.getName()));
+        Typer.typeStringln(String.format("%s Contains:\n%s", this.name, this.item.getName()));
     }
 
     public void interact(Player plr) {
-        System.out.println("\nYou open the " + this.name + ".");
-        System.out.println("You begin to rummage through the " + this.name + "...\n");
+        Typer.typeStrings(new String[] {
+            "\nYou open the " + this.name + ".",
+            "You begin to rummage through the " + this.name + "...\n"
+        }, 1000);
         viewItem();
         Scanner scanner = new Scanner(System.in);
         boolean choosing = true;
         while (choosing) {
-            System.out.print("\nWhat would you like to do?\n1. Swap Weapons\n2. View " + this.item.getName() + " Stats\n3. View Equipped Weapon Stats\n4. Close " + this.name + "\n> ");
+            Typer.typeString("\nWhat would you like to do?\n1. Swap Weapons\n2. View " + this.item.getName() + " Stats\n3. View Equipped Weapon Stats\n4. Close " + this.name + "\n> ");
             String input = scanner.next();
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             if(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")) {
                 switch(Integer.parseInt(input)) {
                     case 1:
@@ -54,7 +57,7 @@ public class Chest {
                         choosing = false; 
                     break;
                     default:
-                        System.out.println("Please enter the number next to the option you wish to pick.");
+                        Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                 }
 
             }
