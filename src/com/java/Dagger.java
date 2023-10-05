@@ -2,7 +2,7 @@ package src.com.java;
 
 public class Dagger extends Weapon {
 
-    private String[] validSubtypes = {"rusty dagger", "rondel dagger", "stiletto dagger", "castillon dagger", "sacrificial dagger"};
+    private String[] validSubtypes = {"rusty dagger", "rondel dagger", "stiletto dagger", "castillon dagger", "sacrificial dagger", "necromancer dagger"};
     protected String subType; 
 
     public Dagger(String name, int dmg, String subType, int speedPenalty) {

@@ -104,8 +104,6 @@ public class Room {
             int decider = random.nextInt(100) + 1;
             //25% chance to encounter enemy, increases by 5% every 3 rooms.
             if(decider <= 25 + (5*Dungeon.getEnemyEncounterMultiplier())) {
-                System.out.println(this.nextEnemyEncounter);
-                System.out.println(this.enemiesRemaining);
                 Main.startEncounter(this.enemies[this.nextEnemyEncounter], plr);
                 this.enemiesRemaining -= 1;
                 this.nextEnemyEncounter += 1;
@@ -119,41 +117,41 @@ public class Room {
 
     public void useRestRoom(Player plr) {
         if(this.type.equals("rest") && !this.hasRested) {
-            System.out.println("\nYou take a seat by the campfire and light it.");
-            System.out.println("You begin to feel rejuvinated.");
+            Typer.typeStrings(new String[] {"\nYou take a seat by the campfire and light it.", "You begin to feel rejuvinated."});
             plr.setHp(plr.getMaxHP());
-            System.out.println("Your HP has been fully restored!");
+            Typer.typeStringln("Your HP has been fully restored!");
             plr.setUsedHeals(0);
-            System.out.println("You have regained all of your heals!");
+            Typer.typeStringln("You have regained all of your heals!");
             this.hasRested = true;
-            System.out.println("The embers in the campfire slowly fade out as you prepare to venture through the dungeon once again.");
+            Typer.typeStringln("The embers in the campfire slowly fade out as you prepare to venture through the dungeon once again.");
         } else {
-            System.out.println("\nYou have already used up the campfire in this room, making you unable to rest here again.");
+            Typer.typeStringln("\nYou have already used up the campfire in this room, making you unable to rest here again.");
         }
     }
 
     public void searchRoom(Player plr) {
-        System.out.println("\nYou begin to search the room..");
+        Typer.typeStringln("\nYou begin to search the room..");
+        Main.wait(2000);
         if(this.type == "generic") {
             if(playerDecideEncounter(plr)) {
-                System.out.println("\nBecause you were attacked, it seems like you'll have to attempt to search the room again.");
+                Typer.typeStringln("\nBecause you were attacked, it seems like you'll have to attempt to search the room again.");
                 return;
             }
             if(hasChests) {
-                System.out.println("\nYou discovered a " + this.chest.getName() + " in the room!");
+                Typer.typeStringln("\nYou discovered a " + this.chest.getName() + " in the room!");
                 this.searched = true;
                 plr.gainXp(25.0);
             } else {
-                System.out.println("\nThis room appears to have nothing of interest.");
+                Typer.typeStringln("\nThis room appears to have nothing of interest.");
                 this.searched = true;
                 plr.gainXp(10.0);
             }
         } else if(this.type.equals("rest")){
-            System.out.println("\nYou discovered a campfire in the center of the room!\nIt seems like you might be able to rest here.");
+            Typer.typeStringln("\nYou discovered a campfire in the center of the room!\nIt seems like you might be able to rest here.");
             this.searched = true;
             plr.gainXp(25.0);
         } else {
-            System.out.println("\nThis room appears to have nothing of interest.");
+            Typer.typeStringln("\nThis room appears to have nothing of interest.");
             this.searched = true;
             plr.gainXp(10.0);
         }

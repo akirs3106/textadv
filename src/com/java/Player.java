@@ -93,7 +93,7 @@ public class Player {
     public void inspectWeapon(){
         String str = String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.equippedWeapon.name, this.equippedWeapon.dmg, this.equippedWeapon.speedPenalty);
 
-        System.out.println(str);
+        Typer.typeString(str);
 
     }
 
@@ -103,7 +103,7 @@ public class Player {
     public void viewStats(){
         String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed);
 
-        System.out.println(str);
+        Typer.typeString(str);
     }
 
     
@@ -114,11 +114,11 @@ public class Player {
     public void takeDamage(int dmg) {
         this.currenthp -= dmg;
 
-        System.out.println("You took " + dmg + " damage!");
+        Typer.typeStringln("You took " + dmg + " damage!");
         if(this.currenthp < 0) {
             this.currenthp = 0;
         }
-        System.out.println(String.format("Remaining health: %s / %s", this.currenthp, this.maxhp));
+        Typer.typeStringln(String.format("Remaining health: %s / %s", this.currenthp, this.maxhp));
     }
     
 
@@ -128,7 +128,7 @@ public class Player {
      */
     public void gainXp(double gainedXp) {
         this.xp += gainedXp;
-        System.out.println("You received " + gainedXp + "XP!\n");
+        Typer.typeStringln("You received " + gainedXp + "XP!\n");
         while(this.xp >= xpRequiredForLevel && this.level < 10) {
             levelUp();
         }
@@ -145,14 +145,14 @@ public class Player {
         this.healAmount = (int)Math.floor((double)(this.healAmount*1.2));
         this.usedHeals = 0;
 
-        System.out.println("You levelled up to level " + this.level + "!");
-        System.out.println("\nYour max HP has been increased to " + maxhp + "!");
-        System.out.println("You have been fully healed!");
-        System.out.println("Your base speed has been increased to " + baseSpeed + "!");
-        System.out.println("You can now heal yourself for " + this.healAmount + " HP!");
-        System.out.println("You have regained all of your heals!");
-
-
+        Typer.typeStrings(new String[] {
+            "You levelled up to level " + this.level + "!",
+            "\nYour max HP has been increased to " + maxhp + "!",
+            "You have been fully healed!",
+            "Your base speed has been increased to " + baseSpeed + "!",
+            "You can now heal yourself for " + this.healAmount + " HP!",
+            "You have regained all of your heals!"
+        }, 500);
 
     }
 
@@ -174,10 +174,10 @@ public class Player {
         int critChance = random.nextInt((10 - 1) + 1) + 1;
         boolean crit = false;
 
-        System.out.println(String.format("\nYou attacked %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
+        Typer.typeStringln(String.format("\nYou attacked %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
         if(critChance == 1) {
             crit = true;
-            System.out.println("CRITICAL HIT!\n");
+            Typer.typeStringln("CRITICAL HIT!\n");
         }
         enemy.takeDamage(this.equippedWeapon, plr, crit);
     }
@@ -189,12 +189,14 @@ public class Player {
                 this.currenthp = this.maxhp;
             }
             usedHeals++;
-            System.out.println("\nYou healed for " + this.healAmount + "HP!");
-            System.out.println("Remaining HP: " + this.currenthp + " / " + this.maxhp);
-            System.out.println("You have " + (availableHeals - usedHeals) + " heals remaining!\n");
+            Typer.typeStrings(new String[] {
+                "\nYou healed for " + this.healAmount + "HP!",
+                "Remaining HP: " + this.currenthp + " / " + this.maxhp,
+                "You have " + (availableHeals - usedHeals) + " heals remaining!\n"
+            }, 500);
             return true;
         } else {
-            System.out.println("\nYou have no heals remaining!");
+            Typer.typeStringln("\nYou have no heals remaining!");
             return false;
         }
     }

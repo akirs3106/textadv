@@ -3,6 +3,7 @@ package src.com.java;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.Thread;
 class Main {
 
     public static final String[][] swordNames  = {
@@ -44,22 +45,24 @@ class Main {
 
         do {
             choosing = true;
-            System.out.print("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
+            Typer.typeString("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
             
         
             int input = scanner.nextInt()-1;
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //Clears the console.
 
             if(input >= 0 && input < plrClasses.length) {
 
                 String plrClass = plrClasses[input];
 
                 plr = new Player(plrClass);
+                Typer.typeStringln("Class selected: " + plrClass);
                 choosing = false;
 
 
             } else {
                 plr = null;
-                System.out.println("Please input the number next to the class you wish to choose!");
+                Typer.typeStringln("Please input the number next to the class you wish to choose!");
             }
 
         } while(choosing);
@@ -68,7 +71,7 @@ class Main {
             String dungeons[] = {"Underground Ruins"};
             choosing = true;
 
-            System.out.print("\nDungeons:\n\n1. Underground Ruins\n\nChoose a dungeon: ");
+            Typer.typeString("\nDungeons:\n\n1. Underground Ruins\n\nChoose a dungeon: ");
             int input = scanner.nextInt()-1;
 
             if(input >= 0 && input < dungeons.length) {
@@ -77,6 +80,8 @@ class Main {
                 String restRoomDescs[] = new String[3];
                 String dungeonName = dungeons[input];
                 Room[] rooms = null;
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.typeStringln("Selected dungeon: " + dungeonName);
 
                 choosing = false;
                 switch(dungeonName) {
@@ -86,7 +91,7 @@ class Main {
                     restRoomDescs[0] = "This room seems to be in much better condition than the others and feels much warmer.";
                     restRoomDescs[1] = "The roof of this room seems to have collapsed, however the night sky shines above you, comforting you for a moment.";
                     restRoomDescs[2] = "A sweet smell comes from this room, making you realize how hungry you actually are.";
-                    Weapon bossWeapon = new Dagger("Sacrificial Dagger", 30, "sacrificial dagger", 0);
+                    Weapon bossWeapon = new Dagger("The Necromancer's Dagger", 30, "necromancer dagger", 15);
                     Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "damage", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
@@ -103,12 +108,14 @@ class Main {
                 do {
                         choosing = true;
                         String mapSizes[] = {"Small", "Medium", "Large"};
-                        System.out.print("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n\n> ");
+                        Typer.typeString("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n\n> ");
                         int mapSizeChoice = scanner.nextInt()-1;
                         if(mapSizeChoice < 3) {
                             String mapSize = mapSizes[mapSizeChoice];
                             choosing = false;
                             Random random = new Random();
+                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.typeStringln("Selected size: " + mapSize);
                             switch(mapSize) {
                                 case "Small":
                                     rooms = new Room[random.nextInt((15 - 10) + 1) + 10];
@@ -151,10 +158,9 @@ class Main {
                         
                 } while(choosing);
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
-                System.out.println("\nYou are now entering the " + dungeonName + ".");
+                Typer.typeStrings(new String[] {"You are now entering the " + dungeonName + ".", startRoomDesc});
                 choosing = false;
                 boolean gameActive = true;
-                System.out.println(startRoomDesc);
                 while(gameActive) {
                     choosing = true;
                     while(choosing) {
@@ -187,11 +193,12 @@ class Main {
                         question += String.format("\n%s. %s\n> ", choiceNumber, allQuestions[6]);
                         curatedQuestions.add(allQuestions[6]);
                         choiceNumber++;
-                        System.out.print(question);
+                        Typer.typeString(question);
                         try {
                             int numChoice = 999;
                             try {
                                 numChoice = Integer.parseInt(scanner.next())-1;
+                                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                             } catch (NumberFormatException e) {
                                 numChoice = 999;
                             }
@@ -237,14 +244,15 @@ class Main {
                             }
                         
                         } catch (Exception e) {
-                            System.out.println("Please enter the number next to your desired choice.");
+                            Typer.typeStringln("Please enter the number next to your desired choice.");
                         }
                     }
                     
                     
                 }
             } else {
-                System.out.println("Please input then number next to the dungeon you wish to enter!");
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.typeStringln("Please input then number next to the dungeon you wish to enter!");
             }
 
         } while (choosing);
@@ -258,7 +266,8 @@ class Main {
      */
     public static void startEncounter(Enemy enemy, Player plr) {
 
-        System.out.println(String.format("%s approaches you!", enemy.getName()));
+        
+        Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
 
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
@@ -266,15 +275,16 @@ class Main {
                 choosing = true;
                 enemy.attackPlayer(plr);
                 if(plr.getHp() <= 0) {
-                    System.out.println("You died to a " + enemy.getName() + ".");
+                    Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
                     System.exit(0);
                 }
 
                 while(choosing) {
-                    System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
 
                     String in = scanner.next();
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     if(in.equals("1") || in.equals("2") || in.equals("3")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
@@ -295,13 +305,13 @@ class Main {
                         }
                         
                     } else {
-                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                        Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                     }
 
 
                 }
                 if(enemy.getHp() <= 0) {
-                    System.out.println("You won the fight!");
+                    Typer.typeStringln("You won the fight!");
                     plr.setUsedHeals(0);
                     break;
                 }
@@ -311,9 +321,10 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
 
                     String in = scanner.next();
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     if(in.equals("1") || in.equals("2") || in.equals("3")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
@@ -334,7 +345,7 @@ class Main {
                         }
                         
                     } else {
-                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                        Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                     }
 
 
@@ -342,12 +353,12 @@ class Main {
                 
 
                 if(enemy.getHp() <= 0) {
-                    System.out.println("You won the fight!");
+                    Typer.typeStringln("You won the fight!");
                     break;
                 }
                 enemy.attackPlayer(plr);
                 if(plr.getHp() <= 0) {
-                    System.out.println("You died to a " + enemy.getName() + ".");
+                    Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
                     System.exit(0);
                     
@@ -358,9 +369,10 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
 
                     String in = scanner.next();
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     if(in.equals("1") || in.equals("2") || in.equals("3")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
@@ -378,7 +390,7 @@ class Main {
                         }
                         
                     } else {
-                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                        Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                     }
 
 
@@ -387,12 +399,12 @@ class Main {
 
                 // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
-                    System.out.println("You won the fight!");
+                    Typer.typeStringln("You won the fight!");
                     break;
                 }
                 enemy.attackPlayer(plr);
                 if(plr.getHp() <= 0) {
-                    System.out.println("You died to a " + enemy.getName() + ".");
+                    Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
                     System.exit(0);
                     
@@ -408,13 +420,14 @@ class Main {
      * @param plr
      */
     public static void startBossEncounter(Player plr) {
-        System.out.println("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
+        Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             choosing = true;
             while(choosing) {
-                System.out.print("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
 
                     String in = scanner.next();
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     if(in.equals("1") || in.equals("2") || in.equals("3")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
@@ -435,25 +448,117 @@ class Main {
                         }
                         
                     } else {
-                        System.out.println("\nPut in the number next to the option you wish to choose!");
+                        Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                     }
 
 
             }
             if(boss.getHp() <= 0) {
-                System.out.println("You won the fight!");
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                finishGame(plr);
                 break;
             }
 
             boss.chooseMove(plr);
             
             if(plr.getHp() <= 0) {
-                System.out.println("You died to " + boss.getName() + ".");
+                Typer.typeStringln("You died to " + boss.getName() + ".");
                 scanner.next();
                 System.exit(0);
             }
         }
     }
+
+    public static void finishGame(Player plr) {
+        switch(boss.getName()) {
+            case "The Necromancer": 
+                switch(plr.getPlayerClass()) {
+                    case "Warrior":
+                        Typer.typeStrings(new String[] {
+                                                "You slash The Necromancer with your " + plr.getWeapon().getName() + " knocking him backwards and onto the ground.",
+                                                "You stare at what remains of the struggling creature, as its reduced to a pile of bones once again.",
+                                                "As you raise your " + plr.getWeapon().getName() + " in celebration, you begin to hear cackling.",
+                                                "You look back down towards the ground, and see the remains of The Necromancer reconstructing themselves back into their functional form.",
+                                                "Suddenly, an army of skeletons begins to rise around you, all of which are cackling as well.",
+                                                "As the undead army begins to close in around you, you notice The Necromancer is wielding its Sacrifical Dagger once again.",
+                                                "Cutting through the many skeletons, you rush towards The Necromancer, and force the Sacrifical Dagger out of his hand.",
+                                                "You firmly grip the dagger, and lodge it into The Necromancer's skull.",
+                                                "As the dagger penetrates its skull, you can see dark energy flowing out of The Necromancer's skull and the knife.",
+                                                "The Necromancer lets out one final scream before slowly being turned into bonedust, along with its army of skeletons."
+                                                });
+                    break;
+                    case "Barbarian":
+                        if(plr.getWeapon().getName().equals("The Labrys")) {
+                            Typer.typeStrings(new String[] {
+                                "While he is dazed from your previous attacks, you harshly kick The Necromancer to the floor.",
+                                "As he lays on the ground, you lift up your foot and slam it down onto his ribcage, shattering it into millions of pieces.",
+                                "The Necromancer lets out a horrifying screech.",
+                                "You raise The Labrys into the air in celebration above the suffering creature.",
+                                "As you look down, you can see The Necromancer reaching for his Sacrificial Dagger.",
+                                "As he gets ahold of it, you promptly slam your foot down onto his wrist, crushing it just like his ribcage.",
+                                "You reach your arm out and grab the Sacrifical Dagger amongst the many particles of shattered bone.",
+                                "You look at it for a moment, only to snap it in half with your bare hands.",
+                                "The Necromancer yells out in anger at this sight of you snapping his beloved weapon.",
+                                "You place your foot on The Necromancer's skull, before promptly crushing it beneath your boots."
+                            });
+                        } else {
+                            Typer.typeStrings(new String[] {
+                                "While he is dazed from your previous attacks, you harshly kick The Necromancer to the floor.",
+                                "As he lays on the ground, you lift up your foot and slam it down onto his ribcage, shattering it into millions of pieces.",
+                                "The Necromancer lets out a horrifying screech.",
+                                "You raise your " + plr.getWeapon().getName() + " into the air in celebration above the suffering creature.",
+                                "As you look down, you can see The Necromancer reaching for his Sacrificial Dagger.",
+                                "As he gets ahold of it, you promptly slam your foot down onto his wrist, crushing it just like his ribcage.",
+                                "You reach your arm out and grab the Sacrifical Dagger amongst the many particles of shattered bone.",
+                                "You look at it for a moment, only to snap it in half with your bare hands.",
+                                "The Necromancer yells out in anger at the sight of you snapping his beloved weapon.",
+                                "You place your foot on The Necromancer's skull, before promptly crushing it beneath your boots."
+                            });
+                        }
+                    break;
+                    case "Rogue":
+                        Typer.typeStrings(new String[] {
+                            "You slash at The Necromancer with your " + plr.getWeapon().getName() + ", causing him to stumble backwards.",
+                            "The Necromancer clutches at his partially broken ribcage.",
+                            "While he is attempting to recover, you sprint forwards and swipe the Sacrificical Dagger straight from his hand.",
+                            "You knock over a bookshelf, causing a gust of wind that extinguishes all the candles that are producing light in the room.",
+                            "As the room fades to complete darkness, you begin to stalk around The Necromancer.",
+                            "The Necromancer gazes around the room, desperately attempting to pinpoint your location.",
+                            "However, before he can even hear you, you lunge forwards and stab him over and over again.",
+                            "The Necromancer falls to the floor, and collapses into a lifeless pile of bones once again."
+                        });
+                        choosing = true;
+                        while(choosing) {
+                            Typer.typeString("Would you like to keep The Necromancer's Dagger? (Y/N)\n> ");
+                            String input = scanner.next().toLowerCase();
+                            if(input.equals("y")) {
+                                choosing = false;
+                                plr.setWeapon(boss.getWeapon());
+                                Typer.typeStringln("You equipped " + plr.getWeapon().getName() + "!");
+                                wait(2000);
+                            } else if (input.equals("n")){
+                                choosing = false;
+                                Typer.typeStringln("You throw The Necromancer's Dagger on the floor with all your strength, shattering it into pieces as it hits the cold stone floor.");
+                            } else {
+                                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                Typer.typeStringln("Please input \"Y\" or \"N\".");
+                            }
+                        }
+                    break;
+                }
+                Typer.typeStrings(new String[] {
+                    "As you defeated The Necromancer once and for all, a large section of the wall begins to slide open at the back of the room.",
+                    "You enter the now open passageway and emerge from the dungeon, back into the world.",
+                    "Congratulations, you have succesfully emerged victorious from the dungeon!",
+                    "Final Stats: "
+                });
+                plr.viewStats();
+                plr.inspectWeapon();
+                scanner.next();
+                System.exit(0);
+        }
+    }
+
     /**
      * Creates a completely random weapon, deprecated. Instead, use createRandomWeapon(String type, int rarity).
      * @param type | "sword" | "axe" | "dagger" |
@@ -859,7 +964,7 @@ class Main {
                     weapon = new Axe("The Labrys", 55, "the labrys", 45);
                 break;
                 case "Rogue":
-                    weapon = new Dagger("Sacrifical Dagger", 30, "sacrifical dagger", 20);
+                    weapon = new Dagger("Sacrifical Dagger", 30, "sacrificial dagger", 20);
                 break;
                 default:
                 weapon = null;
@@ -975,4 +1080,38 @@ class Main {
         
         
     }
+
+    public static void wait(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    // public static void typeString(String str) {
+    //     String[] strChars = str.split("", 0);
+    //     for(String character : strChars) {
+    //         System.out.print(character);
+    //         wait(20);
+    //     }
+    // }
+
+    // public static void typeStringln(String str) {
+    //     String[] strChars = str.split("", 0);
+    //     for(String character : strChars) {
+    //         System.out.print(character);
+    //         wait(20);
+    //     }
+    //     System.out.println("\n");
+    // }
+
+
+    // public static void typeStrings(String[] arr) {
+    //     for(String str : arr) {
+    //         typeString(str);
+    //         wait(2000);
+    //         System.out.println("\n");
+    //     }
+    // }
 }

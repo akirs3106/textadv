@@ -40,19 +40,19 @@ public class Boss extends Enemy {
     }
 
     public void useMove(Player plr, Move move) {
-        System.out.println(String.format("\n%s %s", this.name, move.getMoveDialogue()));
+        Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
             plr.takeDamage(move.getMoveDmg());
     }
 
 
     public void useHealMove() {
-        System.out.println(String.format("\n%s %s", this.name, this.healMove.getMoveDialogue()));
+        Typer.typeStringln(String.format("\n%s %s", this.name, this.healMove.getMoveDialogue()));
         this.currentHealth += healMove.getMoveDmg();
         this.usedHeals++;
         if(this.currentHealth > this.maxHealth) {
             this.currentHealth = this.maxHealth;
         }
-        System.out.println(String.format("%s healed for %s HP\n", this.name, this.healMove.getMoveDmg()));
+        Typer.typeStringln(String.format("%s healed for %s HP\n", this.name, this.healMove.getMoveDmg()));
     }
 
     public void chooseMove(Player plr) {
