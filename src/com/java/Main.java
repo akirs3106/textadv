@@ -107,10 +107,10 @@ class Main {
                 }
                 do {
                         choosing = true;
-                        String mapSizes[] = {"Small", "Medium", "Large"};
-                        Typer.typeString("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n\n> ");
+                        String mapSizes[] = {"Small", "Medium", "Large", "Custom"};
+                        Typer.typeString("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n4. Custom\n\n> ");
                         int mapSizeChoice = scanner.nextInt()-1;
-                        if(mapSizeChoice < 3) {
+                        if(mapSizeChoice < 4) {
                             String mapSize = mapSizes[mapSizeChoice];
                             choosing = false;
                             Random random = new Random();
@@ -125,6 +125,21 @@ class Main {
                                 break;
                                 case "Large":
                                     rooms = new Room[random.nextInt((35 - 30) + 1) + 30];
+                                break;
+                                case "Custom":
+                                    boolean customChoosing;
+                                    do {
+                                        customChoosing = true;
+                                        Typer.typeString("Input the number of rooms you want:\n> ");
+                                        int customSize = scanner.nextInt();
+                                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                        if(customSize >= 2) {
+                                            rooms = new Room[customSize];
+                                            customChoosing = false;
+                                        } else {
+                                            Typer.typeStringln("Please input a number greater than or equal to 2.");
+                                        }
+                                    } while (customChoosing);
                                 break;
                                 default:
                                     rooms = new Room[3];
@@ -157,6 +172,7 @@ class Main {
                         
                         
                 } while(choosing);
+
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
                 Typer.typeStrings(new String[] {"You are now entering the " + dungeonName + ".", startRoomDesc});
                 choosing = false;
