@@ -328,7 +328,6 @@ class Main {
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
-                    plr.setUsedHeals(0);
                     break;
                 }
             }
