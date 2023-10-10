@@ -5,6 +5,8 @@ This game is purely a passion project, and its main purpose is to give me someth
 my attempt at learning how to use different tools such as GitHub for a more efficient and professional workflow, as well as an 
 introduction to a basic game design and development process.
 
+### [Roadmap](https://trello.com/b/28H3JFAg)
+
 ## How to Play
 Downloading and playing textadv is very easy.
 
