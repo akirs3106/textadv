@@ -34,33 +34,41 @@ public class Chest {
             "\nYou open the " + this.name + ".",
             "You begin to rummage through the " + this.name + "...\n"
         }, 1000);
-        viewItem();
         Scanner scanner = new Scanner(System.in);
         boolean choosing = true;
+        viewItem();
         while (choosing) {
+            String chestChoices[] = {"Swap", "Compare", "Close"};
             Typer.typeStringln("\nWhat would you like to do?");
-            Typer.typeString("1. Swap Weapons\n2. View " + this.item.getName() + " Stats\n3. View Equipped Weapon Stats\n4. Close " + this.name + "\n> ", 10);
-            String input = scanner.next();
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-            if(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")) {
-                switch(Integer.parseInt(input)) {
-                    case 1:
+            Typer.typeString("1. Swap Weapons \n2. Compare Weapons \n3. Close Chest\n> ", 10);
+            try {
+                String input = scanner.next();
+                int choice = Integer.parseInt(input)-1;
+
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                if(choice >= 0 && choice < chestChoices.length) {
+                    switch(chestChoices[choice]) {
+                    case "Swap":
                         swapItems(plr);
                         viewItem();
                     break;
-                    case 2: 
-                        item.viewWeapon();
+                    case "Compare":
+                        item.compareWeapon(plr.getWeapon());
                     break;
-                    case 3:
-                        plr.inspectWeapon();
-                    break;
-                    case 4:
-                        choosing = false; 
+                    case "Close":
+                        choosing = false;
                     break;
                     default:
-                        Typer.typeStringln("Please enter the number next to the option you wish to pick.");
+                        System.out.println("You shouldn't see this.");
+                        scanner.next();
+                        System.exit(0);
                 }
-
+                } else {
+                    Typer.typeStringln("Please enter the number next to the option you wish to pick.");
+                }
+            } catch (Exception e) {
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.typeStringln("Please enter the number next to the option you wish to pick.");
             }
         }
         

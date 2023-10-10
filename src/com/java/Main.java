@@ -1069,7 +1069,7 @@ class Main {
      */
     public static Room createRandomRoom(Player plr, int dropLevel, int enemyLevel, int roomNumber) {
         String[] genericRoomDescriptions = {
-            "The room is incredibly dark and damp. your eyes slowly adjust to the lack of light as you remain in it.",
+            "The room is incredibly dark and damp. Your eyes slowly adjust to the lack of light as you remain in it.",
             "The room contains various cells with decomposed corpses inside of them, infested with rats.",
             "You can feel the room's rotted wood floor beneath your feet.",
             "The room's cold stone brick walls appear to extend upwards forever.",
