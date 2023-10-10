@@ -27,6 +27,20 @@ public class Typer {
     }
 
     /**
+     * Prints out a string with a scrolling text effect with a provided delay between each character.
+     * @param str
+     * @param characterDelay
+     */
+    public static void typeString(String str, int characterDelay) {
+        String[] strChars = str.split("", 0);
+        for(String character : strChars) {
+            System.out.print(character);
+            wait(characterDelay);
+        }
+    }
+
+
+    /**
      * Prints out a string character by character to give it a scrolling text effect, followed by printing a new line once the string is fully printed.
      * @param str
      */

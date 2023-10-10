@@ -45,7 +45,8 @@ class Main {
 
         do {
             choosing = true;
-            Typer.typeString("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
+            Typer.typeStringln("Classes:");
+            Typer.typeString("\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ", 10);
             
         
             int input = scanner.nextInt()-1;
@@ -70,8 +71,8 @@ class Main {
         do {
             String dungeons[] = {"Underground Ruins"};
             choosing = true;
-
-            Typer.typeString("\nDungeons:\n\n1. Underground Ruins\n\nChoose a dungeon: ");
+            Typer.typeStringln("\nDungeons:");
+            Typer.typeString("\n1. Underground Ruins\n\nChoose a dungeon: ", 10);
             int input = scanner.nextInt()-1;
 
             if(input >= 0 && input < dungeons.length) {
@@ -108,7 +109,8 @@ class Main {
                 do {
                         choosing = true;
                         String mapSizes[] = {"Small", "Medium", "Large", "Custom"};
-                        Typer.typeString("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n4. Custom\n\n> ");
+                        Typer.typeStringln("\nChoose a map size:");
+                        Typer.typeString("\n1. Small\n2. Medium\n3. Large\n4. Custom\n\n> ", 10);
                         int mapSizeChoice = scanner.nextInt()-1;
                         if(mapSizeChoice < 4) {
                             String mapSize = mapSizes[mapSizeChoice];
@@ -180,7 +182,7 @@ class Main {
                 while(gameActive) {
                     choosing = true;
                     while(choosing) {
-                        String question = "What would you like to do?\n";
+                        String question = "";
                         String[] allQuestions = {"Search", "Open Chest", "Rest", "Heal", "Enter next room", "Enter previous room", "View stats"};
                         ArrayList<String> curatedQuestions = new ArrayList<String>();
                         int choiceNumber = 1;
@@ -209,7 +211,8 @@ class Main {
                         question += String.format("\n%s. %s\n> ", choiceNumber, allQuestions[6]);
                         curatedQuestions.add(allQuestions[6]);
                         choiceNumber++;
-                        Typer.typeString(question);
+                        Typer.typeStringln("What would you like to do?");
+                        Typer.typeString(question, 10);
                         try {
                             int numChoice = 999;
                             try {
@@ -297,7 +300,7 @@ class Main {
                 }
 
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -336,7 +339,7 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -384,7 +387,7 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -439,7 +442,7 @@ class Main {
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             choosing = true;
             while(choosing) {
-                Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");

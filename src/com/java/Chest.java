@@ -38,7 +38,8 @@ public class Chest {
         Scanner scanner = new Scanner(System.in);
         boolean choosing = true;
         while (choosing) {
-            Typer.typeString("\nWhat would you like to do?\n1. Swap Weapons\n2. View " + this.item.getName() + " Stats\n3. View Equipped Weapon Stats\n4. Close " + this.name + "\n> ");
+            Typer.typeStringln("\nWhat would you like to do?");
+            Typer.typeString("1. Swap Weapons\n2. View " + this.item.getName() + " Stats\n3. View Equipped Weapon Stats\n4. Close " + this.name + "\n> ", 10);
             String input = scanner.next();
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             if(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")) {
