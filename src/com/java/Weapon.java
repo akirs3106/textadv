@@ -34,5 +34,21 @@ public class Weapon {
         Typer.typeStringln(String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.name, this.dmg, this.speedPenalty));
     }
 
+    public void compareWeapon(Weapon wpn) {
+        String compareDmg = "";
+        if(this.dmg - wpn.getDmg() > 0) {
+            compareDmg = "(+" + (this.dmg - wpn.getDmg()) + ")";
+        } else if (this.dmg - wpn.getDmg() < 0) {
+            compareDmg = "(" + (this.dmg - wpn.getDmg()) + ")";
+        }
+        String compareSpeedPen = "";
+        if(this.speedPenalty - wpn.getSpeedPenalty() > 0) {
+            compareSpeedPen = "(+" + (this.speedPenalty - wpn.getSpeedPenalty()) + ")";
+        } else if (this.speedPenalty - wpn.getSpeedPenalty() < 0) {
+            compareSpeedPen = "(" + (this.speedPenalty - wpn.getSpeedPenalty()) + ")";
+        }
+        Typer.typeStringln(String.format("\nWeapon: %s \nDamage: %s %s \nSpeed Reduction: %s %s\n", this.name, this.dmg, compareDmg, this.speedPenalty, compareSpeedPen));
+    }
+
 
 }

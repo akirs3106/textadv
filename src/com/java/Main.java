@@ -45,7 +45,8 @@ class Main {
 
         do {
             choosing = true;
-            Typer.typeString("Classes:\n\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ");
+            Typer.typeStringln("Classes:");
+            Typer.typeString("\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ", 10);
             
         
             int input = scanner.nextInt()-1;
@@ -70,8 +71,8 @@ class Main {
         do {
             String dungeons[] = {"Underground Ruins"};
             choosing = true;
-
-            Typer.typeString("\nDungeons:\n\n1. Underground Ruins\n\nChoose a dungeon: ");
+            Typer.typeStringln("\nDungeons:");
+            Typer.typeString("\n1. Underground Ruins\n\nChoose a dungeon: ", 10);
             int input = scanner.nextInt()-1;
 
             if(input >= 0 && input < dungeons.length) {
@@ -107,10 +108,11 @@ class Main {
                 }
                 do {
                         choosing = true;
-                        String mapSizes[] = {"Small", "Medium", "Large"};
-                        Typer.typeString("\nChoose a map size:\n\n1. Small\n2. Medium\n3. Large\n\n> ");
+                        String mapSizes[] = {"Small", "Medium", "Large", "Custom"};
+                        Typer.typeStringln("\nChoose a map size:");
+                        Typer.typeString("\n1. Small\n2. Medium\n3. Large\n4. Custom\n\n> ", 10);
                         int mapSizeChoice = scanner.nextInt()-1;
-                        if(mapSizeChoice < 3) {
+                        if(mapSizeChoice < 4) {
                             String mapSize = mapSizes[mapSizeChoice];
                             choosing = false;
                             Random random = new Random();
@@ -125,6 +127,21 @@ class Main {
                                 break;
                                 case "Large":
                                     rooms = new Room[random.nextInt((35 - 30) + 1) + 30];
+                                break;
+                                case "Custom":
+                                    boolean customChoosing;
+                                    do {
+                                        customChoosing = true;
+                                        Typer.typeString("Input the number of rooms you want:\n> ");
+                                        int customSize = scanner.nextInt();
+                                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                        if(customSize >= 2) {
+                                            rooms = new Room[customSize];
+                                            customChoosing = false;
+                                        } else {
+                                            Typer.typeStringln("Please input a number greater than or equal to 2.");
+                                        }
+                                    } while (customChoosing);
                                 break;
                                 default:
                                     rooms = new Room[3];
@@ -150,13 +167,14 @@ class Main {
                                         restRoomDesc = 0;
                                     }
                                 } else {
-                                    rooms[i] = createRandomRoom(plr, roomLootDropLevel, enemyDiffLevel);
+                                    rooms[i] = createRandomRoom(plr, roomLootDropLevel, enemyDiffLevel, (i+1));
                                 }
                             }
                         }
                         
                         
                 } while(choosing);
+
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
                 Typer.typeStrings(new String[] {"You are now entering the " + dungeonName + ".", startRoomDesc});
                 choosing = false;
@@ -164,7 +182,7 @@ class Main {
                 while(gameActive) {
                     choosing = true;
                     while(choosing) {
-                        String question = "What would you like to do?\n";
+                        String question = "";
                         String[] allQuestions = {"Search", "Open Chest", "Rest", "Heal", "Enter next room", "Enter previous room", "View stats"};
                         ArrayList<String> curatedQuestions = new ArrayList<String>();
                         int choiceNumber = 1;
@@ -193,7 +211,8 @@ class Main {
                         question += String.format("\n%s. %s\n> ", choiceNumber, allQuestions[6]);
                         curatedQuestions.add(allQuestions[6]);
                         choiceNumber++;
-                        Typer.typeString(question);
+                        Typer.typeStringln("What would you like to do?");
+                        Typer.typeString(question, 10);
                         try {
                             int numChoice = 999;
                             try {
@@ -281,7 +300,7 @@ class Main {
                 }
 
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -312,7 +331,6 @@ class Main {
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
-                    plr.setUsedHeals(0);
                     break;
                 }
             }
@@ -321,7 +339,7 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -369,7 +387,7 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -424,7 +442,7 @@ class Main {
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             choosing = true;
             while(choosing) {
-                Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ");
+                Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -1049,9 +1067,9 @@ class Main {
      * @param enemyLevel
      * @return Room
      */
-    public static Room createRandomRoom(Player plr, int dropLevel, int enemyLevel) {
+    public static Room createRandomRoom(Player plr, int dropLevel, int enemyLevel, int roomNumber) {
         String[] genericRoomDescriptions = {
-            "The room is incredibly dark and damp. your eyes slowly adjust to the lack of light as you remain in it.",
+            "The room is incredibly dark and damp. Your eyes slowly adjust to the lack of light as you remain in it.",
             "The room contains various cells with decomposed corpses inside of them, infested with rats.",
             "You can feel the room's rotted wood floor beneath your feet.",
             "The room's cold stone brick walls appear to extend upwards forever.",

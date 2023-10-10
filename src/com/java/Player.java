@@ -48,6 +48,8 @@ public class Player {
     }
 
 
+
+
     public int getHp() {
         return this.currenthp;
     }
@@ -101,7 +103,7 @@ public class Player {
      * Prints visual representation of the player's stats.
      */
     public void viewStats(){
-        String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed);
+        String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \nRemaining Heals: %s \nHeal Amount: %s \nRoom: %s\n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed, (this.availableHeals - this.usedHeals), this.healAmount, Room.roomNumber);
 
         Typer.typeString(str);
     }
