@@ -165,7 +165,7 @@ class Main {
                                         restRoomDesc = 0;
                                     }
                                 } else {
-                                    rooms[i] = createRandomRoom(plr, roomLootDropLevel, enemyDiffLevel);
+                                    rooms[i] = createRandomRoom(plr, roomLootDropLevel, enemyDiffLevel, (i+1));
                                 }
                             }
                         }
@@ -1064,7 +1064,7 @@ class Main {
      * @param enemyLevel
      * @return Room
      */
-    public static Room createRandomRoom(Player plr, int dropLevel, int enemyLevel) {
+    public static Room createRandomRoom(Player plr, int dropLevel, int enemyLevel, int roomNumber) {
         String[] genericRoomDescriptions = {
             "The room is incredibly dark and damp. your eyes slowly adjust to the lack of light as you remain in it.",
             "The room contains various cells with decomposed corpses inside of them, infested with rats.",

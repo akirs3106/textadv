@@ -12,6 +12,7 @@ public class Room {
     protected boolean hasRested;
     protected boolean searched;
     protected boolean activeRoom;
+    public static int roomNumber = 1;
 
     /**
      * Used for "generic" type room.

@@ -55,6 +55,7 @@ public class Dungeon {
                         Typer.typeStringln(nextRoom.getDescription());
                         currentRoom.setActiveRoomStatus(false);
                         nextRoom.setActiveRoomStatus(true);
+                        Room.roomNumber += 1;
                         this.activeRoom = nextRoom;
                         this.activeRoomIndex = nextRoomIndex;
                         Main.startBossEncounter(plr);
@@ -72,6 +73,7 @@ public class Dungeon {
                 Typer.typeStringln(nextRoom.description);
                 currentRoom.setActiveRoomStatus(false);
                 nextRoom.setActiveRoomStatus(true);
+                Room.roomNumber += 1;
                 this.activeRoom = nextRoom;
                 this.activeRoomIndex = nextRoomIndex;
                 this.activeRoom.playerDecideEncounter(plr);
@@ -93,6 +95,7 @@ public class Dungeon {
             Typer.typeStringln(previousRoom.getDescription());
             currentRoom.setActiveRoomStatus(false);
             previousRoom.setActiveRoomStatus(true);
+            Room.roomNumber -= 1;
             this.activeRoom = previousRoom;
             this.activeRoomIndex = previousRoomIndex;
             this.activeRoom.playerDecideEncounter(plr);
