@@ -177,7 +177,6 @@ class Main {
 
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
                 Typer.typeStrings(new String[] {"You are now entering the " + dungeonName + ".", startRoomDesc});
-                startBossEncounter(plr);
                 choosing = false;
                 boolean gameActive = true;
                 while(gameActive) {
@@ -332,6 +331,15 @@ class Main {
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
+                    wait(100);
+                    Random random = new Random();
+                    if(random.nextInt(10) + 1 <= 1 && plr.getUsedHeals() > 0) {
+                        Typer.typeStrings(new String[] {
+                            "You look down and find a small amount of medical supplies.",
+                            "You have regained one heal!"
+                        }, 500);
+                        plr.setUsedHeals(plr.getUsedHeals()-1);
+                    }
                     break;
                 }
             }
@@ -373,6 +381,15 @@ class Main {
 
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
+                    wait(100);
+                    Random random = new Random();
+                    if(random.nextInt(10) + 1 <= 1 && plr.getUsedHeals() > 0) {
+                        Typer.typeStrings(new String[] {
+                            "You look down and find a small amount of medical supplies.",
+                            "You have regained one heal!"
+                        }, 500);
+                        plr.setUsedHeals(plr.getUsedHeals()-1);
+                    }
                     break;
                 }
                 enemy.attackPlayer(plr);
@@ -419,6 +436,15 @@ class Main {
                 // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
+                    wait(100);
+                    Random random = new Random();
+                    if(random.nextInt(10) + 1 <= 1 && plr.getUsedHeals() > 0) {
+                        Typer.typeStrings(new String[] {
+                            "You look down and find a small amount of medical supplies.",
+                            "You have regained one heal!"
+                        }, 500);
+                        plr.setUsedHeals(plr.getUsedHeals()-1);
+                    }
                     break;
                 }
                 enemy.attackPlayer(plr);

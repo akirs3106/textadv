@@ -78,9 +78,6 @@ public class Boss extends Enemy {
             System.out.println(genericMovesUsed);
         if(this.hasPowerMove && this.genericMovesUsed >= genericMovesRequired) {
             int moveChosen = random.nextInt(genericMoves.size()+2);
-            System.out.println("Power Move Possible");
-            System.out.println(moveChosen);
-            System.out.println(genericMoves.size());
             if(moveChosen >= genericMoves.size()) {
                 usePowerMove(plr);
             } else {

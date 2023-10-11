@@ -15,6 +15,7 @@ public class Player {
     protected int availableHeals;
     protected int usedHeals;
     protected int healAmount;
+    protected int baseHealAmount;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
@@ -45,6 +46,7 @@ public class Player {
         }
             calculateActiveSpeed();
             this.currenthp = this.maxhp;
+            this.baseHealAmount = this.healAmount;
     }
 
 
@@ -52,6 +54,10 @@ public class Player {
 
     public int getHp() {
         return this.currenthp;
+    }
+
+    public int getUsedHeals() {
+        return this.usedHeals;
     }
 
     public int getSpeed() {
@@ -137,24 +143,39 @@ public class Player {
     }
 
     private void levelUp() {
-        this.level++;
+        this.level += 1;
         this.maxhp += 10;
         this.currenthp = maxhp;
         this.baseSpeed += 5;
         calculateActiveSpeed();
         this.xp -= xpRequiredForLevel;
         this.xpRequiredForLevel += 100;
-        this.healAmount = (int)Math.floor((double)(this.healAmount*1.2));
+        this.healAmount += (int)Math.floor((double)(this.baseHealAmount*.2));
         this.usedHeals = 0;
-
-        Typer.typeStrings(new String[] {
+        if(this.level % 3 == 0) {
+            this.availableHeals += 1;
+            Typer.typeStrings(new String[] {
+            "You levelled up to level " + this.level + "!",
+            "\nYour max HP has been increased to " + maxhp + "!",
+            "You have been fully healed!",
+            "Your base speed has been increased to " + baseSpeed + "!",
+            "You can now heal yourself for " + this.healAmount + " HP!",
+            "Your available heals has increased to " + this.availableHeals + "!",
+            "You have regained all of your heals!"
+            }, 500);
+        } else {
+            Typer.typeStrings(new String[] {
             "You levelled up to level " + this.level + "!",
             "\nYour max HP has been increased to " + maxhp + "!",
             "You have been fully healed!",
             "Your base speed has been increased to " + baseSpeed + "!",
             "You can now heal yourself for " + this.healAmount + " HP!",
             "You have regained all of your heals!"
-        }, 500);
+            }, 500);
+        }
+
+
+        
 
     }
 
