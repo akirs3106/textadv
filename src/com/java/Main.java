@@ -95,9 +95,9 @@ class Main {
                     Weapon bossWeapon = new Dagger("The Necromancer's Dagger", 30, "necromancer dagger", 15);
                     Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
-                    Move bossMove3 = new Move("Summon Undead Army", "damage", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
+                    Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3);
+                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3);
                 break;
                 default:
                     dungeonName = null;
@@ -177,6 +177,7 @@ class Main {
 
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
                 Typer.typeStrings(new String[] {"You are now entering the " + dungeonName + ".", startRoomDesc});
+                startBossEncounter(plr);
                 choosing = false;
                 boolean gameActive = true;
                 while(gameActive) {
