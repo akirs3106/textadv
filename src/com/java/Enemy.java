@@ -10,6 +10,8 @@ public class Enemy {
     protected int speed;
     protected double xpValue;
     protected String type;
+    protected boolean hit;
+    protected boolean hitPlayer;
 
 
     public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, String type) {
@@ -21,6 +23,7 @@ public class Enemy {
         this.speed = speed - this.weapon.getSpeedPenalty();
         this.xpValue = xpValue;
         this.type = type;
+        this.hit = false;
     }
 
     public Weapon getWeapon() {
@@ -46,6 +49,38 @@ public class Enemy {
         Typer.typeStringln(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
 
         plr.takeDamage(this.weapon.getDmg());
+        this.hitPlayer = true;
+    }
+
+    public void inspect() {
+        if(this.hit) {
+            Typer.typeStringsNoSpace(new String[] {
+                String.format("Name: %s", this.name),
+                String.format("Health: %s / %s", this.currentHealth, this.maxHealth),
+                "Speed: ???",
+                String.format("Race: %s", this.race)
+            }, 100);
+        } else {
+            Typer.typeStringsNoSpace(new String[] {
+                String.format("Name: %s", this.name),
+                "Health: ??? / ???",
+                "Speed: ???",
+                String.format("Race: %s", this.race)
+            }, 100);
+        }
+        if(this.hitPlayer) {
+            Typer.typeStringsNoSpace(new String[] {
+                String.format("\nWeapon: %s", this.weapon.getName()),
+                String.format("Damage: %s", this.weapon.getDmg()),
+                "Speed Reduction: ???"
+            }, 100);
+        } else {
+            Typer.typeStringsNoSpace(new String[] {
+                String.format("\nWeapon: %s", this.weapon.getName()),
+                "Damage: ???",
+                "Speed Reduction: ???"
+            }, 100);
+        }
     }
 
     /**

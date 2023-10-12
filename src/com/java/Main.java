@@ -306,11 +306,11 @@ class Main {
                 }
 
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
                                 plr.attackEnemy(enemy, plr);
@@ -324,8 +324,11 @@ class Main {
                                 }
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                enemy.inspect();
                             break;
                         }
                         
@@ -354,11 +357,11 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
                                 plr.attackEnemy(enemy, plr);
@@ -372,8 +375,11 @@ class Main {
                                 }
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                enemy.inspect();
                             break;
                         }
                         
@@ -411,11 +417,11 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
                                 plr.attackEnemy(enemy, plr);
@@ -426,8 +432,11 @@ class Main {
                                 choosing = false;
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                enemy.inspect();
                             break;
                         }
                         
@@ -950,7 +959,7 @@ class Main {
 
 
 
-        return new Enemy(skelName, skelWeapon, "skeleton", skelHp, skelSpeed, skelXp, "normal");
+        return new Enemy(skelName, skelWeapon, "Skeleton", skelHp, skelSpeed, skelXp, "normal");
 
         
     }
