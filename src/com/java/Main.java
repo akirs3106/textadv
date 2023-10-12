@@ -78,6 +78,9 @@ class Main {
             if(input >= 0 && input < dungeons.length) {
                 String startRoomDesc;
                 String bossRoomDesc;
+                String powerMoveChargedDialogue;
+                String powerMoveStillChargedDialogue;
+                String powerMoveChargeUsedDialogue;
                 String restRoomDescs[] = new String[3];
                 String dungeonName = dungeons[input];
                 Room[] rooms = null;
@@ -92,12 +95,15 @@ class Main {
                     restRoomDescs[0] = "This room seems to be in much better condition than the others and feels much warmer.";
                     restRoomDescs[1] = "The roof of this room seems to have collapsed, however the night sky shines above you, comforting you for a moment.";
                     restRoomDescs[2] = "A sweet smell comes from this room, making you realize how hungry you actually are.";
+                    powerMoveChargedDialogue = "The Necromancer's dagger begins to radiate with dark energy.";
+                    powerMoveStillChargedDialogue = "The Necromancer's dagger continues to pulse with dark energy.";
+                    powerMoveChargeUsedDialogue = "The dark energy surrounding The Necromancer's dagger begins to fade out.";
                     Weapon bossWeapon = new Dagger("The Necromancer's Dagger", 30, "necromancer dagger", 15);
                     Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3);
+                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue);
                 break;
                 default:
                     dungeonName = null;

@@ -15,10 +15,28 @@ public class Boss extends Enemy {
     protected boolean hasPowerMove = false;
     protected int availableHeals;
     protected int usedHeals;
-    private ArrayList<Move> genericMoves;
-    private int genericMovesUsed;
-    private int genericMovesRequired;
+    protected ArrayList<Move> genericMoves;
+    protected int genericMovesUsed;
+    protected int genericMovesRequired;
+    protected String powerMoveReady;
+    protected String powerMoveStillReady;
+    protected String powerMoveUsed;
 
+    /**
+     * Used for bosses that do NOT have a power move.
+     * @param name
+     * @param weapon
+     * @param race
+     * @param maxHealth
+     * @param speed
+     * @param xpValue
+     * @param move1
+     * @param move2
+     * @param move3
+     * @param move4
+     * @param availableHeals
+     * @param genericMovesRequired
+     */
     public Boss(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, Move move1, Move move2, Move move3, Move move4, int availableHeals, int genericMovesRequired) {
         super(name, weapon, race, maxHealth, speed, xpValue, "boss");
         this.move1 = move1;
@@ -45,6 +63,56 @@ public class Boss extends Enemy {
         }
     }
 
+    /**
+     * Used for bosses that DO have a power move.
+     * @param name
+     * @param weapon
+     * @param race
+     * @param maxHealth
+     * @param speed
+     * @param xpValue
+     * @param move1
+     * @param move2
+     * @param move3
+     * @param move4
+     * @param availableHeals
+     * @param genericMovesRequired
+     * @param powerMoveReady
+     * @param powerMoveStillReady
+     * @param powerMoveUsed
+     */
+    public Boss(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, Move move1, Move move2, Move move3, Move move4, int availableHeals, int genericMovesRequired, String powerMoveReady, String powerMoveStillReady, String powerMoveUsed) {
+        super(name, weapon, race, maxHealth, speed, xpValue, "boss");
+        this.move1 = move1;
+        this.move2 = move2;
+        this.move3 = move3;
+        this.move4 = move4;
+        this.availableHeals = availableHeals;
+        this.usedHeals = 0;
+        this.genericMoves = new ArrayList<Move>();
+        this.genericMovesUsed = 0;
+        this.genericMovesRequired = genericMovesRequired;
+
+        this.powerMoveReady = powerMoveReady;
+        this.powerMoveStillReady = powerMoveStillReady;
+        this.powerMoveUsed = powerMoveUsed;
+
+        Move moves[] = {move1, move2, move3, move4};
+        for (Move move : moves) {
+            if(move.getMoveType().equals("heal")) {
+                this.healMove = move;
+                this.hasHealMove = true;
+            } else if (move.getMoveType().equals("power")) {
+                this.powerMove = move;
+                this.hasPowerMove = true;
+            } else {
+                this.genericMoves.add(move);
+            }
+        }
+    }
+
+
+
     public void useMove(Player plr, Move move) {
         Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
         this.genericMovesUsed += 1;
@@ -52,9 +120,9 @@ public class Boss extends Enemy {
     }
 
     public void usePowerMove(Player plr) {
-        Typer.typeStringln(String.format("\n%s %s", this.name, this.powerMove.getMoveDialogue()));
         this.genericMovesUsed = 0;
         useMove(plr, powerMove);
+        Typer.typeStringln(this.powerMoveUsed);
     }
 
 
@@ -75,8 +143,15 @@ public class Boss extends Enemy {
             useHealMove();
             return;
         } 
-            System.out.println(genericMovesUsed);
         if(this.hasPowerMove && this.genericMovesUsed >= genericMovesRequired) {
+
+            if(this.genericMovesUsed == this.genericMovesRequired) {
+                Typer.typeStringln(this.powerMoveReady);
+            }    
+            if(this.genericMovesUsed > this.genericMovesRequired) {
+                Typer.typeStringln(this.powerMoveStillReady);
+            }
+
             int moveChosen = random.nextInt(genericMoves.size()+2);
             if(moveChosen >= genericMoves.size()) {
                 usePowerMove(plr);
