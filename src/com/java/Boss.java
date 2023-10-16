@@ -113,10 +113,40 @@ public class Boss extends Enemy {
 
 
 
+    /**
+     * Uses one of the boss's moves, guaranteed to hit the player.
+     * Should mainly be used for a boss's power move.
+     * @param plr
+     * @param move
+     */
     public void useMove(Player plr, Move move) {
         Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
         this.genericMovesUsed += 1;
         plr.takeDamage(move.getMoveDmg());
+    }
+
+    /**
+     * Uses one of the boss's moves, takes into account the player's dodge chance.
+     * Should mainly be used for generic attacks chosen through chooseMove();
+     * @param plr
+     * @param move
+     * @param playerDodgeChance
+     */
+    public void useMove(Player plr, Move move, int playerDodgeChance) {
+
+        Typer.typeStringln("%s prepares to attack!");
+
+        Random random = new Random();
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= playerDodgeChance) {
+            Typer.typeStringln("You dodged %s's attack!");
+            return;
+        } else {
+            Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
+            plr.takeDamage(move.getMoveDmg());
+        }
+        this.genericMovesUsed += 1;
     }
 
     public void usePowerMove(Player plr) {
@@ -136,7 +166,7 @@ public class Boss extends Enemy {
         Typer.typeStringln(String.format("%s healed for %s HP\n", this.name, this.healMove.getMoveDmg()));
     }
 
-    public void chooseMove(Player plr) {
+    public void chooseMove(Player plr, int playerDodgeChance) {
         Random random = new Random();
 
         if(this.currentHealth < this.maxHealth * 0.5 && this.usedHeals < this.availableHeals && this.hasHealMove) {
@@ -156,12 +186,12 @@ public class Boss extends Enemy {
             if(moveChosen >= genericMoves.size()) {
                 usePowerMove(plr);
             } else {
-                useMove(plr, genericMoves.get(moveChosen));
+                useMove(plr, genericMoves.get(moveChosen), playerDodgeChance);
             }
 
         } else {
             int moveChosen = random.nextInt(genericMoves.size());
-            useMove(plr, genericMoves.get(moveChosen));
+            useMove(plr, genericMoves.get(moveChosen), playerDodgeChance);
         }
 
 

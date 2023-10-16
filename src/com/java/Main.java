@@ -103,7 +103,7 @@ class Main {
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue);
+                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue);
                 break;
                 default:
                     dungeonName = null;
@@ -293,12 +293,14 @@ class Main {
 
         
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
+        int playerDodgeChance = calculatePlayerDodgeChance(plr, enemy);
+        int enemyDodgeChance = calculateEnemyDodgeChance(plr, enemy);
 
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
-                enemy.attackPlayer(plr);
+                enemy.attackPlayer(plr, playerDodgeChance);
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -313,7 +315,7 @@ class Main {
                     if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr);
+                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
@@ -364,7 +366,7 @@ class Main {
                     if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr);
+                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
@@ -404,7 +406,7 @@ class Main {
                     }
                     break;
                 }
-                enemy.attackPlayer(plr);
+                enemy.attackPlayer(plr, playerDodgeChance);
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -424,7 +426,7 @@ class Main {
                     if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr);
+                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
@@ -447,8 +449,6 @@ class Main {
 
                 }
 
-
-                // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
                     wait(100);
@@ -462,7 +462,7 @@ class Main {
                     }
                     break;
                 }
-                enemy.attackPlayer(plr);
+                enemy.attackPlayer(plr, playerDodgeChance);
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -481,6 +481,9 @@ class Main {
      */
     public static void startBossEncounter(Player plr) {
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
+
+        int playerDodgeChance = calculatePlayerDodgeChance(plr, boss);
+        int enemyDodgeChance = calculateEnemyDodgeChance(plr, boss);
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             choosing = true;
             while(choosing) {
@@ -488,22 +491,23 @@ class Main {
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(boss, plr);
+                                plr.attackEnemy(boss, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
                                 if(plr.heal()) {
                                     choosing = false;
-                                } else {
-                                    choosing = true;
                                 }
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                Typer.typeStringln(String.format("%s's immense power prevents you from being able to properly inspect it!"));
                             break;
                         }
                         
@@ -519,7 +523,7 @@ class Main {
                 break;
             }
 
-            boss.chooseMove(plr);
+            boss.chooseMove(plr, playerDodgeChance);
             
             if(plr.getHp() <= 0) {
                 Typer.typeStringln("You died to " + boss.getName() + ".");
@@ -1139,6 +1143,32 @@ class Main {
             return new Room(enemies, chest, genericRoomDescriptions[random.nextInt(genericRoomDescriptions.length)], "generic");
         
         
+    }
+
+    public static int calculatePlayerDodgeChance(Player plr, Enemy enemy) {
+        if(enemy.getSpeed() >= plr.getSpeed()) {
+            return 0;
+        } else {
+            int difference = plr.getSpeed()-enemy.getSpeed();
+            int result = (int)(difference/2);
+            if(result > 80) {
+                result = 80;
+            }
+            return result;
+        }
+    }
+
+    public static int calculateEnemyDodgeChance(Player plr, Enemy enemy) {
+        if (plr.getSpeed() >= enemy.getSpeed()) {
+            return 0;
+        } else {
+            int difference = enemy.getSpeed()-plr.getSpeed();
+            int result = (int)(difference/2);
+            if(result > 80) {
+                result = 80;
+            }
+            return result;
+        }
     }
 
     public static void wait(int millis) {

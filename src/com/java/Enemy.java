@@ -1,5 +1,7 @@
 package src.com.java;
 
+import java.util.Random;
+
 public class Enemy {
 
     protected String name;
@@ -20,7 +22,11 @@ public class Enemy {
         this.race = race;
         this.maxHealth = maxHealth;
         this.currentHealth = this.maxHealth;
-        this.speed = speed - this.weapon.getSpeedPenalty();
+        if(speed - this.weapon.getSpeedPenalty() < 0) {
+            this.speed = 0;
+        } else {
+            this.speed = speed - this.weapon.getSpeedPenalty();
+        }
         this.xpValue = xpValue;
         this.type = type;
         this.hit = false;
@@ -42,7 +48,7 @@ public class Enemy {
     }
 
     /**
-     * Cosmetically invokes Player.takeDamage()
+     * Enemy damages the player.
      * @param plr
      */
     public void attackPlayer(Player plr) {
@@ -50,6 +56,27 @@ public class Enemy {
 
         plr.takeDamage(this.weapon.getDmg());
         this.hitPlayer = true;
+    }
+
+    /**
+     * Enemy attempts to damage the player, taking into account the player's dodge chance.
+     * @param plr
+     * @param dodgeChance
+     */
+    public void attackPlayer(Player plr, int dodgeChance) {
+
+        Typer.typeStringln(String.format("%s attacks you with its %s!\n", this.name, this.weapon.getName()));
+        Random random = new Random();
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= dodgeChance) {
+            Typer.typeStringln(String.format("You jumped out of the way of %s's attack!\n", this.name));
+            return;
+        } else {
+            Typer.typeStringln(String.format("You were hit by %s's %s!\n", this.name, this.weapon.getName()));
+            this.hitPlayer = true;
+            plr.takeDamage(this.weapon.getDmg());
+        }
     }
 
     public void inspect() {
@@ -97,6 +124,7 @@ public class Enemy {
             this.currentHealth -= wpn.getDmg();
             Typer.typeStringln(String.format("%s took %s damage!", this.name, wpn.getDmg()));
         }
+        this.hit = true;
         
 
         if(this.currentHealth > 0) {

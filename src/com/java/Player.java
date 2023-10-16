@@ -194,7 +194,7 @@ public class Player {
     public void attackEnemy(Enemy enemy, Player plr) {
 
         Random random = new Random();
-        int critChance = random.nextInt((10 - 1) + 1) + 1;
+        int critChance = random.nextInt(10) + 1;
         boolean crit = false;
 
         Typer.typeStringln(String.format("\nYou attacked %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
@@ -203,6 +203,29 @@ public class Player {
             Typer.typeStringln("CRITICAL HIT!\n");
         }
         enemy.takeDamage(this.equippedWeapon, plr, crit);
+    }
+
+    public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance) {
+        
+
+        Random random = new Random();
+
+        Typer.typeStringln(String.format("You attack %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
+
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= enemyDodgeChance) {
+            Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
+            return;
+        } else {
+            int critChance = random.nextInt(10) + 1;
+            boolean crit = false;
+            if(critChance == 1) {
+                crit = true;
+                Typer.typeStringln("CRITICAL HIT!\n");
+            }
+            enemy.takeDamage(this.equippedWeapon, plr, crit);
+        }
     }
 
     public boolean heal() {
