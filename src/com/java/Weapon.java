@@ -31,7 +31,20 @@ public class Weapon {
     }
 
     public void viewWeapon() {
-        Typer.typeStringln(String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.name, this.dmg, this.speedPenalty));
+        Typer.typeStringln(String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n%s\n", this.name, this.dmg, this.speedPenalty, getAbilityDescription()));
+    }
+
+    /**
+     * Should be overriden in weapon subtype classes, starter weapons do not have abilities.
+     * @return boolean
+     */
+    public boolean useAbility() {
+        Typer.typeStringln("This weapon has no special ability.");
+        return false;
+    }
+
+    protected String getAbilityDescription() {
+        return "Ability: This weapon has no special ability.";
     }
 
     public void compareWeapon(Weapon wpn) {
@@ -47,7 +60,7 @@ public class Weapon {
         } else if (this.speedPenalty - wpn.getSpeedPenalty() < 0) {
             compareSpeedPen = "(" + (this.speedPenalty - wpn.getSpeedPenalty()) + ")";
         }
-        Typer.typeStringln(String.format("\nWeapon: %s \nDamage: %s %s \nSpeed Reduction: %s %s\n", this.name, this.dmg, compareDmg, this.speedPenalty, compareSpeedPen));
+        Typer.typeStringln(String.format("\nWeapon: %s \nDamage: %s %s \nSpeed Reduction: %s %s\n%s\n", this.name, this.dmg, compareDmg, this.speedPenalty, compareSpeedPen, getAbilityDescription()));
     }
 
 
