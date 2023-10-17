@@ -2,6 +2,7 @@ package src.com.java;
 
 import java.util.Random;
 
+
 public class Enemy {
 
     protected String name;

@@ -2,6 +2,10 @@ package src.com.java;
 
 import java.util.Random;
 
+import src.com.java.Axes.*;
+import src.com.java.Daggers.*;
+import src.com.java.Swords.*;
+
 public class Player {
     private int maxhp;
     private int currenthp;

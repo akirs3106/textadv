@@ -1,4 +1,6 @@
-package src.com.java;
+package src.com.java.Swords;
+
+import src.com.java.Weapon;
 
 public class Sword extends Weapon {
 

@@ -1,4 +1,6 @@
-package src.com.java;
+package src.com.java.Daggers;
+
+import src.com.java.Weapon;
 
 public class Dagger extends Weapon {
 

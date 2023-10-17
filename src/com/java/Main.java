@@ -2,6 +2,11 @@ package src.com.java;
 
 import java.util.Random;
 import java.util.Scanner;
+
+import src.com.java.Axes.*;
+import src.com.java.Daggers.*;
+import src.com.java.Swords.*;
+
 import java.util.ArrayList;
 import java.lang.Thread;
 class Main {
@@ -98,7 +103,7 @@ class Main {
                     powerMoveChargedDialogue = "The Necromancer's dagger begins to radiate with dark energy.";
                     powerMoveStillChargedDialogue = "The Necromancer's dagger continues to pulse with dark energy.";
                     powerMoveChargeUsedDialogue = "The dark energy surrounding The Necromancer's dagger begins to fade out.";
-                    Weapon bossWeapon = new Dagger("The Necromancer's Dagger", 30, "necromancer dagger", 15);
+                    Weapon bossWeapon = new NecromancerDagger();
                     Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
@@ -635,7 +640,7 @@ class Main {
         int randWeaponSubTypeSelector = rand.nextInt((2-0) + 1);
         int randWeaponTierSelector = rand.nextInt(101) + 1;
 
-        Weapon weapon;
+        Weapon weapon = null;
         String weaponName;
         String weaponSubType;
         int weaponDamage;
@@ -680,7 +685,19 @@ class Main {
                         weaponSpeedPenalty = 0;
 
                 }
-                weapon = new Sword(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+                
+                switch(weaponSubType) {
+                    case "longsword":
+                        weapon = new Longsword(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "shortsword":
+                        weapon = new Shortsword(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "rapier":
+                        weapon = new Rapier(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                }
+
                 break;
             case "axe":
                 weaponName = axeNames[randWeaponSubTypeSelector][randWeaponTierSelector];
@@ -717,7 +734,18 @@ class Main {
                         weaponSpeedPenalty = 0;
                 }
 
-                weapon = new Axe(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+                switch(weaponSubType) {
+                    case "battleaxe":
+                        weapon = new Battleaxe(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "felling axe":
+                        weapon = new FellingAxe(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "halberd":
+                        weapon = new Halberd(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                }
+
                 break;
             case "dagger": 
                 weaponName = daggerNames[randWeaponSubTypeSelector][randWeaponTierSelector];
@@ -753,10 +781,20 @@ class Main {
                         weaponDamage = 0;
                         weaponSpeedPenalty = 0;
                 }
-                weapon = new Dagger(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+
+                switch(weaponSubType) {
+                    case "rondel dagger":
+                        weapon = new RondelDagger(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "stiletto dagger":
+                        weapon = new StilettoDagger(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "castillon dagger":
+                        weapon = new CastillonDagger(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                }
+
             break;
-            default:
-                weapon = null;
         }
         return weapon;
     }
@@ -774,7 +812,7 @@ class Main {
         int randWeaponSubTypeSelector = rand.nextInt((2-0) + 1);
         int weaponTier = rarity;
 
-        Weapon weapon;
+        Weapon weapon = null;
         String weaponName;
         String weaponSubType;
         int weaponDamage;
@@ -817,7 +855,19 @@ class Main {
                         weaponSpeedPenalty = 0;
 
                 }
-                weapon = new Sword(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+                
+                switch(weaponSubType) {
+                    case "longsword":
+                        weapon = new Longsword(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "shortsword":
+                        weapon = new Shortsword(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "rapier":
+                        weapon = new Rapier(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                }
+
                 break;
             case "axe":
                 weaponName = axeNames[randWeaponSubTypeSelector][weaponTier];
@@ -854,7 +904,17 @@ class Main {
                         weaponSpeedPenalty = 0;
                 }
 
-                weapon = new Axe(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+                switch(weaponSubType) {
+                    case "battleaxe":
+                        weapon = new Battleaxe(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "felling axe":
+                        weapon = new FellingAxe(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "halberd":
+                        weapon = new Halberd(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                }
                 break;
             case "dagger": 
                 weaponName = daggerNames[randWeaponSubTypeSelector][weaponTier];
@@ -890,10 +950,20 @@ class Main {
                         weaponDamage = 0;
                         weaponSpeedPenalty = 0;
                 }
-                weapon = new Dagger(weaponName, weaponDamage, weaponSubType, weaponSpeedPenalty);
+                
+                switch(weaponSubType) {
+                    case "rondel dagger":
+                        weapon = new RondelDagger(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "stiletto dagger":
+                        weapon = new StilettoDagger(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                    case "castillon dagger":
+                        weapon = new CastillonDagger(weaponName, weaponDamage, weaponSpeedPenalty);
+                    break;
+                }
+
             break;
-            default:
-                weapon = null;
         }
         return weapon;
     }
@@ -1022,13 +1092,13 @@ class Main {
         } else {
             switch(plrClass) {
                 case "Warrior":
-                    weapon = new Sword("Excalibur", 40, "excalibur", 35);
+                    weapon = new Excalibur();
                 break;
                 case "Barbarian":
-                    weapon = new Axe("The Labrys", 55, "the labrys", 45);
+                    weapon = new Labrys();
                 break;
                 case "Rogue":
-                    weapon = new Dagger("Sacrifical Dagger", 30, "sacrificial dagger", 20);
+                    weapon = new SacrificalDagger();
                 break;
                 default:
                 weapon = null;
@@ -1088,13 +1158,13 @@ class Main {
         } else {
             switch(plrClass) {
                 case "Warrior":
-                    weapon = new Sword("Excalibur", 40, "excalibur", 35);
+                    weapon = new Excalibur();
                 break;
                 case "Barbarian":
-                    weapon = new Axe("The Labrys", 55, "the labrys", 45);
+                    weapon = new Labrys();
                 break;
                 case "Rogue":
-                    weapon = new Dagger("Sacrifical Dagger", 30, "sacrifical dagger", 20);
+                    weapon = new SacrificalDagger();
                 break;
                 default:
                 weapon = null;

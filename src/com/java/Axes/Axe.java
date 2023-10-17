@@ -1,4 +1,6 @@
-package src.com.java;
+package src.com.java.Axes;
+
+import src.com.java.Weapon;
 
 public class Axe extends Weapon {
 
