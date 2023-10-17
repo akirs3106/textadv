@@ -3,13 +3,13 @@ package src.com.java;
 public class Move {
 
     protected String moveName;
-    protected String moveEffect;
+    protected String moveType;
     protected int moveDmg;
     protected String moveDialogue;
 
-    public Move(String moveName, String moveEffect, int moveDmg, String moveDialogue) {
+    public Move(String moveName, String moveType, int moveDmg, String moveDialogue) {
         this.moveName = moveName;
-        this.moveEffect = moveEffect;
+        this.moveType = moveType;
         this.moveDmg = moveDmg;
         this.moveDialogue = moveDialogue;
     }
@@ -18,8 +18,8 @@ public class Move {
         return this.moveName;
     }
 
-    public String getMoveEffect() {
-        return this.moveEffect;
+    public String getMoveType() {
+        return this.moveType;
     }
 
     public int getMoveDmg() {

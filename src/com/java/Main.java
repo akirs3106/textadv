@@ -78,6 +78,9 @@ class Main {
             if(input >= 0 && input < dungeons.length) {
                 String startRoomDesc;
                 String bossRoomDesc;
+                String powerMoveChargedDialogue;
+                String powerMoveStillChargedDialogue;
+                String powerMoveChargeUsedDialogue;
                 String restRoomDescs[] = new String[3];
                 String dungeonName = dungeons[input];
                 Room[] rooms = null;
@@ -92,12 +95,15 @@ class Main {
                     restRoomDescs[0] = "This room seems to be in much better condition than the others and feels much warmer.";
                     restRoomDescs[1] = "The roof of this room seems to have collapsed, however the night sky shines above you, comforting you for a moment.";
                     restRoomDescs[2] = "A sweet smell comes from this room, making you realize how hungry you actually are.";
+                    powerMoveChargedDialogue = "The Necromancer's dagger begins to radiate with dark energy.";
+                    powerMoveStillChargedDialogue = "The Necromancer's dagger continues to pulse with dark energy.";
+                    powerMoveChargeUsedDialogue = "The dark energy surrounding The Necromancer's dagger begins to fade out.";
                     Weapon bossWeapon = new Dagger("The Necromancer's Dagger", 30, "necromancer dagger", 15);
                     Move bossMove1 = new Move("Dark Pulse", "damage", 15, "Casts Dark Pulse!");
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
-                    Move bossMove3 = new Move("Summon Undead Army", "damage", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
+                    Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 0, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3);
+                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue);
                 break;
                 default:
                     dungeonName = null;
@@ -287,12 +293,14 @@ class Main {
 
         
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
+        int playerDodgeChance = calculatePlayerDodgeChance(plr, enemy);
+        int enemyDodgeChance = calculateEnemyDodgeChance(plr, enemy);
 
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
-                enemy.attackPlayer(plr);
+                enemy.attackPlayer(plr, playerDodgeChance);
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -300,14 +308,14 @@ class Main {
                 }
 
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr);
+                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
@@ -318,8 +326,11 @@ class Main {
                                 }
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                enemy.inspect();
                             break;
                         }
                         
@@ -331,6 +342,15 @@ class Main {
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
+                    wait(100);
+                    Random random = new Random();
+                    if(random.nextInt(10) + 1 <= 1 && plr.getUsedHeals() > 0) {
+                        Typer.typeStrings(new String[] {
+                            "You look down and find a small amount of medical supplies.",
+                            "You have regained one heal!"
+                        }, 500);
+                        plr.setUsedHeals(plr.getUsedHeals()-1);
+                    }
                     break;
                 }
             }
@@ -339,14 +359,14 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr);
+                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
@@ -357,8 +377,11 @@ class Main {
                                 }
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                enemy.inspect();
                             break;
                         }
                         
@@ -372,9 +395,18 @@ class Main {
 
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
+                    wait(100);
+                    Random random = new Random();
+                    if(random.nextInt(10) + 1 <= 1 && plr.getUsedHeals() > 0) {
+                        Typer.typeStrings(new String[] {
+                            "You look down and find a small amount of medical supplies.",
+                            "You have regained one heal!"
+                        }, 500);
+                        plr.setUsedHeals(plr.getUsedHeals()-1);
+                    }
                     break;
                 }
-                enemy.attackPlayer(plr);
+                enemy.attackPlayer(plr, playerDodgeChance);
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -387,14 +419,14 @@ class Main {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr);
+                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
@@ -402,8 +434,11 @@ class Main {
                                 choosing = false;
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                enemy.inspect();
                             break;
                         }
                         
@@ -414,13 +449,20 @@ class Main {
 
                 }
 
-
-                // plr.attackEnemy(enemy, plr);
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
+                    wait(100);
+                    Random random = new Random();
+                    if(random.nextInt(10) + 1 <= 1 && plr.getUsedHeals() > 0) {
+                        Typer.typeStrings(new String[] {
+                            "You look down and find a small amount of medical supplies.",
+                            "You have regained one heal!"
+                        }, 500);
+                        plr.setUsedHeals(plr.getUsedHeals()-1);
+                    }
                     break;
                 }
-                enemy.attackPlayer(plr);
+                enemy.attackPlayer(plr, playerDodgeChance);
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -439,6 +481,9 @@ class Main {
      */
     public static void startBossEncounter(Player plr) {
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
+
+        int playerDodgeChance = calculatePlayerDodgeChance(plr, boss);
+        int enemyDodgeChance = calculateEnemyDodgeChance(plr, boss);
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             choosing = true;
             while(choosing) {
@@ -446,22 +491,23 @@ class Main {
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3")) {
+                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(boss, plr);
+                                plr.attackEnemy(boss, plr, enemyDodgeChance);
                                 choosing = false;
                             break;
                             case 2: 
                                 if(plr.heal()) {
                                     choosing = false;
-                                } else {
-                                    choosing = true;
                                 }
                             break;
                             case 3:
-                            plr.viewStats();
-                            plr.inspectWeapon();
+                                plr.viewStats();
+                                plr.inspectWeapon();
+                            break;
+                            case 4:
+                                Typer.typeStringln(String.format("%s's immense power prevents you from being able to properly inspect it!"));
                             break;
                         }
                         
@@ -477,7 +523,7 @@ class Main {
                 break;
             }
 
-            boss.chooseMove(plr);
+            boss.chooseMove(plr, playerDodgeChance);
             
             if(plr.getHp() <= 0) {
                 Typer.typeStringln("You died to " + boss.getName() + ".");
@@ -917,7 +963,7 @@ class Main {
 
 
 
-        return new Enemy(skelName, skelWeapon, "skeleton", skelHp, skelSpeed, skelXp, "normal");
+        return new Enemy(skelName, skelWeapon, "Skeleton", skelHp, skelSpeed, skelXp, "normal");
 
         
     }
@@ -1097,6 +1143,32 @@ class Main {
             return new Room(enemies, chest, genericRoomDescriptions[random.nextInt(genericRoomDescriptions.length)], "generic");
         
         
+    }
+
+    public static int calculatePlayerDodgeChance(Player plr, Enemy enemy) {
+        if(enemy.getSpeed() >= plr.getSpeed()) {
+            return 0;
+        } else {
+            int difference = plr.getSpeed()-enemy.getSpeed();
+            int result = (int)(difference/2);
+            if(result > 80) {
+                result = 80;
+            }
+            return result;
+        }
+    }
+
+    public static int calculateEnemyDodgeChance(Player plr, Enemy enemy) {
+        if (plr.getSpeed() >= enemy.getSpeed()) {
+            return 0;
+        } else {
+            int difference = enemy.getSpeed()-plr.getSpeed();
+            int result = (int)(difference/2);
+            if(result > 80) {
+                result = 80;
+            }
+            return result;
+        }
     }
 
     public static void wait(int millis) {

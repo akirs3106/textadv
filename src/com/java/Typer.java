@@ -41,7 +41,8 @@ public class Typer {
 
 
     /**
-     * Prints out a string character by character to give it a scrolling text effect, followed by printing a new line once the string is fully printed.
+     * Prints out a string character by character to give it a scrolling text effect, followed by printing a 
+     * new line once the string is fully printed.
      * @param str
      */
     public static void typeStringln(String str) {
@@ -62,7 +63,8 @@ public class Typer {
     }
 
     /**
-     * Prints out multiple strings with a scrolling text effect, each being followed by a new line and waiting a specified delay before going to the next one
+     * Prints out multiple strings with a scrolling text effect, each being followed by a new line and waiting a specified delay 
+     * before going to the next one
      * @param arr
      * @param delay
      */
@@ -71,6 +73,20 @@ public class Typer {
             typeString(str);
             wait(delay);
             System.out.println("\n");
+        }
+    }
+
+    /**
+     * Prints out multiple strings with a scrolling text effect, each being followed by a new line and waiting for a specified delay
+     * before going to the next one without adding an empty newline between the two.
+     * @param arr
+     * @param delay
+     */
+    public static void typeStringsNoSpace(String[] arr, int delay) {
+        for(String str: arr) {
+            typeString(str);
+            wait(delay);
+            System.out.println("");
         }
     }
 }
