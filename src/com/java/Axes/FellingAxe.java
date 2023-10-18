@@ -8,6 +8,9 @@ public class FellingAxe extends Axe {
     
     public FellingAxe(String name, int dmg, int speedPenalty) {
         super(name, dmg, "felling axe", speedPenalty);
+        this.abilityName = "Skull Splitter";
+        this.abilityDescription = "When used, you have a small chance of killing an enemy immediately.";
+        this.abilityAttackDialogue = String.format("You raise your %s high above your head.", name);
     }
     
     @Override public boolean useAbility() {

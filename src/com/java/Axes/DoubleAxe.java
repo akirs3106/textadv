@@ -1,13 +1,16 @@
 package src.com.java.Axes;
 
-public class Battleaxe extends Axe {
+public class DoubleAxe extends Axe {
 
     protected String abilityDescription;
     protected String abilityName;
     protected String abilityAttackDialogue;
 
-    public Battleaxe(String name, int dmg, int speedPenalty) {
-        super(name, dmg, "battleaxe", speedPenalty);
+    public DoubleAxe(String name, int dmg, int speedPenalty) {
+        super(name, dmg, "double axe", speedPenalty);
+        this.abilityName = "Double Swing";
+        this.abilityDescription = "Utilize the second axehead and hit your opponent on the backswing.";
+        this.abilityAttackDialogue = String.format("You swing your %s forwards.", name);
     }
 
     @Override public boolean useAbility() {

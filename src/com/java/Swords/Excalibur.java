@@ -8,6 +8,9 @@ public class Excalibur extends Sword {
 
     public Excalibur() {
         super("Excalibur", 40, "excalibur", 35);
+        this.abilityName = "Holy Imbuement";
+        this.abilityDescription = "Using this will imbue the sword with holy power, doubling its damage for its next attack.";
+        this.abilityAttackDialogue = "Excalibur begins to glow with a holy aura, as it is imbued with holy power.";
     }
     
     @Override public boolean useAbility() {

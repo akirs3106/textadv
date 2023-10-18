@@ -18,7 +18,7 @@ class Main {
     };
 
     public static final String[][] axeNames = {
-        {"Rusty Battleaxe", "Bronze Battleaxe", "Steel Battleaxe"},
+        {"Rusty Double Axe", "Bronze Double Axe", "Steel Double Axe"},
         {"Rusty Felling Axe", "Bronze Felling Axe", "Steel Felling Axe"},
         {"Rusty Halberd", "Bronze Halberd", "Steel Halberd"}
     };
@@ -704,7 +704,7 @@ class Main {
 
                 switch(randWeaponSubTypeSelector) {
                     case 0: 
-                        weaponSubType = "battleaxe";
+                        weaponSubType = "double axe";
                     break;
                     case 1:
                         weaponSubType = "felling axe";
@@ -735,8 +735,8 @@ class Main {
                 }
 
                 switch(weaponSubType) {
-                    case "battleaxe":
-                        weapon = new Battleaxe(weaponName, weaponDamage, weaponSpeedPenalty);
+                    case "double axe":
+                        weapon = new DoubleAxe(weaponName, weaponDamage, weaponSpeedPenalty);
                     break;
                     case "felling axe":
                         weapon = new FellingAxe(weaponName, weaponDamage, weaponSpeedPenalty);
@@ -874,7 +874,7 @@ class Main {
 
                 switch(randWeaponSubTypeSelector) {
                     case 0: 
-                        weaponSubType = "battleaxe";
+                        weaponSubType = "double axe";
                     break;
                     case 1:
                         weaponSubType = "felling axe";
@@ -905,8 +905,8 @@ class Main {
                 }
 
                 switch(weaponSubType) {
-                    case "battleaxe":
-                        weapon = new Battleaxe(weaponName, weaponDamage, weaponSpeedPenalty);
+                    case "double axe":
+                        weapon = new DoubleAxe(weaponName, weaponDamage, weaponSpeedPenalty);
                     break;
                     case "felling axe":
                         weapon = new FellingAxe(weaponName, weaponDamage, weaponSpeedPenalty);

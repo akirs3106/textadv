@@ -8,6 +8,9 @@ public class Rapier extends Sword {
 
     public Rapier(String name, int dmg, int speedPenalty) {
         super(name, dmg, "rapier", speedPenalty);
+        this.abilityName = "Vital Stab";
+        this.abilityDescription = "Attempt to aim for vital weakpoints of the opponent, decreasing their speed and dealing significant damage.";
+        this.abilityAttackDialogue = String.format("You lunge forward with your %s.", name);
     }
     
     @Override public boolean useAbility() {

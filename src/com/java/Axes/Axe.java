@@ -4,7 +4,7 @@ import src.com.java.Weapon;
 
 public class Axe extends Weapon {
 
-    private String[] validSubtypes = {"rusty axe", "battleaxe", "felling axe", "halberd", "the labrys"};
+    private String[] validSubtypes = {"rusty axe", "double axe", "felling axe", "halberd", "the labrys"};
     protected String subType; 
 
     public Axe(String name, int dmg, String subType, int speedPenalty) {

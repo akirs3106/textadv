@@ -8,6 +8,9 @@ public class Shortsword extends Sword {
 
     public Shortsword(String name, int dmg, int speedPenalty) {
         super(name, dmg, "shortsword", speedPenalty);
+        this.abilityName = "\"Extended\" Melee Attack";
+        this.abilityDescription = "Throw the weapon at your enemy, dealing increased damage and increasing your dodge chance, but making you unable to attack for one turn.";
+        this.abilityAttackDialogue = String.format("You throw your %s with all your might.");
     }
     
     @Override public boolean useAbility() {
