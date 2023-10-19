@@ -1,5 +1,9 @@
 package src.com.java.Swords;
 
+import src.com.java.Enemy;
+import src.com.java.Player;
+import src.com.java.Typer;
+
 public class Shortsword extends Sword {
     
     protected String abilityDescription;
@@ -13,8 +17,18 @@ public class Shortsword extends Sword {
         this.abilityAttackDialogue = String.format("You throw your %s with all your might.");
     }
     
-    @Override public boolean useAbility() {
-        return true;
+    @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
+        if(this.abilityCooldown <= 0) {
+            this.abilityCooldown = 3;
+            return true;
+        } else {
+            if(this.abilityCooldown == 1) {
+                Typer.typeStringln(String.format("%s is on cooldown for 1 turn!", this.abilityName));
+            } else {
+                Typer.typeStringln(String.format("%s is on cooldown for %s more turns!", this.abilityName, this.abilityCooldown));
+            }
+            return false;
+        }
     }
 
     @Override protected String getAbilityDescription() {

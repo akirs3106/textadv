@@ -37,8 +37,8 @@ public class Boss extends Enemy {
      * @param availableHeals
      * @param genericMovesRequired
      */
-    public Boss(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, Move move1, Move move2, Move move3, Move move4, int availableHeals, int genericMovesRequired) {
-        super(name, weapon, race, maxHealth, speed, xpValue, "boss");
+    public Boss(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, Move move1, Move move2, Move move3, Move move4, int availableHeals, int genericMovesRequired, Player plr) {
+        super(name, weapon, race, maxHealth, speed, xpValue, "boss", plr);
         this.move1 = move1;
         this.move2 = move2;
         this.move3 = move3;
@@ -81,8 +81,8 @@ public class Boss extends Enemy {
      * @param powerMoveStillReady
      * @param powerMoveUsed
      */
-    public Boss(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, Move move1, Move move2, Move move3, Move move4, int availableHeals, int genericMovesRequired, String powerMoveReady, String powerMoveStillReady, String powerMoveUsed) {
-        super(name, weapon, race, maxHealth, speed, xpValue, "boss");
+    public Boss(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, Move move1, Move move2, Move move3, Move move4, int availableHeals, int genericMovesRequired, String powerMoveReady, String powerMoveStillReady, String powerMoveUsed, Player plr) {
+        super(name, weapon, race, maxHealth, speed, xpValue, "boss", plr);
         this.move1 = move1;
         this.move2 = move2;
         this.move3 = move3;

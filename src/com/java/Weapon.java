@@ -6,12 +6,14 @@ public class Weapon {
     protected int dmg;
     protected String type;
     protected int speedPenalty;
+    protected int abilityCooldown;
 
     public Weapon(String name, int dmg, String type, int speedPenalty) {
         this.name = name;
         this.dmg = dmg;
         this.type = type;
         this.speedPenalty = Math.abs(speedPenalty);
+        this.abilityCooldown = 0;
     }
 
     public String getName(){
@@ -38,9 +40,20 @@ public class Weapon {
      * Should be overriden in weapon subtype classes, starter weapons do not have abilities.
      * @return boolean
      */
-    public boolean useAbility() {
+    public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         Typer.typeStringln("This weapon has no special ability.");
         return false;
+    }
+
+    public void reduceCooldown() {
+        this.abilityCooldown -= 1;
+        if(this.abilityCooldown < 0) {
+            this.abilityCooldown = 0;
+        }
+    }
+
+    public int getCooldown() {
+        return this.abilityCooldown;
     }
 
     protected String getAbilityDescription() {

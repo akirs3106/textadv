@@ -15,9 +15,10 @@ public class Enemy {
     protected String type;
     protected boolean hit;
     protected boolean hitPlayer;
+    protected int dodgeChance;
 
 
-    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, String type) {
+    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, String type, Player plr) {
         this.name = name;
         this.weapon = weapon;
         this.race = race;
@@ -31,6 +32,7 @@ public class Enemy {
         this.xpValue = xpValue;
         this.type = type;
         this.hit = false;
+        calculateDodgeChance(plr);
     }
 
     public Weapon getWeapon() {
@@ -46,6 +48,22 @@ public class Enemy {
 
     public int getSpeed() {
         return this.speed;
+    }
+
+    public int getDodgeChance() {
+        return this.dodgeChance;
+    }
+
+    private void calculateDodgeChance(Player plr) {
+        if (plr.getSpeed() >= this.speed) {
+            this.dodgeChance = 0;
+        } else {
+            int difference = this.speed-plr.getSpeed();
+            this.dodgeChance = (int)(difference/2);
+            if(this.dodgeChance > 80) {
+                this.dodgeChance = 80;
+            }
+        }
     }
 
     /**

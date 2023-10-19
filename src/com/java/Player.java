@@ -232,6 +232,28 @@ public class Player {
         }
     }
 
+    public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance) {
+        
+
+        Random random = new Random();
+
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= enemyDodgeChance) {
+            Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
+            return false;
+        } else {
+            int critChance = random.nextInt(10) + 1;
+            boolean crit = false;
+            if(critChance == 1) {
+                crit = true;
+                Typer.typeStringln("CRITICAL HIT!\n");
+            }
+            enemy.takeDamage(this.equippedWeapon, plr, crit);
+            return true;
+        }
+    }
+
     public boolean heal() {
         if(usedHeals < availableHeals) {
             this.currenthp += this.healAmount;

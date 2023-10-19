@@ -108,7 +108,7 @@ class Main {
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue);
+                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue, plr);
                 break;
                 default:
                     dungeonName = null;
@@ -299,7 +299,6 @@ class Main {
         
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
         int playerDodgeChance = calculatePlayerDodgeChance(plr, enemy);
-        int enemyDodgeChance = calculateEnemyDodgeChance(plr, enemy);
 
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
@@ -320,7 +319,7 @@ class Main {
                     if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
+                                plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
                                 choosing = false;
                             break;
                             case 2: 
@@ -371,7 +370,7 @@ class Main {
                     if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
+                                plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
                                 choosing = false;
                             break;
                             case 2: 
@@ -431,7 +430,7 @@ class Main {
                     if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(enemy, plr, enemyDodgeChance);
+                                plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
                                 choosing = false;
                             break;
                             case 2: 
@@ -488,7 +487,6 @@ class Main {
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
 
         int playerDodgeChance = calculatePlayerDodgeChance(plr, boss);
-        int enemyDodgeChance = calculateEnemyDodgeChance(plr, boss);
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             choosing = true;
             while(choosing) {
@@ -499,7 +497,7 @@ class Main {
                     if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
                         switch(Integer.parseInt(in)) {
                             case 1:
-                                plr.attackEnemy(boss, plr, enemyDodgeChance);
+                                plr.attackEnemy(boss, plr, boss.getDodgeChance());
                                 choosing = false;
                             break;
                             case 2: 
@@ -973,7 +971,7 @@ class Main {
      * @param enemyLevel
      * @return Enemy
      */
-    public static Enemy createRandomSkeleton(int enemyLevel) {
+    public static Enemy createRandomSkeleton(int enemyLevel, Player plr) {
 
 
 
@@ -1033,7 +1031,7 @@ class Main {
 
 
 
-        return new Enemy(skelName, skelWeapon, "Skeleton", skelHp, skelSpeed, skelXp, "normal");
+        return new Enemy(skelName, skelWeapon, "Skeleton", skelHp, skelSpeed, skelXp, "normal", plr);
 
         
     }
@@ -1200,7 +1198,7 @@ class Main {
         //Up to 3 enemies in a single room.
         Enemy[] enemies = new Enemy[random.nextInt(3) + 1];
         for(int i = 0; i < enemies.length; i++) {
-            enemies[i] = createRandomSkeleton(enemyLevel);
+            enemies[i] = createRandomSkeleton(enemyLevel, plr);
         }
         Chest chest;
         int chestChance = random.nextInt(100) + 1;
@@ -1220,19 +1218,6 @@ class Main {
             return 0;
         } else {
             int difference = plr.getSpeed()-enemy.getSpeed();
-            int result = (int)(difference/2);
-            if(result > 80) {
-                result = 80;
-            }
-            return result;
-        }
-    }
-
-    public static int calculateEnemyDodgeChance(Player plr, Enemy enemy) {
-        if (plr.getSpeed() >= enemy.getSpeed()) {
-            return 0;
-        } else {
-            int difference = enemy.getSpeed()-plr.getSpeed();
             int result = (int)(difference/2);
             if(result > 80) {
                 result = 80;
