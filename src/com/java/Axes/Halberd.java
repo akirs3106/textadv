@@ -8,6 +8,9 @@ public class Halberd extends Axe {
     
     public Halberd(String name, int dmg, int speedPenalty) {
         super(name, dmg, "halberd", speedPenalty);
+        this.abilityName = "Defensive Stance";
+        this.abilityDescription = "Protect yourself using the halberd's extended shaft, negating a large chunk of the next attack's damage.";
+        this.abilityAttackDialogue = String.format("You position your %s infront of you, ready to defend yourself.", name);
     }
     
     @Override public boolean useAbility() {

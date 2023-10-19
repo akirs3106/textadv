@@ -8,6 +8,10 @@ public class StilettoDagger extends Dagger {
 
     public StilettoDagger(String name, int dmg, int speedPenalty) {
         super(name, dmg, "stiletto dagger", speedPenalty);
+        this.abilityName = "Precision Strike";
+        this.abilityDescription = "Attack your enemy's weakpoint, having an increased chance of a critical hit.";
+        this.abilityDescription = String.format("You aim and thrust your %s forwards.", name);
+
     }
     
     @Override public boolean useAbility() {

@@ -8,6 +8,8 @@ public class RondelDagger extends Dagger {
 
     public RondelDagger(String name, int dmg, int speedPenalty) {
         super(name, dmg, "rondel dagger", speedPenalty);
+        this.abilityName = "Counterattack";
+        this.abilityDescription = "If attacked first, use the recoil from being hit to attack your opponent with increased damage";
     }
     
     @Override public boolean useAbility() {
