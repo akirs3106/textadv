@@ -273,12 +273,6 @@ public class Player {
             Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
             return;
         } else {
-            int critChance = random.nextInt(10) + 1;
-            boolean crit = false;
-            if(critChance == 1) {
-                crit = true;
-                Typer.typeStringln("CRITICAL HIT!\n");
-            }
             enemy.takeRawDamage(dmg, plr);
         }
     }
