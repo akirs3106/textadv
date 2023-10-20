@@ -54,6 +54,10 @@ public class Enemy {
         return this.dodgeChance;
     }
 
+    public String getType() {
+        return this.type;
+    }
+
     private void calculateDodgeChance(Player plr) {
         if (plr.getSpeed() >= this.speed) {
             this.dodgeChance = 0;
@@ -153,6 +157,36 @@ public class Enemy {
             plr.gainXp(this.xpValue);
         }
         
+    }
+
+    public void takeRawDamage(int dmg, Player plr) {
+        this.currentHealth -= dmg;
+
+        Typer.typeStringln(String.format("%s took %s damage!", this.name, dmg));
+
+        if(this.currentHealth > 0) {
+            Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
+        } else {
+            Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.gainXp(this.xpValue);
+        }
+    }
+
+    public void takeRawDamage(int dmg, Player plr, boolean crit) {
+        if(crit) {
+            dmg *= 2;
+            Typer.typeStringln("CRITICAL HIT!");
+        }
+        this.currentHealth -= dmg;
+
+        Typer.typeStringln(String.format("%s took %s damage!", this.name, dmg));
+
+        if(this.currentHealth > 0) {
+            Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
+        } else {
+            Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.gainXp(this.xpValue);
+        }
     }
     
 }

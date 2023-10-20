@@ -1233,30 +1233,4 @@ class Main {
             Thread.currentThread().interrupt();
         }
     }
-
-    // public static void typeString(String str) {
-    //     String[] strChars = str.split("", 0);
-    //     for(String character : strChars) {
-    //         System.out.print(character);
-    //         wait(20);
-    //     }
-    // }
-
-    // public static void typeStringln(String str) {
-    //     String[] strChars = str.split("", 0);
-    //     for(String character : strChars) {
-    //         System.out.print(character);
-    //         wait(20);
-    //     }
-    //     System.out.println("\n");
-    // }
-
-
-    // public static void typeStrings(String[] arr) {
-    //     for(String str : arr) {
-    //         typeString(str);
-    //         wait(2000);
-    //         System.out.println("\n");
-    //     }
-    // }
 }

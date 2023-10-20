@@ -12,24 +12,25 @@ public class DoubleAxe extends Axe {
 
 
     public DoubleAxe(String name, int dmg, int speedPenalty) {
-        super(name, dmg, "double axe", speedPenalty);
+        super(name, dmg, "double axe", speedPenalty, 3);
         this.abilityName = "Double Swing";
         this.abilityDescription = "Utilize the second axehead and hit your opponent on the backswing.";
         this.abilityAttackDialogue = String.format("You swing your %s forwards.", name);
     }
 
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        if(this.abilityCooldown <= 0) {
-            this.abilityCooldown = 3;
+        if(this.currentAbilityCooldown <= 0) {
+            this.currentAbilityCooldown = this.abilityCooldown;
+            Typer.typeStringln(this.abilityAttackDialogue);
             plr.attackEnemyAbility(enemy, plr, enemyDodgeChance);
             Typer.typeStringln(String.format("You swing your %s back.", this.name));
             plr.attackEnemyAbility(enemy, plr, enemyDodgeChance);
             return true;
         } else {
-            if(this.abilityCooldown == 1) {
+            if(this.currentAbilityCooldown == 1) {
                 Typer.typeStringln(String.format("%s is on cooldown for 1 turn!", this.abilityName));
             } else {
-                Typer.typeStringln(String.format("%s is on cooldown for %s more turns!", this.abilityName, this.abilityCooldown));
+                Typer.typeStringln(String.format("%s is on cooldown for %s more turns!", this.abilityName, this.currentAbilityCooldown));
             }
             return false;
         }
@@ -37,7 +38,7 @@ public class DoubleAxe extends Axe {
     }
 
     @Override protected String getAbilityDescription() {
-        return String.format("Ability: %s\n Ability Description: %s\n", this.abilityName, this.abilityDescription);
+        return String.format("Ability: %s\n Ability Description: %s\nCooldown: %s turns\n", this.abilityName, this.abilityDescription, this.abilityCooldown);
     }
     
 }

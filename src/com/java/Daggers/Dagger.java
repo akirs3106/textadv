@@ -7,8 +7,8 @@ public class Dagger extends Weapon {
     private String[] validSubtypes = {"rusty dagger", "rondel dagger", "stiletto dagger", "castillon dagger", "sacrificial dagger", "necromancer dagger"};
     protected String subType; 
 
-    public Dagger(String name, int dmg, String subType, int speedPenalty) {
-        super(name, dmg, "dagger", speedPenalty);
+    public Dagger(String name, int dmg, String subType, int speedPenalty, int abilityCooldown) {
+        super(name, dmg, "dagger", speedPenalty, abilityCooldown);
         for(int i = 0; i < validSubtypes.length; i++) {
             if(subType.equals(validSubtypes[i])) {
                 this.subType = subType.toLowerCase();

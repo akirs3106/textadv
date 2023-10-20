@@ -20,6 +20,8 @@ public class Player {
     protected int usedHeals;
     protected int healAmount;
     protected int baseHealAmount;
+    protected double damageReduction;
+    protected boolean defensiveStance;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
@@ -31,19 +33,20 @@ public class Player {
         this.xpRequiredForLevel = 100;
         this.availableHeals = 2;
         this.usedHeals = 0;
+        this.damageReduction = 0;
 
         if(playerClass.toLowerCase().equals("warrior")){
-            this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20);
+            this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20, 0);
             this.baseSpeed = 100;
             this.maxhp = 100;
             this.healAmount = 30;
         } else if (playerClass.toLowerCase().equals("barbarian")) {
-            this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 30);
+            this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 30, 0);
             this.baseSpeed = 75;
             this.maxhp = 125;
             this.healAmount = 20;
         } else if (playerClass.toLowerCase().equals("rogue")) {
-            this.equippedWeapon = new Dagger("Rusty Dagger", 8, "rusty dagger", 0);
+            this.equippedWeapon = new Dagger("Rusty Dagger", 8, "rusty dagger", 0, 0);
             this.baseSpeed = 125;
             this.maxhp = 75;
             this.healAmount = 40;
@@ -72,8 +75,8 @@ public class Player {
         return this.equippedWeapon;
     }
 
-    public void setWeapon(Weapon weapon) {
-        this.equippedWeapon = weapon;
+    public void setWeapon(Weapon x) {
+        this.equippedWeapon = x;
     }
 
     public int getLevel() {
@@ -97,6 +100,28 @@ public class Player {
 
     public int getMaxHP() {
         return this.maxhp;
+    }
+
+    public void setDamageReduction(double x) {
+        this.damageReduction += x;
+        if(this.damageReduction > 1) {
+            this.damageReduction = 1;
+        }
+    }
+
+    public double getDamageReduction() {
+        return this.damageReduction;
+    }
+
+    public void setDefensiveStance(boolean x) {
+        this.defensiveStance = x;
+        if(defensiveStance) {
+            setDamageReduction(0.75);
+        }
+    }
+
+    public boolean getDefensiveStance() {
+        return this.defensiveStance;
     }
 
     /**
@@ -124,6 +149,9 @@ public class Player {
      * @param wpn
      */
     public void takeDamage(int dmg) {
+        dmg = ((int)((1-this.damageReduction) * dmg));
+        this.defensiveStance = false;
+        this.damageReduction -= 0.75;
         this.currenthp -= dmg;
 
         Typer.typeStringln("You took " + dmg + " damage!");
@@ -232,6 +260,29 @@ public class Player {
         }
     }
 
+    public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
+        
+
+        Random random = new Random();
+
+        Typer.typeStringln(String.format("You attack %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
+
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= enemyDodgeChance) {
+            Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
+            return;
+        } else {
+            int critChance = random.nextInt(10) + 1;
+            boolean crit = false;
+            if(critChance == 1) {
+                crit = true;
+                Typer.typeStringln("CRITICAL HIT!\n");
+            }
+            enemy.takeRawDamage(dmg, plr);
+        }
+    }
+
     public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance) {
         
 
@@ -250,6 +301,28 @@ public class Player {
                 Typer.typeStringln("CRITICAL HIT!\n");
             }
             enemy.takeDamage(this.equippedWeapon, plr, crit);
+            return true;
+        }
+    }
+
+    public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
+        
+
+        Random random = new Random();
+
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= enemyDodgeChance) {
+            Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
+            return false;
+        } else {
+            int critChance = random.nextInt(10) + 1;
+            boolean crit = false;
+            if(critChance == 1) {
+                crit = true;
+                Typer.typeStringln("CRITICAL HIT!\n");
+            }
+            enemy.takeRawDamage(dmg, plr, crit);
             return true;
         }
     }

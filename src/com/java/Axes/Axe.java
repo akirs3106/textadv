@@ -7,8 +7,8 @@ public class Axe extends Weapon {
     private String[] validSubtypes = {"rusty axe", "double axe", "felling axe", "halberd", "the labrys"};
     protected String subType; 
 
-    public Axe(String name, int dmg, String subType, int speedPenalty) {
-        super(name, dmg, "axe", speedPenalty);
+    public Axe(String name, int dmg, String subType, int speedPenalty, int abilityCooldown) {
+        super(name, dmg, "axe", speedPenalty, abilityCooldown);
         for(int i = 0; i < validSubtypes.length; i++) {
             if(subType.equals(validSubtypes[i])) {
                 this.subType = subType.toLowerCase();

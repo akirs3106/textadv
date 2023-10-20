@@ -7,13 +7,15 @@ public class Weapon {
     protected String type;
     protected int speedPenalty;
     protected int abilityCooldown;
+    protected int currentAbilityCooldown;
 
-    public Weapon(String name, int dmg, String type, int speedPenalty) {
+    public Weapon(String name, int dmg, String type, int speedPenalty, int abilityCooldown) {
         this.name = name;
         this.dmg = dmg;
         this.type = type;
         this.speedPenalty = Math.abs(speedPenalty);
-        this.abilityCooldown = 0;
+        this.currentAbilityCooldown = 0;
+        this.abilityCooldown = abilityCooldown;
     }
 
     public String getName(){
@@ -46,18 +48,18 @@ public class Weapon {
     }
 
     public void reduceCooldown() {
-        this.abilityCooldown -= 1;
-        if(this.abilityCooldown < 0) {
-            this.abilityCooldown = 0;
+        this.currentAbilityCooldown -= 1;
+        if(this.currentAbilityCooldown < 0) {
+            this.currentAbilityCooldown = 0;
         }
     }
 
     public int getCooldown() {
-        return this.abilityCooldown;
+        return this.currentAbilityCooldown;
     }
 
     protected String getAbilityDescription() {
-        return "Ability: This weapon has no special ability.";
+        return "This weapon has no special ability.";
     }
 
     public void compareWeapon(Weapon wpn) {

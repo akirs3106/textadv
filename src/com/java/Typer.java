@@ -6,7 +6,7 @@ public class Typer {
      * Waits for a specified number of milliseconds.
      * @param millis
      */
-    private static void wait(int millis) {
+    public static void wait(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
