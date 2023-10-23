@@ -20,6 +20,8 @@ public class Excalibur extends Sword {
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.abilityCooldown <= 0) {
             this.abilityCooldown = 3;
+            Typer.typeStringln(abilityAttackDialogue);
+            plr.setDamageMultiplier(2.5);
             return true;
         } else {
             if(this.abilityCooldown == 1) {

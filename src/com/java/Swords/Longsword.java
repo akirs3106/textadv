@@ -3,6 +3,7 @@ package src.com.java.Swords;
 import src.com.java.Enemy;
 import src.com.java.Player;
 import src.com.java.Typer;
+import java.util.Random;
 
 public class Longsword extends Sword {
     
@@ -21,6 +22,7 @@ public class Longsword extends Sword {
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.abilityCooldown <= 0) {
             this.abilityCooldown = 3;
+            Typer.typeStringln(abilityAttackDialogue);
             return true;
         } else {
             if(this.abilityCooldown == 1) {
@@ -28,6 +30,20 @@ public class Longsword extends Sword {
             } else {
                 Typer.typeStringln(String.format("%s is on cooldown for %s more turns!", this.abilityName, this.currentAbilityCooldown));
             }
+            return false;
+        }
+    }
+
+    public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {
+        Random random = new Random();
+        int riposteDecider = random.nextInt(100) + 1;
+        if(riposteDecider <= 75) {
+            Typer.typeStringln(String.format("%s's %s is deflected by your %s!", enemy.getName(), enemy.getWeapon().getName(), plr.getWeapon().getName()));
+            Typer.wait(200);
+            plr.setDamageMultiplier(2.0);
+            plr.attackEnemy(enemy, plr, enemyDodgeChance);
+            return true;
+        } else {
             return false;
         }
     }

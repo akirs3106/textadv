@@ -21,6 +21,10 @@ public class StilettoDagger extends Dagger {
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
+            Typer.typeStringln(abilityDescription);
+            plr.setCritChanceCap(2);
+            plr.attackEnemy(enemy, plr, enemyDodgeChance);
+            plr.setCritChanceCap(10);
             return true;
         } else {
             if(this.currentAbilityCooldown == 1) {

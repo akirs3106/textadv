@@ -8,6 +8,7 @@ public class Weapon {
     protected int speedPenalty;
     protected int abilityCooldown;
     protected int currentAbilityCooldown;
+    protected final int initialDamage;
 
     public Weapon(String name, int dmg, String type, int speedPenalty, int abilityCooldown) {
         this.name = name;
@@ -16,6 +17,7 @@ public class Weapon {
         this.speedPenalty = Math.abs(speedPenalty);
         this.currentAbilityCooldown = 0;
         this.abilityCooldown = abilityCooldown;
+        this.initialDamage = dmg;
     }
 
     public String getName(){
@@ -32,6 +34,14 @@ public class Weapon {
 
     public int getSpeedPenalty() {
         return speedPenalty;
+    }
+
+    public void setDamage(int x) {
+        this.dmg = x;
+    }
+
+    public int getInitialDamage() {
+        return this.initialDamage;
     }
 
     public void viewWeapon() {

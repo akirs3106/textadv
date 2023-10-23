@@ -22,6 +22,9 @@ public class Player {
     protected int baseHealAmount;
     protected double damageReduction;
     protected boolean defensiveStance;
+    protected int critChanceCap;
+    protected double damageMultiplier;
+    protected boolean riposte;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
@@ -34,6 +37,9 @@ public class Player {
         this.availableHeals = 2;
         this.usedHeals = 0;
         this.damageReduction = 0;
+        this.critChanceCap = 10;
+        this.damageMultiplier = 1;
+        this.riposte = false;
 
         if(playerClass.toLowerCase().equals("warrior")){
             this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20, 0);
@@ -122,6 +128,28 @@ public class Player {
 
     public boolean getDefensiveStance() {
         return this.defensiveStance;
+    }
+
+    public void setCritChanceCap(int x) {
+        this.critChanceCap = x;
+    }
+
+    public void setDamageMultiplier(double x) {
+        this.damageMultiplier = x;
+        this.equippedWeapon.setDamage((int)(this.equippedWeapon.getDmg()*x));
+    }
+
+    public void setRiposte(boolean x) {
+        this.riposte = x;
+    }
+
+    public boolean getRiposte() {
+        return this.riposte;
+    }
+
+    private void resetWeaponDamage() {
+        this.damageMultiplier = 1;
+        this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
     }
 
     /**
@@ -226,7 +254,7 @@ public class Player {
     public void attackEnemy(Enemy enemy, Player plr) {
 
         Random random = new Random();
-        int critChance = random.nextInt(10) + 1;
+        int critChance = random.nextInt(this.critChanceCap) + 1;
         boolean crit = false;
 
         Typer.typeStringln(String.format("\nYou attacked %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
@@ -235,6 +263,7 @@ public class Player {
             Typer.typeStringln("CRITICAL HIT!\n");
         }
         enemy.takeDamage(this.equippedWeapon, plr, crit);
+        resetWeaponDamage();
     }
 
     public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance) {
@@ -250,13 +279,14 @@ public class Player {
             Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
             return;
         } else {
-            int critChance = random.nextInt(10) + 1;
+            int critChance = random.nextInt(this.critChanceCap) + 1;
             boolean crit = false;
             if(critChance == 1) {
                 crit = true;
                 Typer.typeStringln("CRITICAL HIT!\n");
             }
             enemy.takeDamage(this.equippedWeapon, plr, crit);
+            resetWeaponDamage();
         }
     }
 
@@ -274,6 +304,7 @@ public class Player {
             return;
         } else {
             enemy.takeRawDamage(dmg, plr);
+            resetWeaponDamage();
         }
     }
 
@@ -288,13 +319,14 @@ public class Player {
             Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
             return false;
         } else {
-            int critChance = random.nextInt(10) + 1;
+            int critChance = random.nextInt(this.critChanceCap) + 1;
             boolean crit = false;
             if(critChance == 1) {
                 crit = true;
                 Typer.typeStringln("CRITICAL HIT!\n");
             }
             enemy.takeDamage(this.equippedWeapon, plr, crit);
+            resetWeaponDamage();
             return true;
         }
     }
@@ -310,13 +342,14 @@ public class Player {
             Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
             return false;
         } else {
-            int critChance = random.nextInt(10) + 1;
+            int critChance = random.nextInt(this.critChanceCap) + 1;
             boolean crit = false;
             if(critChance == 1) {
                 crit = true;
                 Typer.typeStringln("CRITICAL HIT!\n");
             }
             enemy.takeRawDamage(dmg, plr, crit);
+            resetWeaponDamage();
             return true;
         }
     }

@@ -89,6 +89,20 @@ public class Enemy {
     public void attackPlayer(Player plr, int dodgeChance) {
 
         Typer.typeStringln(String.format("%s attacks you with its %s!\n", this.name, this.weapon.getName()));
+
+        if(plr.getRiposte()) {
+            Random random = new Random();
+            int riposteDecider = random.nextInt(100) + 1;
+            if(riposteDecider <= 75) {
+                Typer.typeStringln(String.format("%s's %s is deflected by your %s!", this.name, this.weapon.getName(), plr.getWeapon().getName()));
+                Typer.wait(200);
+                plr.setDamageMultiplier(2.0);
+                plr.attackEnemy(this, plr, this.dodgeChance);
+                return;
+            } else {
+                Typer.typeStringln(String.format("%s's %s avoided your %s!", this.name, this.getWeapon().getName(), plr.getWeapon().getName()));
+            }
+        }
         Random random = new Random();
         int dodgeDecider = random.nextInt(100) + 1;
         Main.wait(500);
