@@ -298,51 +298,59 @@ class Main {
 
         
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
-        int playerDodgeChance = calculatePlayerDodgeChance(plr, enemy);
-
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                choosing = true;
-                enemy.attackPlayer(plr, playerDodgeChance);
+                plr.calculateDodgeChance(boss);
+                enemy.calculateDodgeChance(plr);
+                enemy.attackPlayer(plr, plr.getDodgeChance());
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
                     System.exit(0);
                 }
+                if(plr.getTurnsToSkip() <= 0) {
+                    choosing = true;
+                    while(choosing) {
+                        Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
-                while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
-
-                    String in = scanner.next();
-                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
-                        switch(Integer.parseInt(in)) {
-                            case 1:
-                                plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
-                                choosing = false;
-                            break;
-                            case 2: 
-                                if(plr.heal()) {
+                        String in = scanner.next();
+                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                        if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
+                            switch(Integer.parseInt(in)) {
+                                case 1:
+                                    plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
                                     choosing = false;
-                                } else {
-                                    choosing = true;
-                                }
-                            break;
-                            case 3:
-                                plr.viewStats();
-                                plr.inspectWeapon();
-                            break;
-                            case 4:
-                                enemy.inspect();
-                            break;
+                                break;
+                                case 2: 
+                                    if(plr.heal()) {
+                                        choosing = false;
+                                    } else {
+                                        choosing = true;
+                                    }
+                                break;
+                                case 3:
+                                    plr.viewStats();
+                                    plr.inspectWeapon();
+                                break;
+                                case 4:
+                                    enemy.inspect();
+                                break;
+                            }
+                            
+                        } else {
+                            Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                         }
-                        
-                    } else {
-                        Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                     }
-
-
+                } else {
+                    String turn = "";
+                    if(plr.getTurnsToSkip() == 1) {
+                        turn = "turn";
+                    } else {
+                        turn = "turns";
+                    }
+                    Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
+                    plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
@@ -361,39 +369,51 @@ class Main {
             //Player moves first if speed is greater than enemy's
         } else if (plr.getSpeed() > enemy.getSpeed()) {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                choosing = true;
-                while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
+                plr.calculateDodgeChance(boss);
+                enemy.calculateDodgeChance(plr);
+                if(plr.getTurnsToSkip() > 0) {
+                    choosing = true;
+                    while(choosing) {
+                        Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
-                    String in = scanner.next();
-                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
-                        switch(Integer.parseInt(in)) {
-                            case 1:
-                                plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
-                                choosing = false;
-                            break;
-                            case 2: 
-                                if(plr.heal()) {
+                        String in = scanner.next();
+                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                        if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
+                            switch(Integer.parseInt(in)) {
+                                case 1:
+                                    plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
                                     choosing = false;
-                                } else {
-                                    choosing = true;
-                                }
-                            break;
-                            case 3:
-                                plr.viewStats();
-                                plr.inspectWeapon();
-                            break;
-                            case 4:
-                                enemy.inspect();
-                            break;
+                                break;
+                                case 2: 
+                                    if(plr.heal()) {
+                                        choosing = false;
+                                    } else {
+                                        choosing = true;
+                                    }
+                                break;
+                                case 3:
+                                    plr.viewStats();
+                                    plr.inspectWeapon();
+                                break;
+                                case 4:
+                                    enemy.inspect();
+                                break;
+                            }
+                            
+                        } else {
+                            Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                         }
-                        
-                    } else {
-                        Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                     }
 
-
+                } else {
+                    String turn = "";
+                    if(plr.getTurnsToSkip() == 1) {
+                        turn = "turn";
+                    } else {
+                        turn = "turns";
+                    }
+                    Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
+                    plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
                 
 
@@ -410,7 +430,7 @@ class Main {
                     }
                     break;
                 }
-                enemy.attackPlayer(plr, playerDodgeChance);
+                enemy.attackPlayer(plr, plr.getDodgeChance());
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -422,36 +442,48 @@ class Main {
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 choosing = true;
-                while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
+                if(plr.getTurnsToSkip() <= 0) {
+                    while(choosing) {
+                        Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\n4. Inspect Enemy\nChoose your next move: ", 10);
 
-                    String in = scanner.next();
-                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                    if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
-                        switch(Integer.parseInt(in)) {
-                            case 1:
-                                plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
-                                choosing = false;
-                            break;
-                            case 2: 
-                                plr.heal();
-                                choosing = false;
-                            break;
-                            case 3:
-                                plr.viewStats();
-                                plr.inspectWeapon();
-                            break;
-                            case 4:
-                                enemy.inspect();
-                            break;
+                        String in = scanner.next();
+                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                        if(in.equals("1") || in.equals("2") || in.equals("3") || in.equals("4")) {
+                            switch(Integer.parseInt(in)) {
+                                case 1:
+                                    plr.attackEnemy(enemy, plr, enemy.getDodgeChance());
+                                    choosing = false;
+                                break;
+                                case 2: 
+                                    plr.heal();
+                                    choosing = false;
+                                break;
+                                case 3:
+                                    plr.viewStats();
+                                    plr.inspectWeapon();
+                                break;
+                                case 4:
+                                    enemy.inspect();
+                                break;
+                            }
+                            
+                        } else {
+                            Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
                         }
-                        
-                    } else {
-                        Typer.typeStringln("\nPut in the number next to the option you wish to choose!");
+
+
                     }
-
-
+                } else {
+                    String turn = "";
+                    if(plr.getTurnsToSkip() == 1) {
+                        turn = "turn";
+                    } else {
+                        turn = "turns";
+                    }
+                    Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
+                    plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
+                
 
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
@@ -466,7 +498,7 @@ class Main {
                     }
                     break;
                 }
-                enemy.attackPlayer(plr, playerDodgeChance);
+                enemy.attackPlayer(plr, plr.getDodgeChance());
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -485,12 +517,13 @@ class Main {
      */
     public static void startBossEncounter(Player plr) {
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
-
-        int playerDodgeChance = calculatePlayerDodgeChance(plr, boss);
         while(plr.getHp() > 0 && boss.getHp() > 0) {
-            choosing = true;
-            while(choosing) {
-                Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
+            plr.calculateDodgeChance(boss);
+            boss.calculateDodgeChance(plr);
+            if(plr.getTurnsToSkip() <= 0) {
+                choosing = true;
+                while(choosing) {
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. View Stats\nChoose your next move: ", 10);
 
                     String in = scanner.next();
                     System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -519,14 +552,25 @@ class Main {
                     }
 
 
+                }
+            } else {
+                String turn = "";
+                    if(plr.getTurnsToSkip() == 1) {
+                        turn = "turn";
+                    } else {
+                        turn = "turns";
+                    }
+                    Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
+                    plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
             }
+            
             if(boss.getHp() <= 0) {
                 System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 finishGame(plr);
                 break;
             }
 
-            boss.chooseMove(plr, playerDodgeChance);
+            boss.chooseMove(plr, plr.getDodgeChance());
             
             if(plr.getHp() <= 0) {
                 Typer.typeStringln("You died to " + boss.getName() + ".");
@@ -1211,19 +1255,6 @@ class Main {
             return new Room(enemies, chest, genericRoomDescriptions[random.nextInt(genericRoomDescriptions.length)], "generic");
         
         
-    }
-
-    public static int calculatePlayerDodgeChance(Player plr, Enemy enemy) {
-        if(enemy.getSpeed() >= plr.getSpeed()) {
-            return 0;
-        } else {
-            int difference = plr.getSpeed()-enemy.getSpeed();
-            int result = (int)(difference/2);
-            if(result > 80) {
-                result = 80;
-            }
-            return result;
-        }
     }
 
     public static void wait(int millis) {

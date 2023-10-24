@@ -20,6 +20,15 @@ public class Rapier extends Sword {
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.abilityCooldown <= 0) {
             this.abilityCooldown = 3;
+            Typer.typeStrings(new String[] {
+                this.abilityAttackDialogue,
+                String.format("Your %s hit %s for %s damage!", plr.getWeapon().getName(), enemy.getName(), plr.getWeapon().getDmg()*1.2),
+                String.format("You lowered %s's speed by 20%!", enemy.getName())
+            });
+            enemy.setSpeed((int)(enemy.getSpeed()*0.8));
+            enemy.calculateDodgeChance(plr);
+            plr.calculateDodgeChance(enemy);
+            enemy.takeRawDamage((int)(plr.getWeapon().getDmg()*1.2), plr);
             return true;
         } else {
             if(this.abilityCooldown == 1) {

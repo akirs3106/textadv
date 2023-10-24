@@ -25,6 +25,8 @@ public class Player {
     protected int critChanceCap;
     protected double damageMultiplier;
     protected boolean riposte;
+    protected int dodgeChance;
+    protected int turnsToSkip;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
@@ -40,6 +42,8 @@ public class Player {
         this.critChanceCap = 10;
         this.damageMultiplier = 1;
         this.riposte = false;
+        this.dodgeChance = 0;
+        this.turnsToSkip = 0;
 
         if(playerClass.toLowerCase().equals("warrior")){
             this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20, 0);
@@ -152,6 +156,18 @@ public class Player {
         this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
     }
 
+    public int getDodgeChance() {
+        return this.dodgeChance;
+    }
+
+    public int getTurnsToSkip() {
+        return this.turnsToSkip;
+    }
+
+    public void setTurnsToSkip(int x) {
+        this.turnsToSkip = x;
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */
@@ -243,6 +259,20 @@ public class Player {
 
         this.activeSpeed = this.baseSpeed - this.equippedWeapon.getSpeedPenalty();
 
+    }
+
+    public void calculateDodgeChance(Enemy enemy) {
+        int result = 0;
+        if(enemy.getSpeed() >= this.activeSpeed) {
+            result = 0;
+        } else {
+            int difference = this.activeSpeed-enemy.getSpeed();
+            result = (int)(difference/2);
+            if(result > 80) {
+                result = 80;
+            }
+        }
+        this.dodgeChance = result;
     }
 
 

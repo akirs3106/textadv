@@ -58,7 +58,11 @@ public class Enemy {
         return this.type;
     }
 
-    private void calculateDodgeChance(Player plr) {
+    public void setSpeed(int x) {
+        this.speed = x;
+    }
+
+    public void calculateDodgeChance(Player plr) {
         if (plr.getSpeed() >= this.speed) {
             this.dodgeChance = 0;
         } else {
@@ -91,6 +95,7 @@ public class Enemy {
         Typer.typeStringln(String.format("%s attacks you with its %s!\n", this.name, this.weapon.getName()));
 
         if(plr.getRiposte()) {
+            plr.setRiposte(false);
             Random random = new Random();
             int riposteDecider = random.nextInt(100) + 1;
             if(riposteDecider <= 75) {

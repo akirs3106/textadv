@@ -20,6 +20,10 @@ public class Shortsword extends Sword {
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.abilityCooldown <= 0) {
             this.abilityCooldown = 3;
+            Typer.typeStringln(abilityAttackDialogue);
+            Typer.wait(300);
+            plr.attackEnemyAbility(enemy, plr, enemyDodgeChance, (int)(plr.getWeapon().getDmg()*2.3));
+            plr.setTurnsToSkip(1);
             return true;
         } else {
             if(this.abilityCooldown == 1) {
