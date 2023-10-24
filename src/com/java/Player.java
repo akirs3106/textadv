@@ -113,7 +113,7 @@ public class Player {
     }
 
     public void setDamageReduction(double x) {
-        this.damageReduction += x;
+        this.damageReduction = x;
         if(this.damageReduction > 1) {
             this.damageReduction = 1;
         }
@@ -168,11 +168,15 @@ public class Player {
         this.turnsToSkip = x;
     }
 
+    public void setActiveSpeed(int x) {
+        this.activeSpeed = x;
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */
     public void inspectWeapon(){
-        String str = String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.equippedWeapon.name, this.equippedWeapon.dmg, this.equippedWeapon.speedPenalty);
+        String str = String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n%s\n", this.equippedWeapon.name, this.equippedWeapon.dmg, this.equippedWeapon.speedPenalty, this.equippedWeapon.getAbilityDescription());
 
         Typer.typeString(str);
 
@@ -195,7 +199,7 @@ public class Player {
     public void takeDamage(int dmg) {
         dmg = ((int)((1-this.damageReduction) * dmg));
         this.defensiveStance = false;
-        this.damageReduction -= 0.75;
+        this.damageReduction = 0;
         this.currenthp -= dmg;
 
         Typer.typeStringln("You took " + dmg + " damage!");
@@ -255,7 +259,7 @@ public class Player {
 
     }
 
-    private void calculateActiveSpeed() {
+    public void calculateActiveSpeed() {
 
         this.activeSpeed = this.baseSpeed - this.equippedWeapon.getSpeedPenalty();
 

@@ -18,8 +18,9 @@ public class Excalibur extends Sword {
     }
     
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        if(this.abilityCooldown <= 0) {
-            this.abilityCooldown = 3;
+        System.out.println("Subtype calss ability called!");
+        if(this.currentAbilityCooldown <= 0) {
+            this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStringln(abilityAttackDialogue);
             plr.setDamageMultiplier(2.5);
             return true;
@@ -34,7 +35,8 @@ public class Excalibur extends Sword {
     }
 
     @Override protected String getAbilityDescription() {
-        return String.format("Ability: %s\n Ability Description: %s\nCooldown: %s turns\n", this.abilityName, this.abilityDescription, this.abilityCooldown);
+        String turn = this.abilityCooldown == 1 ? "turn" : "turns";
+        return String.format("Ability: %s\nAbility Description: %s\nCooldown: %s %s\n", this.abilityName, this.abilityDescription, this.abilityCooldown, turn);
     }
     
 }

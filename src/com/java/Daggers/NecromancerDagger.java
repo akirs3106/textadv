@@ -16,8 +16,10 @@ public class NecromancerDagger extends Dagger {
         this.abilityDescription = "By sacrificing some of your own lifeforce, summon a random skeleton to attack your opponent.";
         this.abilityAttackDialogue = "You grip the Necromancer's Dagger, as it begins to drain some life out of you.";
     }
-    
+    //[!IMPORTANT!]
+    //ABILITY NOT COMPLETED ON PURPOSE AS THE WEAPON IS CURRENTLY UNUSABLE IN THE CURRENT VERSION!
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
+        System.out.println("Subtype calss ability called!");
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
             return true;
@@ -32,7 +34,8 @@ public class NecromancerDagger extends Dagger {
     }
 
     @Override protected String getAbilityDescription() {
-        return String.format("Ability: %s\n Ability Description: %s\nCooldown: %s turns\n", this.abilityName, this.abilityDescription, this.abilityCooldown);
+        String turn = this.abilityCooldown == 1 ? "turn" : "turns";
+        return String.format("Ability: %s\nAbility Description: %s\nCooldown: %s %s\n", this.abilityName, this.abilityDescription, this.abilityCooldown, turn);
     }
 
 }

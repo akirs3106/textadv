@@ -18,13 +18,14 @@ public class Rapier extends Sword {
     }
     
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        if(this.abilityCooldown <= 0) {
-            this.abilityCooldown = 3;
+        System.out.println("Subtype calss ability called!");
+        if(this.currentAbilityCooldown <= 0) {
+            this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStrings(new String[] {
                 this.abilityAttackDialogue,
                 String.format("Your %s hit %s for %s damage!", plr.getWeapon().getName(), enemy.getName(), plr.getWeapon().getDmg()*1.2),
                 String.format("You lowered %s's speed by 20%!", enemy.getName())
-            });
+            }, 300);
             enemy.setSpeed((int)(enemy.getSpeed()*0.8));
             enemy.calculateDodgeChance(plr);
             plr.calculateDodgeChance(enemy);
@@ -41,7 +42,8 @@ public class Rapier extends Sword {
     }
 
     @Override protected String getAbilityDescription() {
-        return String.format("Ability: %s\n Ability Description: %s\nCooldown: %s turns\n", this.abilityName, this.abilityDescription, this.abilityCooldown);
+        String turn = this.abilityCooldown == 1 ? "turn" : "turns";
+        return String.format("Ability: %s\nAbility Description: %s\nCooldown: %s %s\n", this.abilityName, this.abilityDescription, this.abilityCooldown, turn);
     }
     
 }
