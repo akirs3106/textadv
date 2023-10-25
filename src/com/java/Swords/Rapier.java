@@ -18,7 +18,6 @@ public class Rapier extends Sword {
     }
     
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        System.out.println("Subtype calss ability called!");
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStrings(new String[] {

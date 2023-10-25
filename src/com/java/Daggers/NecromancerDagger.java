@@ -19,7 +19,6 @@ public class NecromancerDagger extends Dagger {
     //[!IMPORTANT!]
     //ABILITY NOT COMPLETED ON PURPOSE AS THE WEAPON IS CURRENTLY UNUSABLE IN THE CURRENT VERSION!
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        System.out.println("Subtype calss ability called!");
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
             return true;

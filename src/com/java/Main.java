@@ -296,7 +296,7 @@ class Main {
      */
     public static void startEncounter(Enemy enemy, Player plr) {
 
-        
+        boolean usedAbilityThisTurn = false;
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
         String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
             //Enemy moves first if speed in greater than player's
@@ -310,6 +310,7 @@ class Main {
                     scanner.next();
                     System.exit(0);
                 }
+                usedAbilityThisTurn = false;
                 if(plr.getTurnsToSkip() <= 0) {
                     plr.calculateActiveSpeed();
                     choosing = true;
@@ -338,6 +339,7 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
+                                            usedAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -348,6 +350,11 @@ class Main {
                                     break;
                                     case "Inspect Enemy":
                                         enemy.inspect();
+                                    break;
+                                    default: 
+                                        System.out.println("\n\nIf you see this I'm a bad programmer :D");
+                                        scanner.next();
+                                        System.exit(0);
                                     break;
                                 }
                             } else {
@@ -367,6 +374,9 @@ class Main {
                     }
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
+                }
+                if(!usedAbilityThisTurn) {
+                    plr.getWeapon().reduceCooldown();
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
@@ -381,11 +391,11 @@ class Main {
                     }
                     break;
                 }
-                plr.getWeapon().reduceCooldown();
             }
             //Player moves first if speed is greater than enemy's or equal
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
+                usedAbilityThisTurn = false;
                 if(plr.getTurnsToSkip() <= 0) {
                     choosing = true;
                     plr.calculateActiveSpeed();
@@ -414,6 +424,7 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
+                                            usedAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -424,6 +435,11 @@ class Main {
                                     break;
                                     case "Inspect Enemy":
                                         enemy.inspect();
+                                    break;
+                                    default: 
+                                        System.out.println("\n\nIf you see this I'm a bad programmer :D");
+                                        scanner.next();
+                                        System.exit(0);
                                     break;
                                 }
                             } else {
@@ -443,6 +459,9 @@ class Main {
                     }
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
+                }
+                if(!usedAbilityThisTurn) {
+                    plr.getWeapon().reduceCooldown();
                 }
                 
 
@@ -478,11 +497,13 @@ class Main {
      * @param plr
      */
     public static void startBossEncounter(Player plr) {
+        boolean usedAbilityThisTurn = false;
         String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             plr.calculateDodgeChance(boss);
             boss.calculateDodgeChance(plr);
+            usedAbilityThisTurn = false;
             if(plr.getTurnsToSkip() <= 0) {
                 plr.calculateActiveSpeed();
                 choosing = true;
@@ -511,6 +532,7 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(boss);
                                             boss.calculateDodgeChance(plr);
+                                            usedAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -521,6 +543,11 @@ class Main {
                                     break;
                                     case "Inspect Enemy":
                                         boss.inspect();
+                                    break;
+                                    default: 
+                                        System.out.println("\n\nIf you see this I'm a bad programmer :D");
+                                        scanner.next();
+                                        System.exit(0);
                                     break;
                                 }
                             } else {
@@ -540,6 +567,9 @@ class Main {
                     }
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
+                }
+                if(!usedAbilityThisTurn) {
+                    plr.getWeapon().reduceCooldown();
                 }
             
             if(boss.getHp() <= 0) {

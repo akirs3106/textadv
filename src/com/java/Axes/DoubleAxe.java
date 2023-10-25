@@ -19,7 +19,6 @@ public class DoubleAxe extends Axe {
     }
 
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        System.out.println("Subtype calss ability called!");
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStringln(this.abilityAttackDialogue);

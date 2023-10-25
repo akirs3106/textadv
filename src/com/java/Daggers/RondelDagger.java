@@ -17,7 +17,6 @@ public class RondelDagger extends Dagger {
     }
     
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        System.out.println("Subtype calss ability called!");
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStringln(String.format("You swing your %s at %s, using the recoil from their attack to your advantage!", this.name, enemy.getName()));
