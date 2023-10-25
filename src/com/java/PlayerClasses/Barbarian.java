@@ -11,10 +11,9 @@ public class Barbarian extends Player {
         super("Barbarian", new Axe("Rusty Axe", 20, "rusty axe", 30, 0), 75, 125, 20);
     }
 
-    public void setAbility(String x) {
+    public void setAbilityName(String x) {
         this.abilityName = x;
     }
-
 
 
 }
