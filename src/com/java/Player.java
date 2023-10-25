@@ -5,17 +5,18 @@ import java.util.Random;
 import src.com.java.Axes.*;
 import src.com.java.Daggers.*;
 import src.com.java.Swords.*;
+import src.com.java.PlayerClasses.*;
 
 public class Player {
-    private int maxhp;
-    private int currenthp;
-    private double xp;
-    private int level;
-    private int baseSpeed;
-    private int xpRequiredForLevel;
+    protected int maxhp;
+    protected int currenthp;
+    protected double xp;
+    protected int level;
+    protected int baseSpeed;
+    protected int xpRequiredForLevel;
     protected int activeSpeed;
-    private Weapon equippedWeapon;
-    private String playerClass;
+    protected Weapon equippedWeapon;
+    protected String playerClass;
     protected int availableHeals;
     protected int usedHeals;
     protected int healAmount;
@@ -31,7 +32,7 @@ public class Player {
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
      */
-    public Player(String playerClass) {
+    public Player(String playerClass, Weapon equippedWeapon, int baseSpeed, int maxhp, int healAmount) {
         this.xp = 0;
         this.level = 0;
         this.playerClass = playerClass;
@@ -44,26 +45,14 @@ public class Player {
         this.riposte = false;
         this.dodgeChance = 0;
         this.turnsToSkip = 0;
-
-        if(playerClass.toLowerCase().equals("warrior")){
-            this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20, 0);
-            this.baseSpeed = 100;
-            this.maxhp = 100;
-            this.healAmount = 30;
-        } else if (playerClass.toLowerCase().equals("barbarian")) {
-            this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 30, 0);
-            this.baseSpeed = 75;
-            this.maxhp = 125;
-            this.healAmount = 20;
-        } else if (playerClass.toLowerCase().equals("rogue")) {
-            this.equippedWeapon = new Dagger("Rusty Dagger", 8, "rusty dagger", 0, 0);
-            this.baseSpeed = 125;
-            this.maxhp = 75;
-            this.healAmount = 40;
-        }
-            calculateActiveSpeed();
-            this.currenthp = this.maxhp;
-            this.baseHealAmount = this.healAmount;
+        this.equippedWeapon = equippedWeapon;
+        this.baseSpeed = baseSpeed;
+        this.maxhp = maxhp;
+        this.healAmount = healAmount;
+        this.playerClass = playerClass;
+        calculateActiveSpeed();
+        this.currenthp = this.maxhp;
+        this.baseHealAmount = this.healAmount;
     }
 
 

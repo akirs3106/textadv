@@ -6,6 +6,7 @@ import java.util.Scanner;
 import src.com.java.Axes.*;
 import src.com.java.Daggers.*;
 import src.com.java.Swords.*;
+import src.com.java.PlayerClasses.*;
 
 import java.util.ArrayList;
 import java.lang.Thread;
@@ -61,7 +62,19 @@ class Main {
 
                 String plrClass = plrClasses[input];
 
-                plr = new Player(plrClass);
+                switch(plrClass) {
+                    case "Warrior":
+                        plr = new Warrior();
+                    break;
+                    case "Barbarian":
+                        plr = new Barbarian();
+                    break;
+                    case "Rogue":
+                        plr = new Rogue();
+                    break;
+                    default:
+                        plr = null;
+                }
                 Typer.typeStringln("Class selected: " + plrClass);
                 choosing = false;
 
