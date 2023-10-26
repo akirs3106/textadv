@@ -223,7 +223,7 @@ class Main {
                 String restRoomDescs[] = new String[3];
                 String dungeonName = dungeons[input];
                 Room[] rooms = null;
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 Typer.typeStringln("Selected dungeon: " + dungeonName);
 
                 choosing = false;
@@ -261,7 +261,7 @@ class Main {
                             String mapSize = mapSizes[mapSizeChoice];
                             choosing = false;
                             Random random = new Random();
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             Typer.typeStringln("Selected size: " + mapSize);
                             switch(mapSize) {
                                 case "Small":
@@ -279,7 +279,7 @@ class Main {
                                         customChoosing = true;
                                         Typer.typeString("Input the number of rooms you want:\n> ");
                                         int customSize = scanner.nextInt();
-                                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                        Typer.clearConsole();
                                         if(customSize >= 2) {
                                             rooms = new Room[customSize];
                                             customChoosing = false;
@@ -362,7 +362,7 @@ class Main {
                             int numChoice = 999;
                             try {
                                 numChoice = Integer.parseInt(scanner.next())-1;
-                                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                Typer.clearConsole();
                             } catch (NumberFormatException e) {
                                 numChoice = 999;
                             }
@@ -415,7 +415,7 @@ class Main {
                     
                 }
             } else {
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 Typer.typeStringln("Please input then number next to the dungeon you wish to enter!");
             }
 
@@ -454,7 +454,7 @@ class Main {
                         try {
                             String in = scanner.next();
                             int choice = Integer.parseInt(in)-1;
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             if(choice >= 0 && choice < battleChoices.length) {
                                 switch(battleChoices[choice]) {
                                     case "Attack":
@@ -495,7 +495,7 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                             }
                         } catch (Exception e) {
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
@@ -539,7 +539,7 @@ class Main {
                         try {
                             String in = scanner.next();
                             int choice = Integer.parseInt(in)-1;
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             if(choice >= 0 && choice < battleChoices.length) {
                                 switch(battleChoices[choice]) {
                                     case "Attack":
@@ -580,7 +580,7 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                             }
                         } catch (Exception e) {
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
@@ -647,7 +647,7 @@ class Main {
                         try {
                             String in = scanner.next();
                             int choice = Integer.parseInt(in)-1;
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             if(choice >= 0 && choice < battleChoices.length) {
                                 switch(battleChoices[choice]) {
                                     case "Attack":
@@ -688,7 +688,7 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                             }
                         } catch (Exception e) {
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
@@ -707,7 +707,7 @@ class Main {
                 }
             
             if(boss.getHp() <= 0) {
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 finishGame(plr);
                 break;
             }
@@ -794,7 +794,7 @@ class Main {
                                 choosing = false;
                                 Typer.typeStringln("You throw The Necromancer's Dagger on the floor with all your strength, shattering it into pieces as it hits the cold stone floor.");
                             } else {
-                                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                Typer.clearConsole();
                                 Typer.typeStringln("Please input \"Y\" or \"N\".");
                             }
                         }

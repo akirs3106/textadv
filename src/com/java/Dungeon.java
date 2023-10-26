@@ -49,7 +49,7 @@ public class Dungeon {
                 while(choosing) {
                     Typer.typeString("\nAre you sure you wish to enter the next room? You may not be able to come back.\n\nY/N\n> ");
                     String input = scanner.next().toLowerCase();
-                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                    Typer.clearConsole();
                     if(input.equals("y")) {
                         Typer.typeStringln("\nYou enter the next room.");
                         Typer.typeStringln(nextRoom.getDescription());

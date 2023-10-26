@@ -101,7 +101,7 @@ public class Typer {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (IOException e) {
-
+            System.out.println("uhoh");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

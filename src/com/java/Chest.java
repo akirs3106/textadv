@@ -45,7 +45,7 @@ public class Chest {
                 String input = scanner.next();
                 int choice = Integer.parseInt(input)-1;
 
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 if(choice >= 0 && choice < chestChoices.length) {
                     switch(chestChoices[choice]) {
                     case "Swap":
@@ -67,7 +67,7 @@ public class Chest {
                     Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                 }
             } catch (Exception e) {
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 Typer.typeStringln("Please enter the number next to the option you wish to pick.");
             }
         }
