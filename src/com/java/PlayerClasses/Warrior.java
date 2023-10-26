@@ -7,8 +7,9 @@ public class Warrior extends Player {
 
     String abilityName;
 
-    public Warrior() {
+    public Warrior(String abilityName) {
         super("Warrior", new Sword("Rusty Sword", 10, "rusty sword", 20, 0), 100, 100, 30);
+        this.abilityName = abilityName;
     }
 
     public void setAbilityName(String x) {

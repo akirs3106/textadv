@@ -7,8 +7,9 @@ public class Rogue extends Player {
 
     String abilityName;
     
-    public Rogue() {
+    public Rogue(String abilityName) {
         super("Rogue", new Dagger("Rusty Dagger", 8, "rusty dagger", 0, 0), 125, 75, 40);
+        this.abilityName = abilityName;
     }
 
     public void setAbilityName(String x) {

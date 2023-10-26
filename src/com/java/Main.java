@@ -10,6 +10,7 @@ import src.com.java.PlayerClasses.*;
 
 import java.util.ArrayList;
 import java.lang.Thread;
+
 class Main {
 
     public static final String[][] swordNames  = {
@@ -51,26 +52,146 @@ class Main {
 
         do {
             choosing = true;
+            Typer.clearConsole();
             Typer.typeStringln("Classes:");
             Typer.typeString("\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ", 10);
             
         
             int input = scanner.nextInt()-1;
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //Clears the console.
+            Typer.clearConsole(); //Clears the console.
 
             if(input >= 0 && input < plrClasses.length) {
 
                 String plrClass = plrClasses[input];
 
+                boolean choosingAbility = true;
+                boolean confirming = false;
+                int abilChoice = 999;
+                Typer.typeStringln("Class Abilities:");
                 switch(plrClass) {
                     case "Warrior":
-                        plr = new Warrior();
+                    String[] warriorAbilities = {"Abil1", "Abil2"};
+                    String[] warriorAbilityDescriptions = {"desc1", "desc2"};
+                    while(choosingAbility) {
+                        Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
+                        try {
+                            String inputAbil = scanner.next();
+                            Typer.clearConsole();
+                            abilChoice = Integer.parseInt(inputAbil)-1;
+                            if(abilChoice >= 0 && abilChoice < warriorAbilities.length) {
+                                confirming = true;
+                                Typer.clearConsole();
+                                while(confirming) {
+                                    Typer.typeStringsNoSpace(new String[] {
+                                        String.format("Ability: %s", warriorAbilities[abilChoice]),
+                                        String.format("Description: %s", warriorAbilityDescriptions[abilChoice])
+                                    }, 200);
+                                    Typer.typeString(String.format("\nAre you sure you want to equip the ability: %s? (Y/N)\n> ", warriorAbilities[abilChoice]));
+                                    String confirmation = scanner.next().toLowerCase();
+                                    Typer.clearConsole();
+                                    if(confirmation.equals("y")) {
+                                        confirming = false;
+                                        choosingAbility = false;
+                                        
+                                    } else if (confirmation.equals("n")) {
+                                        confirming = false;
+                                        choosingAbility = true;
+                                    } else {
+                                        Typer.typeStringln("Please enter Y or N for \"Yes\" or \"No\".");
+                                    }
+
+                                }
+                            } else {
+                                throw new Exception();
+                            }
+                        } catch (Exception e) {
+                            Typer.typeStringln("Please enter the number next to your desired choice.");
+                        }
+                    }
+                    plr = new Warrior(warriorAbilities[abilChoice]);
+                        
                     break;
                     case "Barbarian":
-                        plr = new Barbarian();
+                        String[] barbarianAbilities = {"Abil3", "Abil4"};
+                        String[] barbarianAbilityDescriptions = {"desc3", "desc4"};
+                        while(choosingAbility) {
+                            Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
+                            try {
+                                String inputAbil = scanner.next();
+                                Typer.clearConsole();
+                                abilChoice = Integer.parseInt(inputAbil)-1;
+                                if(abilChoice >= 0 && abilChoice < barbarianAbilities.length) {
+                                    confirming = true;
+                                    Typer.clearConsole();
+                                    while(confirming) {
+                                        Typer.typeStringsNoSpace(new String[] {
+                                            String.format("Ability: %s", barbarianAbilities[abilChoice]),
+                                            String.format("Description: %s", barbarianAbilityDescriptions[abilChoice])
+                                        }, 200);
+                                        Typer.typeString(String.format("\nAre you sure you want to equip the ability: %s? (Y/N)\n> ", barbarianAbilities[abilChoice]));
+                                        String confirmation = scanner.next().toLowerCase();
+                                        Typer.clearConsole();
+                                        if(confirmation.equals("y")) {
+                                            confirming = false;
+                                            choosingAbility = false;
+                                            
+                                        } else if (confirmation.equals("n")) {
+                                            confirming = false;
+                                            choosingAbility = true;
+                                        } else {
+                                            Typer.typeStringln("Please enter Y or N for \"Yes\" or \"No\".");
+                                        }
+
+                                    }
+                                } else {
+                                    throw new Exception();
+                                }
+                            } catch (Exception e) {
+                                Typer.typeStringln("Please enter the number next to your desired choice.");
+                            }
+                        }
+                        plr = new Barbarian(barbarianAbilities[abilChoice]);
                     break;
                     case "Rogue":
-                        plr = new Rogue();
+                        String[] rogueAbilities = {"Abil5", "Abil6"};
+                        String[] rogueAbilityDescriptions = {"desc5", "desc6"};
+                        while(choosingAbility) {
+                            Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
+                            try {
+                                String inputAbil = scanner.next();
+                                Typer.clearConsole();
+                                abilChoice = Integer.parseInt(inputAbil)-1;
+                                if(abilChoice >= 0 && abilChoice < rogueAbilities.length) {
+                                    confirming = true;
+                                    Typer.clearConsole();
+                                    while(confirming) {
+                                        Typer.typeStringsNoSpace(new String[] {
+                                            String.format("Ability: %s", rogueAbilities[abilChoice]),
+                                            String.format("Description: %s", rogueAbilityDescriptions[abilChoice])
+                                        }, 200);
+                                        Typer.typeString(String.format("\nAre you sure you want to equip the ability: %s? (Y/N)\n> ", rogueAbilities[abilChoice]));
+                                        String confirmation = scanner.next().toLowerCase();
+                                        Typer.clearConsole();
+                                        if(confirmation.equals("y")) {
+                                            confirming = false;
+                                            choosingAbility = false;
+                                            
+                                        } else if (confirmation.equals("n")) {
+                                            confirming = false;
+                                            choosingAbility = true;
+                                        } else {
+                                            Typer.typeStringln("Please enter Y or N for \"Yes\" or \"No\".");
+                                        }
+
+                                    }
+                                } else {
+                                    throw new Exception();
+                                }
+                            } catch (Exception e) {
+                                Typer.typeStringln("Please enter the number next to your desired choice.");
+                            }
+                        }
+                        plr = new Rogue(rogueAbilities[abilChoice]);
                     break;
                     default:
                         plr = null;
