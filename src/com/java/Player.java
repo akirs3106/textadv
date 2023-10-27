@@ -156,6 +156,13 @@ public class Player {
         this.activeSpeed = x;
     }
 
+    public void setDodgeChance(int x) {
+        this.dodgeChance = x;
+        if(this.dodgeChance > 80) {
+            this.dodgeChance = 80;
+        }
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */

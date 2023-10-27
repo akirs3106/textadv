@@ -25,7 +25,7 @@ public class Rapier extends Sword {
                 String.format("Your %s hit %s for %s damage!", plr.getWeapon().getName(), enemy.getName(), plr.getWeapon().getDmg()*1.2),
                 String.format("You lowered %s's speed by 20%!", enemy.getName())
             }, 300);
-            enemy.setSpeed((int)(enemy.getSpeed()*0.8));
+            enemy.setBaseSpeed((int)(enemy.getSpeed()*0.8));
             enemy.calculateDodgeChance(plr);
             plr.calculateDodgeChance(enemy);
             enemy.takeRawDamage((int)(plr.getWeapon().getDmg()*1.2), plr);

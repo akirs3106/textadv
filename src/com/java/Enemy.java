@@ -1,6 +1,7 @@
 package src.com.java;
 
 import java.util.Random;
+import src.com.java.PlayerClasses.*;
 
 
 public class Enemy {
@@ -10,7 +11,8 @@ public class Enemy {
     protected String race;
     protected int maxHealth;
     protected int currentHealth;
-    protected int speed;
+    protected int baseSpeed;
+    protected int activeSpeed;
     protected double xpValue;
     protected String type;
     protected boolean hit;
@@ -18,21 +20,18 @@ public class Enemy {
     protected int dodgeChance;
 
 
-    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, String type, Player plr) {
+    public Enemy(String name, Weapon weapon, String race, int maxHealth, int baseSpeed, double xpValue, String type, Player plr) {
         this.name = name;
         this.weapon = weapon;
         this.race = race;
         this.maxHealth = maxHealth;
         this.currentHealth = this.maxHealth;
-        if(speed - this.weapon.getSpeedPenalty() < 0) {
-            this.speed = 0;
-        } else {
-            this.speed = speed - this.weapon.getSpeedPenalty();
-        }
+        this.baseSpeed = baseSpeed;
         this.xpValue = xpValue;
         this.type = type;
         this.hit = false;
         calculateDodgeChance(plr);
+        calculateActiveSpeed();
     }
 
     public Weapon getWeapon() {
@@ -47,7 +46,11 @@ public class Enemy {
     }
 
     public int getSpeed() {
-        return this.speed;
+        return this.activeSpeed;
+    }
+
+    public int getBaseSpeed() {
+        return this.baseSpeed;
     }
 
     public int getDodgeChance() {
@@ -58,19 +61,28 @@ public class Enemy {
         return this.type;
     }
 
-    public void setSpeed(int x) {
-        this.speed = x;
+    public void setBaseSpeed(int x) {
+        this.baseSpeed = x;
+        calculateActiveSpeed();
     }
 
     public void calculateDodgeChance(Player plr) {
-        if (plr.getSpeed() >= this.speed) {
+        if (plr.getSpeed() >= this.activeSpeed) {
             this.dodgeChance = 0;
         } else {
-            int difference = this.speed-plr.getSpeed();
+            int difference = this.activeSpeed-plr.getSpeed();
             this.dodgeChance = (int)(difference/2);
             if(this.dodgeChance > 80) {
                 this.dodgeChance = 80;
             }
+        }
+    }
+
+    public void calculateActiveSpeed() {
+        if(baseSpeed - this.weapon.getSpeedPenalty() < 0) {
+            this.activeSpeed = 0;
+        } else {
+            this.activeSpeed = baseSpeed - this.weapon.getSpeedPenalty();
         }
     }
 
@@ -121,7 +133,7 @@ public class Enemy {
         }
     }
 
-    public void inspect() {
+    public void inspect(Player plr) {
         if(this.hit) {
             Typer.typeStringsNoSpace(new String[] {
                 String.format("Name: %s", this.name),

@@ -131,6 +131,7 @@ public class Room {
     }
 
     public void searchRoom(Player plr) {
+        Typer.clearConsole();
         Typer.typeStringln("\nYou begin to search the room..");
         Main.wait(2000);
         if(this.type == "generic") {

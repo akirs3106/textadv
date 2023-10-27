@@ -70,8 +70,12 @@ class Main {
                 Typer.typeStringln("Class Abilities:");
                 switch(plrClass) {
                     case "Warrior":
-                    String[] warriorAbilities = {"Abil1", "Abil2"};
-                    String[] warriorAbilityDescriptions = {"desc1", "desc2"};
+                    String[] warriorAbilities = {"Retaliation", "Adrenaline Rush"};
+                    String[] warriorAbilityDescriptions = {
+                        "When hit while active, deal the same amount of damage that was done to you plus your weapon damage to your opponent.",
+                        "When activated, gain a speed boost for a few turns."
+                    };
+                    int[] warriorAbilityCooldowns = {3, 4};
                     while(choosingAbility) {
                         Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
                         try {
@@ -108,12 +112,16 @@ class Main {
                             Typer.typeStringln("Please enter the number next to your desired choice.");
                         }
                     }
-                    plr = new Warrior(warriorAbilities[abilChoice]);
+                    plr = new Warrior(warriorAbilities[abilChoice], warriorAbilityCooldowns[abilChoice], warriorAbilityDescriptions[abilChoice]);
                         
                     break;
                     case "Barbarian":
-                        String[] barbarianAbilities = {"Abil3", "Abil4"};
-                        String[] barbarianAbilityDescriptions = {"desc3", "desc4"};
+                        String[] barbarianAbilities = {"Battlecry", "Savage Charge"};
+                        String[] barbarianAbilityDescriptions = {
+                            "Shout out with absolute power in your voice, decreasing your opponent's speed and defense for a few turns, while increasing your own damage dealt.",
+                            "Charge head-on at your opponent with great force, dealing a large sum of damage in addition to potentially stunning them for a few turns."
+                            };
+                        int[] barbarianAbilityCooldowns = {4, 5};
                         while(choosingAbility) {
                             Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
                             try {
@@ -150,11 +158,15 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to your desired choice.");
                             }
                         }
-                        plr = new Barbarian(barbarianAbilities[abilChoice]);
+                        plr = new Barbarian(barbarianAbilities[abilChoice], barbarianAbilityCooldowns[abilChoice], barbarianAbilityDescriptions[abilChoice]);
                     break;
                     case "Rogue":
-                        String[] rogueAbilities = {"Abil5", "Abil6"};
-                        String[] rogueAbilityDescriptions = {"desc5", "desc6"};
+                        String[] rogueAbilities = {"Keen Eyed", "Hide"};
+                        String[] rogueAbilityDescriptions = {
+                            "When used, discover all of your opponent's stats, including ones that would normally be hidden.",
+                            "Utilize your lightfootedness and agility to attempt to hide from the enemy for a turn, greatly increasing your chance to dodge.\nEffects wear off once you are hit or attempt to attack the opponent."
+                        };
+                        int[] rogueAbilityCooldowns = {0, 1};
                         while(choosingAbility) {
                             Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
                             try {
@@ -191,7 +203,7 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to your desired choice.");
                             }
                         }
-                        plr = new Rogue(rogueAbilities[abilChoice]);
+                        plr = new Rogue(rogueAbilities[abilChoice], rogueAbilityCooldowns[abilChoice], rogueAbilityDescriptions[abilChoice]);
                     break;
                     default:
                         plr = null;
@@ -430,7 +442,7 @@ class Main {
      */
     public static void startEncounter(Enemy enemy, Player plr) {
 
-        boolean usedAbilityThisTurn = false;
+        boolean usedWeaponAbilityThisTurn = false;
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
         String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
             //Enemy moves first if speed in greater than player's
@@ -444,7 +456,7 @@ class Main {
                     scanner.next();
                     System.exit(0);
                 }
-                usedAbilityThisTurn = false;
+                usedWeaponAbilityThisTurn = false;
                 if(plr.getTurnsToSkip() <= 0) {
                     plr.calculateActiveSpeed();
                     choosing = true;
@@ -473,7 +485,7 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
-                                            usedAbilityThisTurn = true;
+                                            usedWeaponAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -483,7 +495,7 @@ class Main {
                                         plr.inspectWeapon();
                                     break;
                                     case "Inspect Enemy":
-                                        enemy.inspect();
+                                        enemy.inspect(plr);
                                     break;
                                     default: 
                                         System.out.println("\n\nIf you see this I'm a bad programmer :D");
@@ -509,7 +521,7 @@ class Main {
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
-                if(!usedAbilityThisTurn) {
+                if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
                 }
                 if(enemy.getHp() <= 0) {
@@ -529,7 +541,7 @@ class Main {
             //Player moves first if speed is greater than enemy's or equal
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                usedAbilityThisTurn = false;
+                usedWeaponAbilityThisTurn = false;
                 if(plr.getTurnsToSkip() <= 0) {
                     choosing = true;
                     plr.calculateActiveSpeed();
@@ -558,7 +570,7 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
-                                            usedAbilityThisTurn = true;
+                                            usedWeaponAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -568,7 +580,7 @@ class Main {
                                         plr.inspectWeapon();
                                     break;
                                     case "Inspect Enemy":
-                                        enemy.inspect();
+                                        enemy.inspect(plr);
                                     break;
                                     default: 
                                         System.out.println("\n\nIf you see this I'm a bad programmer :D");
@@ -594,7 +606,7 @@ class Main {
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
-                if(!usedAbilityThisTurn) {
+                if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
                 }
                 
@@ -631,13 +643,13 @@ class Main {
      * @param plr
      */
     public static void startBossEncounter(Player plr) {
-        boolean usedAbilityThisTurn = false;
+        boolean usedWeaponAbilityThisTurn = false;
         String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
             plr.calculateDodgeChance(boss);
             boss.calculateDodgeChance(plr);
-            usedAbilityThisTurn = false;
+            usedWeaponAbilityThisTurn = false;
             if(plr.getTurnsToSkip() <= 0) {
                 plr.calculateActiveSpeed();
                 choosing = true;
@@ -666,7 +678,7 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(boss);
                                             boss.calculateDodgeChance(plr);
-                                            usedAbilityThisTurn = true;
+                                            usedWeaponAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -676,7 +688,7 @@ class Main {
                                         plr.inspectWeapon();
                                     break;
                                     case "Inspect Enemy":
-                                        boss.inspect();
+                                        boss.inspect(plr);
                                     break;
                                     default: 
                                         System.out.println("\n\nIf you see this I'm a bad programmer :D");
@@ -702,7 +714,7 @@ class Main {
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
-                if(!usedAbilityThisTurn) {
+                if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
                 }
             
