@@ -7,42 +7,43 @@ public class Rogue extends Player {
 
     String abilityName;
     int abilityCooldown;
-    int activeCooldown;
     String abilityDescription;
     boolean hideActive;
     boolean keenEyedActive;
     
     public Rogue(String abilityName, int abilityCooldown, String abilityDescription) {
-        super("Rogue", new Dagger("Rusty Dagger", 8, "rusty dagger", 0, 0), 125, 75, 40);
+        super("Rogue", new Dagger("Rusty Dagger", 8, "rusty dagger", 0, 0), 125, 75, 40, 0);
         this.abilityName = abilityName;
         this.abilityCooldown = abilityCooldown;
         this.abilityDescription = abilityDescription;
-        this.activeCooldown = 0;
         this.hideActive = false;
         this.keenEyedActive = false;
     }
 
-    public void setAbilityName(String x) {
+    @Override public void setAbilityName(String x) {
         this.abilityName = x;
     }
 
-    public boolean getKeenEyedActive() {
+    @Override public boolean getKeenEyedActive() {
         return this.keenEyedActive;
     }
 
-    public void setKeenEyedActive(boolean x) {
+    @Override public void setKeenEyedActive(boolean x) {
         this.keenEyedActive = x;
     }
 
-    public boolean hideActive() {
+    @Override public boolean getHideActive() {
         return this.hideActive;
     }
 
-    public void setHideActive(boolean x) {
+    @Override public void setHideActive(boolean x, Enemy enemy) {
         this.hideActive = x;
+        if(!x) {
+            this.calculateDodgeChance(enemy);
+        }
     }
 
-    public boolean useAbility(Enemy enemy) {
+    @Override public boolean useAbility(Enemy enemy) {
         if(this.activeCooldown <= 0) {
             this.activeCooldown = abilityCooldown;
             switch(this.abilityName) {

@@ -53,7 +53,6 @@ public class Weapon {
      * @return boolean
      */
     public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        System.out.println("Weapon.class useAbility called.");
         Typer.typeStringln("This weapon has no special ability.");
         return false;
     }

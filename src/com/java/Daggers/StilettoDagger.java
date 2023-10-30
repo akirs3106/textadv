@@ -14,7 +14,7 @@ public class StilettoDagger extends Dagger {
         super(name, dmg, "stiletto dagger", speedPenalty, 2);
         this.abilityName = "Precision Strike";
         this.abilityDescription = "Attack your enemy's weakpoint, having an increased chance of a critical hit.";
-        this.abilityDescription = String.format("You aim and thrust your %s forwards.", name);
+        this.abilityAttackDialogue = String.format("You aim and thrust your %s forwards.", name);
 
     }
     

@@ -8,23 +8,29 @@ public class Barbarian extends Player {
     String abilityName;
     int abilityCooldown;
     String abilityDescription;
-    int activeCooldown;
     boolean battlecryActive;
     
     public Barbarian(String abilityName, int abilityCooldown, String abilityDescription) {
-        super("Barbarian", new Axe("Rusty Axe", 20, "rusty axe", 30, 0), 75, 125, 20);
+        super("Barbarian", new Axe("Rusty Axe", 20, "rusty axe", 30, 0), 75, 125, 20, 0);
         this.abilityName = abilityName;
         this.abilityCooldown = abilityCooldown;
         this.abilityDescription = abilityDescription;
-        this.activeCooldown = 0;
         this.battlecryActive = false;
     }
 
-    public void setAbilityName(String x) {
+    @Override public void setAbilityName(String x) {
         this.abilityName = x;
     }
 
-    public boolean useAbility(Enemy enemy) {
+    @Override public void setBattlecry(boolean x) {
+        this.battlecryActive = x;
+    }
+
+    @Override public boolean getBattlecry() {
+        return this.battlecryActive;
+    }
+
+    @Override public boolean useAbility(Enemy enemy) {
         if(this.activeCooldown <= 0) {
             switch(this.abilityName) {
                 case "Battlecry":

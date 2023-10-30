@@ -1,7 +1,6 @@
 package src.com.java;
 
 import java.util.Random;
-import src.com.java.PlayerClasses.*;
 
 
 public class Enemy {
@@ -128,12 +127,26 @@ public class Enemy {
             return;
         } else {
             Typer.typeStringln(String.format("You were hit by %s's %s!\n", this.name, this.weapon.getName()));
+            if(plr.getHideActive()) {
+                plr.setHideActive(false, this);
+                Typer.typeStringln("You are no longer hidden!");
+            }
             this.hitPlayer = true;
             plr.takeDamage(this.weapon.getDmg());
         }
     }
 
     public void inspect(Player plr) {
+        if(plr.getKeenEyedActive()) {
+            Typer.typeStringsNoSpace(new String[] {
+                String.format("Name: %s", this.name),
+                String.format("Health: %s/ %s", this.currentHealth, this.maxHealth),
+                String.format("Race: %s", this.race),
+                String.format("\nWeapon: %s", this.weapon.getName()),
+                String.format("Damage: %s", this.weapon.getDmg()),
+                String.format("Speed Reduction: %s", this.weapon.getSpeedPenalty())
+            }, 100);
+        }
         if(this.hit) {
             Typer.typeStringsNoSpace(new String[] {
                 String.format("Name: %s", this.name),
@@ -185,6 +198,12 @@ public class Enemy {
             Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
         } else {
             Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.setKeenEyedActive(false);
+            plr.setHideActive(false, this);
+            plr.setBattlecry(false);
+            plr.setAdrenalineRushActive(false);
+            plr.setRetaliation(false);
+            plr.setTurnsToSkip(0);
             plr.gainXp(this.xpValue);
         }
         

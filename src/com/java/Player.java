@@ -23,11 +23,12 @@ public class Player {
     protected boolean riposte;
     protected int dodgeChance;
     protected int turnsToSkip;
+    protected int activeCooldown;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
      */
-    public Player(String playerClass, Weapon equippedWeapon, int baseSpeed, int maxhp, int healAmount) {
+    public Player(String playerClass, Weapon equippedWeapon, int baseSpeed, int maxhp, int healAmount, int classAbilityCooldown) {
         this.xp = 0;
         this.level = 0;
         this.playerClass = playerClass;
@@ -163,6 +164,37 @@ public class Player {
         }
     }
 
+    public int getActiveCooldown() {
+        return this.activeCooldown;
+    }
+
+    public void reduceCooldown() {
+        this.activeCooldown -= 1;
+    }
+
+    // Rogue class override methods
+    public boolean getKeenEyedActive() {return false;}
+    public void setKeenEyedActive(boolean x) {}
+    public boolean getHideActive() {return false;}
+    public void setHideActive(boolean x, Enemy enemy) {}
+
+    //Barbarian class override methods
+    public void setBattlecry(boolean x) {}
+    public boolean getBattlecry() {return false;}
+
+    //Warrior class override methods
+    public boolean getAdrenalineRushActive() {return false;}
+    public void setAdrenalineRushActive(boolean x) {}
+    public boolean getRetaliation() {return false;}
+    public void setRetaliation(boolean x) {}
+
+    //All classes override methods
+    public void setAbilityName(String x) {}
+    public boolean useAbility(Enemy enemy) {
+        Typer.typeStringln("You do not have an ability!");
+        return false;
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */
@@ -278,6 +310,10 @@ public class Player {
      */
     public void attackEnemy(Enemy enemy, Player plr) {
 
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
         Random random = new Random();
         int critChance = random.nextInt(this.critChanceCap) + 1;
         boolean crit = false;
@@ -293,6 +329,10 @@ public class Player {
 
     public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance) {
         
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
 
         Random random = new Random();
 
@@ -317,7 +357,11 @@ public class Player {
 
     public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
         
-
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+        
         Random random = new Random();
 
         Typer.typeStringln(String.format("You attack %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
@@ -335,6 +379,10 @@ public class Player {
 
     public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance) {
         
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
 
         Random random = new Random();
 
@@ -358,6 +406,10 @@ public class Player {
 
     public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
         
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
 
         Random random = new Random();
 

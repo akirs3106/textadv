@@ -7,26 +7,40 @@ public class Warrior extends Player {
 
     String abilityName;
     int abilityCooldown;
-    int activeCooldown;
     String abilityDescription;
     boolean adrenalineRushActive;
     boolean retaliationActive;
 
     public Warrior(String abilityName, int abilityCooldown, String abilityDescription) {
-        super("Warrior", new Sword("Rusty Sword", 10, "rusty sword", 20, 0), 100, 100, 30);
+        super("Warrior", new Sword("Rusty Sword", 10, "rusty sword", 20, 0), 100, 100, 30, 0);
         this.abilityName = abilityName;
         this.abilityCooldown = abilityCooldown;
         this.abilityDescription = abilityDescription;
-        this.activeCooldown = 0;
         this.adrenalineRushActive = false;
         this.retaliationActive = false;
     }
 
-    public void setAbilityName(String x) {
+    @Override public void setAbilityName(String x) {
         this.abilityName = x;
     }
 
-    public boolean useAbility(Enemy enemy) {
+    @Override public boolean getAdrenalineRushActive() {
+        return this.adrenalineRushActive;
+    }
+
+    @Override public void setAdrenalineRushActive(boolean x) {
+        this.adrenalineRushActive = x;
+    }
+
+    @Override public boolean getRetaliation() {
+        return this.retaliationActive;
+    }
+
+    @Override public void setRetaliation(boolean x) {
+        this.retaliationActive = x;
+    }
+
+    @Override public boolean useAbility(Enemy enemy) {
         if(this.activeCooldown <= 0) {
             switch(this.abilityName) {
                 case "Retaliation":

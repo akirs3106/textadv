@@ -23,6 +23,9 @@ public class DoubleAxe extends Axe {
             this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStringln(this.abilityAttackDialogue);
             plr.attackEnemyAbility(enemy, plr, enemyDodgeChance);
+            if(enemy.getHp() <= 0) {
+                return true;
+            }
             Typer.typeStringln(String.format("You swing your %s back.", this.name));
             plr.attackEnemyAbility(enemy, plr, enemyDodgeChance);
             return true;

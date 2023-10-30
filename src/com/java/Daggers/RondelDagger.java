@@ -18,10 +18,12 @@ public class RondelDagger extends Dagger {
     
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.currentAbilityCooldown <= 0) {
-            this.currentAbilityCooldown = this.abilityCooldown;
-            Typer.typeStringln(String.format("You swing your %s at %s, using the recoil from their attack to your advantage!", this.name, enemy.getName()));
             if(enemyDodgeChance > 0) {
+                this.currentAbilityCooldown = this.abilityCooldown;
+                Typer.typeStringln(String.format("You swing your %s at %s, using the recoil from their attack to your advantage!", this.name, enemy.getName()));
                 plr.attackEnemyAbility(enemy, plr, enemyDodgeChance, (int)(plr.getWeapon().getDmg()*1.6));
+            } else {
+                Typer.typeStringln("Your attack failed because you had no recoil to use!");
             }
             return true;
         } else {

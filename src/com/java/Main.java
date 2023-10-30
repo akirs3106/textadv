@@ -164,11 +164,11 @@ class Main {
                         String[] rogueAbilities = {"Keen Eyed", "Hide"};
                         String[] rogueAbilityDescriptions = {
                             "When used, discover all of your opponent's stats, including ones that would normally be hidden.",
-                            "Utilize your lightfootedness and agility to attempt to hide from the enemy for a turn, greatly increasing your chance to dodge.\nEffects wear off once you are hit or attempt to attack the opponent."
+                            "Utilize your lightfootedness and agility to attempt to hide from the enemy, greatly increasing your chance to dodge.\nEffects wear off once you are hit or attempt to attack the opponent."
                         };
-                        int[] rogueAbilityCooldowns = {0, 1};
+                        int[] rogueAbilityCooldowns = {0, 3};
                         while(choosingAbility) {
-                            Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
+                            Typer.typeString("1. Keen Eyed\n2. Hide\n\nChoose an ability: ");
                             try {
                                 String inputAbil = scanner.next();
                                 Typer.clearConsole();
@@ -443,13 +443,12 @@ class Main {
     public static void startEncounter(Enemy enemy, Player plr) {
 
         boolean usedWeaponAbilityThisTurn = false;
+        boolean usedClassAbilityThisTurn = false;
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
-        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
+        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "Class Ability", "View Stats", "Inspect Enemy"};
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                plr.calculateDodgeChance(boss);
-                enemy.calculateDodgeChance(plr);
                 enemy.attackPlayer(plr, plr.getDodgeChance());
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
@@ -457,11 +456,12 @@ class Main {
                     System.exit(0);
                 }
                 usedWeaponAbilityThisTurn = false;
+                usedClassAbilityThisTurn = false;
                 if(plr.getTurnsToSkip() <= 0) {
                     plr.calculateActiveSpeed();
                     choosing = true;
                     while(choosing) {
-                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. View Stats\n5. Inspect Enemy\nChoose your next move: ", 10);
+                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. Use Class Ability\n5. View Stats\n6. Inspect Enemy\nChoose your next move: ", 10);
 
                         try {
                             String in = scanner.next();
@@ -486,6 +486,14 @@ class Main {
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
                                             usedWeaponAbilityThisTurn = true;
+                                        } else {
+                                            choosing = true;
+                                        }
+                                    break;
+                                    case "Class Ability":
+                                        if(plr.useAbility(enemy)) {
+                                            choosing = false;
+                                            usedClassAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -523,6 +531,9 @@ class Main {
                 }
                 if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
+                }
+                if(!usedClassAbilityThisTurn) {
+                    plr.reduceCooldown();
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
@@ -542,11 +553,12 @@ class Main {
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
                 usedWeaponAbilityThisTurn = false;
+                usedClassAbilityThisTurn = false;
                 if(plr.getTurnsToSkip() <= 0) {
                     choosing = true;
                     plr.calculateActiveSpeed();
                     while(choosing) {
-                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. View Stats\n5. Inspect Enemy\nChoose your next move: ", 10);
+                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. Use Class Ability\n5. View Stats\n6. Inspect Enemy\nChoose your next move: ", 10);
 
                         try {
                             String in = scanner.next();
@@ -571,6 +583,14 @@ class Main {
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
                                             usedWeaponAbilityThisTurn = true;
+                                        } else {
+                                            choosing = true;
+                                        }
+                                    break;
+                                    case "Class Ability":
+                                        if(plr.useAbility(enemy)) {
+                                            choosing = false;
+                                            usedClassAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -608,6 +628,9 @@ class Main {
                 }
                 if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
+                }
+                if(!usedClassAbilityThisTurn) {
+                    plr.reduceCooldown();
                 }
                 
 
@@ -631,7 +654,6 @@ class Main {
                     System.exit(0);
                     
                 }
-                plr.getWeapon().reduceCooldown();
             }
 
         }
@@ -644,17 +666,17 @@ class Main {
      */
     public static void startBossEncounter(Player plr) {
         boolean usedWeaponAbilityThisTurn = false;
-        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
+        boolean usedClassAbilityThisTurn = false;
+        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "Class Ability", "View Stats", "Inspect Enemy"};
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
-            plr.calculateDodgeChance(boss);
-            boss.calculateDodgeChance(plr);
             usedWeaponAbilityThisTurn = false;
+            usedClassAbilityThisTurn = false;
             if(plr.getTurnsToSkip() <= 0) {
                 plr.calculateActiveSpeed();
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. View Stats\n5. Inspect Enemy\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. Use Class Ability\n5. View Stats\n6. Inspect Enemy\nChoose your next move: ", 10);
 
                         try {
                             String in = scanner.next();
@@ -679,6 +701,14 @@ class Main {
                                             plr.calculateDodgeChance(boss);
                                             boss.calculateDodgeChance(plr);
                                             usedWeaponAbilityThisTurn = true;
+                                        } else {
+                                            choosing = true;
+                                        }
+                                    break;
+                                    case "Class Ability":
+                                        if(plr.useAbility(boss)) {
+                                            choosing = false;
+                                            usedClassAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -717,6 +747,9 @@ class Main {
                 if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
                 }
+                if(!usedClassAbilityThisTurn) {
+                    plr.reduceCooldown();
+                }
             
             if(boss.getHp() <= 0) {
                 Typer.clearConsole();
@@ -731,7 +764,6 @@ class Main {
                 scanner.next();
                 System.exit(0);
             }
-            plr.getWeapon().reduceCooldown();
         }
     }
 
