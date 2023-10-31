@@ -290,6 +290,10 @@ public class Player {
 
     public void calculateDodgeChance(Enemy enemy) {
         int result = 0;
+        if(this.getHideActive()) {
+            this.dodgeChance = 80;
+            return;
+        }
         if(enemy.getSpeed() >= this.activeSpeed) {
             result = 0;
         } else {

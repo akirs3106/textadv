@@ -449,6 +449,10 @@ class Main {
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
+                plr.calculateActiveSpeed();
+                plr.calculateDodgeChance(enemy);
+                enemy.calculateActiveSpeed();
+                enemy.calculateDodgeChance(plr);
                 enemy.attackPlayer(plr, plr.getDodgeChance());
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
@@ -552,6 +556,10 @@ class Main {
             //Player moves first if speed is greater than enemy's or equal
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
+                plr.calculateActiveSpeed();
+                plr.calculateDodgeChance(enemy);
+                enemy.calculateActiveSpeed();
+                enemy.calculateDodgeChance(plr);
                 usedWeaponAbilityThisTurn = false;
                 usedClassAbilityThisTurn = false;
                 if(plr.getTurnsToSkip() <= 0) {
@@ -670,6 +678,10 @@ class Main {
         String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "Class Ability", "View Stats", "Inspect Enemy"};
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
+            plr.calculateActiveSpeed();
+            plr.calculateDodgeChance(boss);
+            boss.calculateActiveSpeed();
+            boss.calculateDodgeChance(plr);
             usedWeaponAbilityThisTurn = false;
             usedClassAbilityThisTurn = false;
             if(plr.getTurnsToSkip() <= 0) {

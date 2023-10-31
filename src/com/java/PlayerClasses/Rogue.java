@@ -49,7 +49,7 @@ public class Rogue extends Player {
             switch(this.abilityName) {
                 case "Hide":
                     Typer.typeStrings(new String[] {
-                        String.format("Whilst %s is briefly distracted, you utilize the darkness of the room to hide yourself", enemy.getName()),
+                        String.format("Whilst %s is briefly distracted, you utilize the darkness of the room to hide yourself.", enemy.getName()),
                         String.format("%s begins to look around, wondering where you may have disappeared to.", enemy.getName())
                     }, 500);
                     this.hideActive = true;
