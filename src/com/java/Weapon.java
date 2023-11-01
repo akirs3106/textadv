@@ -69,7 +69,6 @@ public class Weapon {
     }
 
     protected String getAbilityDescription() {
-        System.out.println("Weapon.class ability description called.");
         return "This weapon has no special ability.";
     }
 

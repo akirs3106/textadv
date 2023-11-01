@@ -17,6 +17,8 @@ public class Enemy {
     protected boolean hit;
     protected boolean hitPlayer;
     protected int dodgeChance;
+    protected double defense;
+    protected double defenseReduction;
 
 
     public Enemy(String name, Weapon weapon, String race, int maxHealth, int baseSpeed, double xpValue, String type, Player plr) {
@@ -29,6 +31,8 @@ public class Enemy {
         this.xpValue = xpValue;
         this.type = type;
         this.hit = false;
+        this.defense = 1;
+        this.defenseReduction = 0;
         calculateDodgeChance(plr);
         calculateActiveSpeed();
     }
@@ -63,6 +67,31 @@ public class Enemy {
     public void setBaseSpeed(int x) {
         this.baseSpeed = x;
         calculateActiveSpeed();
+    }
+
+    public void reduceActiveSpeed(int x) {
+        this.activeSpeed -= x;
+    }
+
+    public void setDefense(double x) {
+        this.defense = x;
+    }
+
+    public void reduceDefense(double x) {
+        this.defenseReduction = x;
+        this.defense -= this.defenseReduction;
+        if(this.defense < 0.25) {
+            this.defense = 0.25;
+        }
+    }
+
+    public void resetDefenseReduction() {
+        this.defenseReduction = 0;
+        this.defense = 1;
+    }
+
+    public double getDefense() {
+        return this.defense;
     }
 
     public void calculateDodgeChance(Player plr) {
@@ -130,6 +159,7 @@ public class Enemy {
             if(plr.getHideActive()) {
                 plr.setHideActive(false, this);
                 Typer.typeStringln("You are no longer hidden!");
+                plr.calculateDodgeChance(this);
             }
             this.hitPlayer = true;
             plr.takeDamage(this.weapon.getDmg());
@@ -140,12 +170,14 @@ public class Enemy {
         if(plr.getKeenEyedActive()) {
             Typer.typeStringsNoSpace(new String[] {
                 String.format("Name: %s", this.name),
-                String.format("Health: %s/ %s", this.currentHealth, this.maxHealth),
+                String.format("Health: %s / %s", this.currentHealth, this.maxHealth),
+                String.format("Speed: %s", this.baseSpeed),
                 String.format("Race: %s", this.race),
                 String.format("\nWeapon: %s", this.weapon.getName()),
                 String.format("Damage: %s", this.weapon.getDmg()),
                 String.format("Speed Reduction: %s", this.weapon.getSpeedPenalty())
             }, 100);
+            return;
         }
         if(this.hit) {
             Typer.typeStringsNoSpace(new String[] {

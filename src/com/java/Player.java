@@ -24,6 +24,7 @@ public class Player {
     protected int dodgeChance;
     protected int turnsToSkip;
     protected int activeCooldown;
+    protected int abilityActiveLength;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
@@ -46,6 +47,7 @@ public class Player {
         this.maxhp = maxhp;
         this.healAmount = healAmount;
         this.playerClass = playerClass;
+        this.abilityActiveLength = -1;
         calculateActiveSpeed();
         this.currenthp = this.maxhp;
         this.baseHealAmount = this.healAmount;
@@ -136,7 +138,7 @@ public class Player {
         return this.riposte;
     }
 
-    private void resetWeaponDamage() {
+    protected void resetWeaponDamage() {
         this.damageMultiplier = 1;
         this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
     }
@@ -172,6 +174,22 @@ public class Player {
         this.activeCooldown -= 1;
     }
 
+    public int getAbilityActiveLength() {
+        return this.abilityActiveLength;
+    }
+
+    public void reduceAbilityActiveLength(Enemy enemy) {
+        if(this.abilityActiveLength <= -1) {
+            this.abilityActiveLength = -1;
+        } else if(this.abilityActiveLength == 0) {
+            resetAbilityEffects(enemy);
+            this.abilityActiveLength -= 1;
+        } else {
+            this.abilityActiveLength -= 1;
+        }
+        
+    }
+    /* CLASS OVERRIDE METHODS */
     // Rogue class override methods
     public boolean getKeenEyedActive() {return false;}
     public void setKeenEyedActive(boolean x) {}
@@ -190,10 +208,12 @@ public class Player {
 
     //All classes override methods
     public void setAbilityName(String x) {}
+    public void resetAbilityEffects(Enemy enemy) {}
     public boolean useAbility(Enemy enemy) {
         Typer.typeStringln("You do not have an ability!");
         return false;
     }
+    ///////////////////////////////////////////////////////////
 
     /**
      * Prints visual representation of the player's weapon's stats.

@@ -164,7 +164,7 @@ class Main {
                         String[] rogueAbilities = {"Keen Eyed", "Hide"};
                         String[] rogueAbilityDescriptions = {
                             "When used, discover all of your opponent's stats, including ones that would normally be hidden.",
-                            "Utilize your lightfootedness and agility to attempt to hide from the enemy, greatly increasing your chance to dodge.\nEffects wear off once you are hit or attempt to attack the opponent."
+                            "Utilize your light-footedness and agility to attempt to hide from the enemy, greatly increasing your chance to dodge.\nEffects wear off once you are hit or attempt to attack the opponent."
                         };
                         int[] rogueAbilityCooldowns = {0, 3};
                         while(choosingAbility) {

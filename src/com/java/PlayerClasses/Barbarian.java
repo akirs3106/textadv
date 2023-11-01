@@ -34,7 +34,16 @@ public class Barbarian extends Player {
         if(this.activeCooldown <= 0) {
             switch(this.abilityName) {
                 case "Battlecry":
-
+                    Typer.typeStrings(new String[] {
+                        "You let out a terrifying roar that continues to echo throughout the room.",
+                        String.format("You look at %s, who now seems more hesitant to approach you.", enemy.getName()),
+                        String.format("%s's defense has been lowered!"),
+                        String.format("%s's speed has been lowered!"),
+                        String.format("Your damage has increased!")
+                    }, 200);
+                    enemy.reduceDefense(0.25);
+                    enemy.reduceActiveSpeed((int)(enemy.getSpeed()*0.25));
+                    this.setDamageMultiplier(1.5);
                 break;
                 case "Savage Charge":
                     
@@ -45,6 +54,16 @@ public class Barbarian extends Player {
             String turn = activeCooldown == 1 ? "turn" : "turns";
             Typer.typeStringln(String.format("%s is on cooldown for %s more %s!", this.abilityName, this.activeCooldown, turn));
             return false;
+        }
+    }
+
+    @Override public void resetAbilityEffects(Enemy enemy) {
+        switch(this.abilityName) {
+            case "Battlecry": 
+                enemy.resetDefenseReduction();
+                enemy.calculateActiveSpeed();
+                this.resetWeaponDamage();
+            break;
         }
     }
 
