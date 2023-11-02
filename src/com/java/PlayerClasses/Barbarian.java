@@ -2,6 +2,7 @@ package src.com.java.PlayerClasses;
 
 import src.com.java.*;
 import src.com.java.Axes.*;
+import java.util.Random;
 
 public class Barbarian extends Player {
 
@@ -32,21 +33,31 @@ public class Barbarian extends Player {
 
     @Override public boolean useAbility(Enemy enemy) {
         if(this.activeCooldown <= 0) {
+            this.activeCooldown = this.abilityCooldown;
             switch(this.abilityName) {
                 case "Battlecry":
                     Typer.typeStrings(new String[] {
                         "You let out a terrifying roar that continues to echo throughout the room.",
                         String.format("You look at %s, who now seems more hesitant to approach you.", enemy.getName()),
-                        String.format("%s's defense has been lowered!"),
-                        String.format("%s's speed has been lowered!"),
+                        String.format("%s's defense has been lowered!", enemy.getName()),
+                        String.format("%s's speed has been lowered!", enemy.getName()),
                         String.format("Your damage has increased!")
                     }, 200);
                     enemy.reduceDefense(0.25);
                     enemy.reduceActiveSpeed((int)(enemy.getSpeed()*0.25));
                     this.setDamageMultiplier(1.5);
+                    this.abilityActiveLength = 2;
                 break;
                 case "Savage Charge":
-                    
+                    Typer.typeStringln(String.format("You rush forwards towards %s.", enemy.getName()));
+                    Random random = new Random();
+                    int successDecider = random.nextInt(100) + 1;
+                    if(successDecider <= 90) {
+                        Typer.typeStringln(String.format("You shoulder slams straight into %s, leaving them dazed.", enemy.getName()));
+                        enemy.setStunned(true);
+                    } else {
+                        Typer.typeStringln(String.format("%s manages to avoid your charge!", enemy.getName()));
+                    }
                 break;
             }
             return true;

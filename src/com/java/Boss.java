@@ -111,7 +111,20 @@ public class Boss extends Enemy {
         }
     }
 
-
+    @Override public boolean attemptUnstun() {
+        this.unstunAttempts += 1;
+        Random random = new Random();
+        int unstunDecider = random.nextInt(100) + 1;
+        if(unstunDecider <= (35*this.unstunAttempts)) {
+            this.stunned = false;
+            Typer.typeStringln(String.format("%s recovered from being stunned!", this.name));
+            this.unstunAttempts = 0;
+            return true;
+        } else {
+            Typer.typeStringln(String.format("%s is still stunned!", this.name));
+            return false;
+        }
+    }
 
     /**
      * Uses one of the boss's moves, guaranteed to hit the player.
@@ -122,6 +135,9 @@ public class Boss extends Enemy {
     public void useMove(Player plr, Move move) {
         Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
         this.genericMovesUsed += 1;
+        if(plr.getRetaliation()) {
+            plr.setHitInRetaliation(this);
+        }
         plr.takeDamage(move.getMoveDmg());
     }
 
@@ -144,6 +160,9 @@ public class Boss extends Enemy {
             return;
         } else {
             Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
+            if(plr.getRetaliation()) {
+                plr.setHitInRetaliation(this);
+            }
             plr.takeDamage(move.getMoveDmg());
         }
         this.genericMovesUsed += 1;

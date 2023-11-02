@@ -77,7 +77,7 @@ class Main {
                     };
                     int[] warriorAbilityCooldowns = {3, 4};
                     while(choosingAbility) {
-                        Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
+                        Typer.typeString("1. Retaliation\n2. Adrenaline Rush\n\nChoose an ability: ");
                         try {
                             String inputAbil = scanner.next();
                             Typer.clearConsole();
@@ -123,7 +123,7 @@ class Main {
                             };
                         int[] barbarianAbilityCooldowns = {4, 5};
                         while(choosingAbility) {
-                            Typer.typeString("1. Ability1\n2. Ability2\n\nChoose an ability: ");
+                            Typer.typeString("1. Battlecry\n2. Savage Charge\n\nChoose an ability: ");
                             try {
                                 String inputAbil = scanner.next();
                                 Typer.clearConsole();
@@ -453,7 +453,12 @@ class Main {
                 plr.calculateDodgeChance(enemy);
                 enemy.calculateActiveSpeed();
                 enemy.calculateDodgeChance(plr);
-                enemy.attackPlayer(plr, plr.getDodgeChance());
+                if(enemy.getStunned()) {
+                    enemy.attemptUnstun();
+                }
+                if(!enemy.getStunned()) {
+                    enemy.attackPlayer(plr, plr.getDodgeChance());
+                }
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -461,7 +466,7 @@ class Main {
                 }
                 usedWeaponAbilityThisTurn = false;
                 usedClassAbilityThisTurn = false;
-                if(plr.getTurnsToSkip() <= 0) {
+                if(plr.getTurnsToSkip() <= 0 && !plr.getHitInRetaliation()) {
                     plr.calculateActiveSpeed();
                     choosing = true;
                     while(choosing) {
@@ -523,6 +528,8 @@ class Main {
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
+                } else if (plr.getHitInRetaliation()) {
+                    plr.triggerRetaliation(enemy);
                 } else {
                     String turn = "";
                     if(plr.getTurnsToSkip() == 1) {
@@ -550,6 +557,7 @@ class Main {
                         }, 500);
                         plr.setUsedHeals(plr.getUsedHeals()-1);
                     }
+                    plr.resetRetaliation();
                     break;
                 }
             }
@@ -562,7 +570,7 @@ class Main {
                 enemy.calculateDodgeChance(plr);
                 usedWeaponAbilityThisTurn = false;
                 usedClassAbilityThisTurn = false;
-                if(plr.getTurnsToSkip() <= 0) {
+                if(plr.getTurnsToSkip() <= 0 && !plr.getHitInRetaliation()) {
                     choosing = true;
                     plr.calculateActiveSpeed();
                     while(choosing) {
@@ -624,6 +632,8 @@ class Main {
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
+                } else if(plr.getHitInRetaliation()) {
+                    plr.triggerRetaliation(enemy);
                 } else {
                     String turn = "";
                     if(plr.getTurnsToSkip() == 1) {
@@ -639,6 +649,7 @@ class Main {
                 }
                 if(!usedClassAbilityThisTurn) {
                     plr.reduceCooldown();
+                    plr.reduceAbilityActiveLength(enemy);
                 }
                 
 
@@ -653,9 +664,15 @@ class Main {
                         }, 500);
                         plr.setUsedHeals(plr.getUsedHeals()-1);
                     }
+                    plr.resetRetaliation();
                     break;
                 }
-                enemy.attackPlayer(plr, plr.getDodgeChance());
+                if(enemy.getStunned()) {
+                    enemy.attemptUnstun();
+                }
+                if(!enemy.getStunned()) {
+                    enemy.attackPlayer(plr, plr.getDodgeChance());
+                }
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
@@ -761,6 +778,7 @@ class Main {
                 }
                 if(!usedClassAbilityThisTurn) {
                     plr.reduceCooldown();
+                    plr.reduceAbilityActiveLength(boss);
                 }
             
             if(boss.getHp() <= 0) {
@@ -768,8 +786,12 @@ class Main {
                 finishGame(plr);
                 break;
             }
-
-            boss.chooseMove(plr, plr.getDodgeChance());
+            if(boss.getStunned()) {
+                boss.attemptUnstun();
+            }
+            if(!boss.getStunned()) {
+                boss.chooseMove(plr, plr.getDodgeChance());
+            }
             
             if(plr.getHp() <= 0) {
                 Typer.typeStringln("You died to " + boss.getName() + ".");

@@ -10,6 +10,8 @@ public class Warrior extends Player {
     String abilityDescription;
     boolean adrenalineRushActive;
     boolean retaliationActive;
+    int retaliationDamage;
+    boolean hitInRetaliation;
 
     public Warrior(String abilityName, int abilityCooldown, String abilityDescription) {
         super("Warrior", new Sword("Rusty Sword", 10, "rusty sword", 20, 0), 100, 100, 30, 0);
@@ -18,6 +20,8 @@ public class Warrior extends Player {
         this.abilityDescription = abilityDescription;
         this.adrenalineRushActive = false;
         this.retaliationActive = false;
+        this.retaliationDamage = this.equippedWeapon.getDmg();
+        this.hitInRetaliation = false;
     }
 
     @Override public void setAbilityName(String x) {
@@ -40,11 +44,39 @@ public class Warrior extends Player {
         this.retaliationActive = x;
     }
 
+    @Override public void setRetaliationDamage(int x) {
+        this.retaliationDamage = this.equippedWeapon.getDmg() + x;
+    }
+
+    @Override public void setHitInRetaliation(Enemy enemy) {
+        this.hitInRetaliation = true;
+        this.setRetaliationDamage(enemy.getWeapon().getDmg());
+    }
+
+    @Override public boolean getHitInRetaliation() {
+        return this.hitInRetaliation;
+    }
+
+    @Override public void triggerRetaliation (Enemy enemy) {
+        Typer.typeStringln(String.format("Using the power from %s's attack in addition to your own weapon's power, you return a counterattack!", enemy.getName()));
+        
+        this.attackEnemyNoDodge(enemy, this, this.retaliationDamage);
+        this.resetRetaliation();
+    }
+
+    @Override public void resetRetaliation() {
+        this.hitInRetaliation = false;
+        this.retaliationActive = false;
+        this.setRetaliationDamage(0);
+    }
+
     @Override public boolean useAbility(Enemy enemy) {
         if(this.activeCooldown <= 0) {
+            this.activeCooldown = this.abilityCooldown;
             switch(this.abilityName) {
                 case "Retaliation":
-
+                    Typer.typeStringln("You prepare yourself for your enemy's next attack.");
+                    this.retaliationActive = true;
                 break;
                 case "Adrenaline Rush":
 

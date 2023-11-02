@@ -56,6 +56,11 @@ public class Weapon {
         Typer.typeStringln("This weapon has no special ability.");
         return false;
     }
+    
+    //Longsword Override Method(s)
+    public boolean getRiposte() {return false;}
+    public boolean riposte() {return false;}
+
 
     public void reduceCooldown() {
         this.currentAbilityCooldown -= 1;

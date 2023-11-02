@@ -20,7 +20,6 @@ public class Player {
     protected boolean defensiveStance;
     protected int critChanceCap;
     protected double damageMultiplier;
-    protected boolean riposte;
     protected int dodgeChance;
     protected int turnsToSkip;
     protected int activeCooldown;
@@ -39,7 +38,6 @@ public class Player {
         this.damageReduction = 0;
         this.critChanceCap = 10;
         this.damageMultiplier = 1;
-        this.riposte = false;
         this.dodgeChance = 0;
         this.turnsToSkip = 0;
         this.equippedWeapon = equippedWeapon;
@@ -127,15 +125,8 @@ public class Player {
 
     public void setDamageMultiplier(double x) {
         this.damageMultiplier = x;
+        this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
         this.equippedWeapon.setDamage((int)(this.equippedWeapon.getDmg()*x));
-    }
-
-    public void setRiposte(boolean x) {
-        this.riposte = x;
-    }
-
-    public boolean getRiposte() {
-        return this.riposte;
     }
 
     protected void resetWeaponDamage() {
@@ -189,6 +180,11 @@ public class Player {
         }
         
     }
+
+    public void resetAbilityActiveLength(Enemy enemy) {
+        this.abilityActiveLength = -1;
+        resetAbilityEffects(enemy);
+    }
     /* CLASS OVERRIDE METHODS */
     // Rogue class override methods
     public boolean getKeenEyedActive() {return false;}
@@ -205,6 +201,11 @@ public class Player {
     public void setAdrenalineRushActive(boolean x) {}
     public boolean getRetaliation() {return false;}
     public void setRetaliation(boolean x) {}
+    public void setRetaliationDamage(int x) {}
+    public void triggerRetaliation (Enemy enemy) {}
+    public void setHitInRetaliation (Enemy enemy) {}
+    public boolean getHitInRetaliation() {return false;}
+    public void resetRetaliation() {}
 
     //All classes override methods
     public void setAbilityName(String x) {}
@@ -453,6 +454,23 @@ public class Player {
             resetWeaponDamage();
             return true;
         }
+    }
+
+    public boolean attackEnemyNoDodge(Enemy enemy, Player plr, int dmg) {
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+        Random random = new Random();
+        int critChance = random.nextInt(this.critChanceCap) + 1;
+        boolean crit = false;
+        if(critChance == 1) {
+            crit = true;
+            Typer.typeStringln("CRITICAL HIT!\n");
+        }
+        enemy.takeRawDamage(dmg, plr, crit);
+        resetWeaponDamage();
+        return true;
     }
 
     public boolean heal() {

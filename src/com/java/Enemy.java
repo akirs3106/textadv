@@ -19,6 +19,8 @@ public class Enemy {
     protected int dodgeChance;
     protected double defense;
     protected double defenseReduction;
+    protected boolean stunned;
+    protected int unstunAttempts;
 
 
     public Enemy(String name, Weapon weapon, String race, int maxHealth, int baseSpeed, double xpValue, String type, Player plr) {
@@ -35,6 +37,7 @@ public class Enemy {
         this.defenseReduction = 0;
         calculateDodgeChance(plr);
         calculateActiveSpeed();
+        this.stunned = false;
     }
 
     public Weapon getWeapon() {
@@ -94,6 +97,30 @@ public class Enemy {
         return this.defense;
     }
 
+    public void setStunned(boolean x) {
+        this.stunned = x;
+    }
+
+    public boolean getStunned() {
+        return this.stunned;
+    }
+
+    public boolean attemptUnstun() {
+        this.unstunAttempts += 1;
+        Random random = new Random();
+        int unstunDecider = random.nextInt(100) + 1;
+        if(unstunDecider <= (25*unstunAttempts)) {
+            this.stunned = false;
+            Typer.typeStringln(String.format("%s recovered from being stunned!", this.name));
+            this.unstunAttempts = 0;
+            return true;
+        } else {
+            Typer.typeStringln(String.format("%s is still stunned!", this.name));
+            return false;
+        }
+
+    }
+
     public void calculateDodgeChance(Player plr) {
         if (plr.getSpeed() >= this.activeSpeed) {
             this.dodgeChance = 0;
@@ -121,6 +148,16 @@ public class Enemy {
     public void attackPlayer(Player plr) {
         Typer.typeStringln(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
 
+        if(plr.getRetaliation()) {
+            plr.setHitInRetaliation(this);
+        }
+
+        if(plr.getWeapon().getRiposte()) {
+            if(plr.getWeapon().getRiposte()){
+                return;
+            }
+        }
+        
         plr.takeDamage(this.weapon.getDmg());
         this.hitPlayer = true;
     }
@@ -134,23 +171,14 @@ public class Enemy {
 
         Typer.typeStringln(String.format("%s attacks you with its %s!\n", this.name, this.weapon.getName()));
 
-        if(plr.getRiposte()) {
-            plr.setRiposte(false);
-            Random random = new Random();
-            int riposteDecider = random.nextInt(100) + 1;
-            if(riposteDecider <= 75) {
-                Typer.typeStringln(String.format("%s's %s is deflected by your %s!", this.name, this.weapon.getName(), plr.getWeapon().getName()));
-                Typer.wait(200);
-                plr.setDamageMultiplier(2.0);
-                plr.attackEnemy(this, plr, this.dodgeChance);
-                return;
-            } else {
-                Typer.typeStringln(String.format("%s's %s avoided your %s!", this.name, this.getWeapon().getName(), plr.getWeapon().getName()));
-            }
-        }
         Random random = new Random();
         int dodgeDecider = random.nextInt(100) + 1;
         Main.wait(500);
+        if(plr.getWeapon().getRiposte()) {
+            if(plr.getWeapon().riposte()) {
+                return;
+            }
+        }
         if(dodgeDecider <= dodgeChance) {
             Typer.typeStringln(String.format("You jumped out of the way of %s's attack!\n", this.name));
             return;
@@ -162,6 +190,9 @@ public class Enemy {
                 plr.calculateDodgeChance(this);
             }
             this.hitPlayer = true;
+            if(plr.getRetaliation()) {
+                plr.setHitInRetaliation(this);
+            }
             plr.takeDamage(this.weapon.getDmg());
         }
     }
@@ -236,6 +267,7 @@ public class Enemy {
             plr.setAdrenalineRushActive(false);
             plr.setRetaliation(false);
             plr.setTurnsToSkip(0);
+            plr.resetAbilityActiveLength(this);
             plr.gainXp(this.xpValue);
         }
         
@@ -250,6 +282,13 @@ public class Enemy {
             Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
         } else {
             Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.setKeenEyedActive(false);
+            plr.setHideActive(false, this);
+            plr.setBattlecry(false);
+            plr.setAdrenalineRushActive(false);
+            plr.setRetaliation(false);
+            plr.setTurnsToSkip(0);
+            plr.resetAbilityActiveLength(this);
             plr.gainXp(this.xpValue);
         }
     }
@@ -267,6 +306,13 @@ public class Enemy {
             Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
         } else {
             Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.setKeenEyedActive(false);
+            plr.setHideActive(false, this);
+            plr.setBattlecry(false);
+            plr.setAdrenalineRushActive(false);
+            plr.setRetaliation(false);
+            plr.setTurnsToSkip(0);
+            plr.resetAbilityActiveLength(this);
             plr.gainXp(this.xpValue);
         }
     }
