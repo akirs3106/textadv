@@ -11,7 +11,7 @@ import src.com.java.PlayerClasses.*;
 import java.util.ArrayList;
 import java.lang.Thread;
 
-class Main {
+public class Main {
 
     public static final String[][] swordNames  = {
         {"Rusty Longsword", "Bronze Longsword", "Steel Longsword"},
@@ -42,6 +42,7 @@ class Main {
 
     public static Boss boss;
     public static int enemyDiffLevel = 0;
+    public static boolean devMode = false;
     
     public static void main(String args[]) {
 
@@ -59,6 +60,16 @@ class Main {
         
             int input = scanner.nextInt()-1;
             Typer.clearConsole(); //Clears the console.
+
+            if(input == 1336) {
+                devMode = !devMode;
+                if(devMode) {
+                    Typer.typeStringln("Dev mode activated.");
+                } else {
+                    Typer.typeStringln("Dev mode deactivated.");
+                }
+                wait(1000);
+            }
 
             if(input >= 0 && input < plrClasses.length) {
 
@@ -254,7 +265,7 @@ class Main {
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue, plr);
+                    boss = new Boss("The Necromancer", bossWeapon, "Skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue, plr);
                 break;
                 default:
                     dungeonName = null;
@@ -333,6 +344,9 @@ class Main {
                 } while(choosing);
 
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
+                if(devMode) {
+                    startEncounter(createRandomSkeleton(enemyDiffLevel, plr), plr);
+                }
                 Typer.typeStrings(new String[] {"You are now entering the " + dungeonName + ".", startRoomDesc});
                 choosing = false;
                 boolean gameActive = true;
@@ -420,6 +434,9 @@ class Main {
                             }
                         
                         } catch (Exception e) {
+                            if(devMode) {
+                                System.out.println(e);
+                            }
                             Typer.typeStringln("Please enter the number next to your desired choice.");
                         }
                     }
@@ -454,7 +471,7 @@ class Main {
                 enemy.calculateActiveSpeed();
                 enemy.calculateDodgeChance(plr);
                 if(enemy.getStunned()) {
-                    enemy.attemptUnstun();
+                    enemy.attemptUnstun(plr);
                 }
                 if(!enemy.getStunned()) {
                     enemy.attackPlayer(plr, plr.getDodgeChance());
@@ -525,6 +542,9 @@ class Main {
                             }
                         } catch (Exception e) {
                             Typer.clearConsole();
+                            if(devMode) {
+                                System.out.println(e);
+                            }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
@@ -629,6 +649,9 @@ class Main {
                             }
                         } catch (Exception e) {
                             Typer.clearConsole();
+                            if(devMode) {
+                                System.out.println(e);
+                            }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
@@ -668,7 +691,7 @@ class Main {
                     break;
                 }
                 if(enemy.getStunned()) {
-                    enemy.attemptUnstun();
+                    enemy.attemptUnstun(plr);
                 }
                 if(!enemy.getStunned()) {
                     enemy.attackPlayer(plr, plr.getDodgeChance());
@@ -787,7 +810,7 @@ class Main {
                 break;
             }
             if(boss.getStunned()) {
-                boss.attemptUnstun();
+                boss.attemptUnstun(plr);
             }
             if(!boss.getStunned()) {
                 boss.chooseMove(plr, plr.getDodgeChance());

@@ -22,6 +22,13 @@ public class Longsword extends Sword {
     
 
 
+    @Override public void setRiposte(boolean x, Player plr) {
+        this.riposte = x;
+        if(!riposte) {
+            plr.setDamageMultiplier(1);
+        }
+    }
+
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
@@ -38,7 +45,7 @@ public class Longsword extends Sword {
         }
     }
 
-    public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {
+    @Override public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {
         Random random = new Random();
         int riposteDecider = random.nextInt(100) + 1;
         if(riposteDecider <= 75) {
@@ -48,6 +55,7 @@ public class Longsword extends Sword {
             plr.attackEnemy(enemy, plr, enemyDodgeChance);
             plr.setDamageMultiplier(1);
             this.riposte = false;
+            plr.setRetaliation(false);
             return true;
         } else {
             return false;

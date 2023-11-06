@@ -1,5 +1,6 @@
 package src.com.java.Swords;
 
+import src.com.java.Main;
 import src.com.java.Enemy;
 import src.com.java.Player;
 import src.com.java.Typer;
@@ -18,7 +19,11 @@ public class Rapier extends Sword {
     }
     
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
+        if(Main.devMode) {
+            System.out.println("Entered rapier ability");
+        }
         if(this.currentAbilityCooldown <= 0) {
+            if(Main.devMode) {System.out.println("Passed ablility cooldown!");}
             this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStrings(new String[] {
                 this.abilityAttackDialogue,
@@ -31,6 +36,7 @@ public class Rapier extends Sword {
             enemy.takeRawDamage((int)(plr.getWeapon().getDmg()*1.2), plr);
             return true;
         } else {
+            if(Main.devMode) {System.out.println("Cooldown activated");}
             if(this.abilityCooldown == 1) {
                 Typer.typeStringln(String.format("%s is on cooldown for 1 turn!", this.abilityName));
             } else {

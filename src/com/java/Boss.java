@@ -111,7 +111,7 @@ public class Boss extends Enemy {
         }
     }
 
-    @Override public boolean attemptUnstun() {
+    @Override public boolean attemptUnstun(Player plr) {
         this.unstunAttempts += 1;
         Random random = new Random();
         int unstunDecider = random.nextInt(100) + 1;
@@ -122,6 +122,14 @@ public class Boss extends Enemy {
             return true;
         } else {
             Typer.typeStringln(String.format("%s is still stunned!", this.name));
+            if(plr.getRetaliation()) {
+                Typer.typeStringln(String.format("Your retaliation failed because %s is still stunned!", this.name));
+                plr.setRetaliation(false);
+            }
+            if(plr.getWeapon().getRiposte()) {
+                Typer.typeStringln(String.format("Your riposte failed because %s is still stunned!", this.name));
+                plr.getWeapon().setRiposte(false, plr);
+            }
             return false;
         }
     }
@@ -134,11 +142,18 @@ public class Boss extends Enemy {
      */
     public void useMove(Player plr, Move move) {
         Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
-        this.genericMovesUsed += 1;
+        if(plr.getWeapon().getRiposte()) {
+            if(plr.getWeapon().riposte(plr, this, this.dodgeChance)) {
+                return;
+            }
+        }
         if(plr.getRetaliation()) {
             plr.setHitInRetaliation(this);
         }
         plr.takeDamage(move.getMoveDmg());
+        if(plr.getHitInRetaliation()) {
+            plr.triggerRetaliation(this);
+        }
     }
 
     /**
@@ -150,22 +165,29 @@ public class Boss extends Enemy {
      */
     public void useMove(Player plr, Move move, int playerDodgeChance) {
 
-        Typer.typeStringln("%s prepares to attack!");
-
+        Typer.typeStringln(String.format("%s prepares to attack!", this.name));
+        this.genericMovesUsed += 1;
         Random random = new Random();
         int dodgeDecider = random.nextInt(100) + 1;
         Main.wait(500);
         if(dodgeDecider <= playerDodgeChance) {
-            Typer.typeStringln("You dodged %s's attack!");
+            Typer.typeStringln(String.format("You dodged %s's attack!", this.name));
             return;
         } else {
             Typer.typeStringln(String.format("\n%s %s", this.name, move.getMoveDialogue()));
+            if(plr.getWeapon().getRiposte()) {
+                if(plr.getWeapon().riposte(plr, this, this.dodgeChance)) {
+                    return;
+                }
+            }
             if(plr.getRetaliation()) {
                 plr.setHitInRetaliation(this);
             }
             plr.takeDamage(move.getMoveDmg());
+            if(plr.getHitInRetaliation()) {
+                plr.triggerRetaliation(this);
+            }
         }
-        this.genericMovesUsed += 1;
     }
 
     public void usePowerMove(Player plr) {

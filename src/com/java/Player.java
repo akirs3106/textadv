@@ -466,7 +466,6 @@ public class Player {
         boolean crit = false;
         if(critChance == 1) {
             crit = true;
-            Typer.typeStringln("CRITICAL HIT!\n");
         }
         enemy.takeRawDamage(dmg, plr, crit);
         resetWeaponDamage();
@@ -480,10 +479,11 @@ public class Player {
                 this.currenthp = this.maxhp;
             }
             usedHeals++;
+            String heal = (availableHeals - usedHeals == 1) ? "heal" : "heals";
             Typer.typeStrings(new String[] {
                 "\nYou healed for " + this.healAmount + "HP!",
                 "Remaining HP: " + this.currenthp + " / " + this.maxhp,
-                "You have " + (availableHeals - usedHeals) + " heals remaining!\n"
+                "You have " + (availableHeals - usedHeals) + " " + heal + " remaining!\n"
             }, 500);
             return true;
         } else {

@@ -14,7 +14,8 @@ public class Warrior extends Player {
     boolean hitInRetaliation;
 
     public Warrior(String abilityName, int abilityCooldown, String abilityDescription) {
-        super("Warrior", new Sword("Rusty Sword", 10, "rusty sword", 20, 0), 100, 100, 30, 0);
+        // super("Warrior", new Sword("Rusty Sword", 10, "rusty sword", 20, 0), 100, 100, 30, 0);
+        super("Warrior", new Rapier("funny rapier", 20, 0), 100, 100, 30, 0);
         this.abilityName = abilityName;
         this.abilityCooldown = abilityCooldown;
         this.abilityDescription = abilityDescription;

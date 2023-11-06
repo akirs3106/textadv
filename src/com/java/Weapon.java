@@ -59,7 +59,8 @@ public class Weapon {
     
     //Longsword Override Method(s)
     public boolean getRiposte() {return false;}
-    public boolean riposte() {return false;}
+    public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {return false;}
+    public void setRiposte(boolean x, Player plr) {}
 
 
     public void reduceCooldown() {

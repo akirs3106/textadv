@@ -105,7 +105,7 @@ public class Enemy {
         return this.stunned;
     }
 
-    public boolean attemptUnstun() {
+    public boolean attemptUnstun(Player plr) {
         this.unstunAttempts += 1;
         Random random = new Random();
         int unstunDecider = random.nextInt(100) + 1;
@@ -141,26 +141,22 @@ public class Enemy {
         }
     }
 
-    /**
-     * Enemy damages the player.
-     * @param plr
-     */
-    public void attackPlayer(Player plr) {
-        Typer.typeStringln(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
+    // public void attackPlayer(Player plr) {
+    //     Typer.typeStringln(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
 
-        if(plr.getRetaliation()) {
-            plr.setHitInRetaliation(this);
-        }
+    //     if(plr.getRetaliation()) {
+    //         plr.setHitInRetaliation(this);
+    //     }
 
-        if(plr.getWeapon().getRiposte()) {
-            if(plr.getWeapon().getRiposte()){
-                return;
-            }
-        }
+    //     if(plr.getWeapon().getRiposte()) {
+    //         if(plr.getWeapon().getRiposte()){
+    //             return;
+    //         }
+    //     }
         
-        plr.takeDamage(this.weapon.getDmg());
-        this.hitPlayer = true;
-    }
+    //     plr.takeDamage(this.weapon.getDmg());
+    //     this.hitPlayer = true;
+    // }
 
     /**
      * Enemy attempts to damage the player, taking into account the player's dodge chance.
@@ -175,12 +171,16 @@ public class Enemy {
         int dodgeDecider = random.nextInt(100) + 1;
         Main.wait(500);
         if(plr.getWeapon().getRiposte()) {
-            if(plr.getWeapon().riposte()) {
+            if(plr.getWeapon().riposte(plr, this, this.dodgeChance)) {
                 return;
             }
         }
         if(dodgeDecider <= dodgeChance) {
             Typer.typeStringln(String.format("You jumped out of the way of %s's attack!\n", this.name));
+            if(plr.getRetaliation()) {
+                Typer.typeStringln(String.format("Your retaliation failed because %s missed its attack!", this.name));
+                plr.setRetaliation(false);
+            }
             return;
         } else {
             Typer.typeStringln(String.format("You were hit by %s's %s!\n", this.name, this.weapon.getName()));
