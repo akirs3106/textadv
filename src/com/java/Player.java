@@ -230,9 +230,26 @@ public class Player {
      * Prints visual representation of the player's stats.
      */
     public void viewStats(){
-        String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \nRemaining Heals: %s \nHeal Amount: %s \nRoom: %s\n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed, (this.availableHeals - this.usedHeals), this.healAmount, Room.roomNumber);
+        // String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \nRemaining Heals: %s \nHeal Amount: %s \nRoom: %s\n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed, (this.availableHeals - this.usedHeals), this.healAmount, Room.roomNumber);
 
-        Typer.typeString(str);
+        // Typer.typeString(str);
+
+        // String speedSymbol = (this.baseSpeed - this.activeSpeed) < 0 ? "" : "+";
+        String speedSymbol = "";
+        if(this.activeSpeed - this.baseSpeed > 0) {
+            speedSymbol = "+";
+        }
+
+        Typer.typeStringsNoSpace(new String[] {
+            String.format("\nClass: %s", this.playerClass),
+            String.format("Health: %s / %s", this.currenthp, this.maxhp),
+            String.format("XP: %s / %s", this.xp, this.xpRequiredForLevel),
+            String.format("Level: %s", this.level),
+            String.format("Speed: %s (%s%s)", this.baseSpeed, speedSymbol, (this.activeSpeed - this.baseSpeed)),
+            String.format("Remaining Heals: %s / %s", (this.availableHeals - this.usedHeals), this.availableHeals),
+            String.format("Heal Amount: %s", this.healAmount),
+            String.format("Room: %s", Room.roomNumber)
+        },100);
     }
 
     

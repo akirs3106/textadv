@@ -71,6 +71,17 @@ public class Warrior extends Player {
         this.setRetaliationDamage(0);
     }
 
+    @Override public void resetAbilityEffects(Enemy enemy) {
+        switch(this.abilityName) {
+            case "Adrenaline Rush":
+                this.calculateActiveSpeed();
+                this.calculateDodgeChance(enemy);
+                enemy.calculateDodgeChance(this);
+                this.adrenalineRushActive = false;
+            break;
+        }
+    }
+
     @Override public boolean useAbility(Enemy enemy) {
         if(this.activeCooldown <= 0) {
             this.activeCooldown = this.abilityCooldown;
@@ -80,7 +91,16 @@ public class Warrior extends Player {
                     this.retaliationActive = true;
                 break;
                 case "Adrenaline Rush":
-
+                    Typer.typeStrings(new String[] {
+                        "You can begin to feel your heart pumping faster and faster.",
+                        "A surge of energy flows throughout your body",
+                        "Your speed has increased!"
+                    }, 200);
+                    this.activeSpeed *= 2;
+                    this.calculateDodgeChance(enemy);
+                    enemy.calculateDodgeChance(this);
+                    this.abilityActiveLength = 3;
+                    this.adrenalineRushActive = true;
                 break;
             }
             return true;

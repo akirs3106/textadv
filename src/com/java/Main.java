@@ -388,6 +388,10 @@ public class Main {
                             int numChoice = 999;
                             try {
                                 numChoice = Integer.parseInt(scanner.next())-1;
+                                if(devMode) {
+                                    System.out.println(numChoice);
+                                    wait(2000);
+                                }
                                 Typer.clearConsole();
                             } catch (NumberFormatException e) {
                                 numChoice = 999;
@@ -435,7 +439,8 @@ public class Main {
                         
                         } catch (Exception e) {
                             if(devMode) {
-                                System.out.println(e);
+                                e.printStackTrace();
+                                System.out.println(e.getMessage());
                             }
                             Typer.typeStringln("Please enter the number next to your desired choice.");
                         }
@@ -543,7 +548,7 @@ public class Main {
                         } catch (Exception e) {
                             Typer.clearConsole();
                             if(devMode) {
-                                System.out.println(e);
+                                System.out.println(e.getMessage());
                             }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
@@ -650,7 +655,7 @@ public class Main {
                         } catch (Exception e) {
                             Typer.clearConsole();
                             if(devMode) {
-                                System.out.println(e);
+                                System.out.println(e.getMessage());
                             }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
