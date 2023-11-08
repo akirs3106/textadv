@@ -53,10 +53,15 @@ public class Weapon {
      * @return boolean
      */
     public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        System.out.println("Weapon.class useAbility called.");
         Typer.typeStringln("This weapon has no special ability.");
         return false;
     }
+    
+    //Longsword Override Method(s)
+    public boolean getRiposte() {return false;}
+    public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {return false;}
+    public void setRiposte(boolean x, Player plr) {}
+
 
     public void reduceCooldown() {
         this.currentAbilityCooldown -= 1;
@@ -65,12 +70,19 @@ public class Weapon {
         }
     }
 
-    public int getCooldown() {
+    public int getCurrentCooldown() {
         return this.currentAbilityCooldown;
     }
 
+    public void setCurrentCooldown(int x) {
+        this.currentAbilityCooldown = x;
+    }
+
+    public int getAbilityCooldown() {
+        return this.abilityCooldown;
+    }
+
     protected String getAbilityDescription() {
-        System.out.println("Weapon.class ability description called.");
         return "This weapon has no special ability.";
     }
 

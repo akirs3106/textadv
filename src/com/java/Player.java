@@ -2,20 +2,16 @@ package src.com.java;
 
 import java.util.Random;
 
-import src.com.java.Axes.*;
-import src.com.java.Daggers.*;
-import src.com.java.Swords.*;
-
 public class Player {
-    private int maxhp;
-    private int currenthp;
-    private double xp;
-    private int level;
-    private int baseSpeed;
-    private int xpRequiredForLevel;
+    protected int maxhp;
+    protected int currenthp;
+    protected double xp;
+    protected int level;
+    protected int baseSpeed;
+    protected int xpRequiredForLevel;
     protected int activeSpeed;
-    private Weapon equippedWeapon;
-    private String playerClass;
+    protected Weapon equippedWeapon;
+    protected String playerClass;
     protected int availableHeals;
     protected int usedHeals;
     protected int healAmount;
@@ -24,14 +20,15 @@ public class Player {
     protected boolean defensiveStance;
     protected int critChanceCap;
     protected double damageMultiplier;
-    protected boolean riposte;
     protected int dodgeChance;
     protected int turnsToSkip;
+    protected int activeCooldown;
+    protected int abilityActiveLength;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
      */
-    public Player(String playerClass) {
+    public Player(String playerClass, Weapon equippedWeapon, int baseSpeed, int maxhp, int healAmount, int classAbilityCooldown) {
         this.xp = 0;
         this.level = 0;
         this.playerClass = playerClass;
@@ -41,29 +38,17 @@ public class Player {
         this.damageReduction = 0;
         this.critChanceCap = 10;
         this.damageMultiplier = 1;
-        this.riposte = false;
         this.dodgeChance = 0;
         this.turnsToSkip = 0;
-
-        if(playerClass.toLowerCase().equals("warrior")){
-            this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20, 0);
-            this.baseSpeed = 100;
-            this.maxhp = 100;
-            this.healAmount = 30;
-        } else if (playerClass.toLowerCase().equals("barbarian")) {
-            this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 30, 0);
-            this.baseSpeed = 75;
-            this.maxhp = 125;
-            this.healAmount = 20;
-        } else if (playerClass.toLowerCase().equals("rogue")) {
-            this.equippedWeapon = new Dagger("Rusty Dagger", 8, "rusty dagger", 0, 0);
-            this.baseSpeed = 125;
-            this.maxhp = 75;
-            this.healAmount = 40;
-        }
-            calculateActiveSpeed();
-            this.currenthp = this.maxhp;
-            this.baseHealAmount = this.healAmount;
+        this.equippedWeapon = equippedWeapon;
+        this.baseSpeed = baseSpeed;
+        this.maxhp = maxhp;
+        this.healAmount = healAmount;
+        this.playerClass = playerClass;
+        this.abilityActiveLength = -1;
+        calculateActiveSpeed();
+        this.currenthp = this.maxhp;
+        this.baseHealAmount = this.healAmount;
     }
 
 
@@ -140,18 +125,11 @@ public class Player {
 
     public void setDamageMultiplier(double x) {
         this.damageMultiplier = x;
+        this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
         this.equippedWeapon.setDamage((int)(this.equippedWeapon.getDmg()*x));
     }
 
-    public void setRiposte(boolean x) {
-        this.riposte = x;
-    }
-
-    public boolean getRiposte() {
-        return this.riposte;
-    }
-
-    private void resetWeaponDamage() {
+    protected void resetWeaponDamage() {
         this.damageMultiplier = 1;
         this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
     }
@@ -172,6 +150,82 @@ public class Player {
         this.activeSpeed = x;
     }
 
+    public void setDodgeChance(int x) {
+        this.dodgeChance = x;
+        if(this.dodgeChance > 80) {
+            this.dodgeChance = 80;
+        }
+    }
+
+    public int getActiveCooldown() {
+        return this.activeCooldown;
+    }
+
+    public void reduceCooldown() {
+        this.activeCooldown -= 1;
+    }
+
+    public int getAbilityActiveLength() {
+        return this.abilityActiveLength;
+    }
+
+    public void reduceAbilityActiveLength(Enemy enemy) {
+        if(this.abilityActiveLength <= -1) {
+            this.abilityActiveLength = -1;
+        } else if(this.abilityActiveLength == 0) {
+            resetAbilityEffects(enemy);
+            this.abilityActiveLength -= 1;
+        } else {
+            this.abilityActiveLength -= 1;
+        }
+        
+    }
+
+    public void resetAbilityActiveLength(Enemy enemy) {
+        this.abilityActiveLength = -1;
+        resetAbilityEffects(enemy);
+    }
+    /* CLASS OVERRIDE METHODS */
+    // Rogue class override methods
+    public boolean getKeenEyedActive() {return false;}
+    public void setKeenEyedActive(boolean x) {}
+    public boolean getHideActive() {return false;}
+    public void setHideActive(boolean x, Enemy enemy) {}
+
+    //Barbarian class override methods
+    public void setBattlecry(boolean x) {}
+    public boolean getBattlecry() {return false;}
+
+    //Warrior class override methods
+    public boolean getAdrenalineRushActive() {return false;}
+    public void setAdrenalineRushActive(boolean x) {}
+    public boolean getRetaliation() {return false;}
+    public void setRetaliation(boolean x) {}
+    public void setRetaliationDamage(int x) {}
+    public void triggerRetaliation (Enemy enemy) {}
+    public void setHitInRetaliation (Enemy enemy) {}
+    public boolean getHitInRetaliation() {return false;}
+    public void resetRetaliation() {}
+
+    //All classes override methods
+    public void setAbilityName(String x) {}
+    public void resetAbilityEffects(Enemy enemy) {}
+    public void setAbilityActiveCooldown(int x) {};
+    public int getAbilityCooldown() {return 0;};
+    public boolean useAbility(Enemy enemy) {
+        Typer.typeStringln("You do not have an ability!");
+        return false;
+    }
+    ///////////////////////////////////////////////////////////
+
+    public int getAbilityActiveCooldown() {
+        return this.activeCooldown;
+    }
+
+    public void setActiveCooldown(int x) {
+        this.activeCooldown = x;
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */
@@ -186,9 +240,26 @@ public class Player {
      * Prints visual representation of the player's stats.
      */
     public void viewStats(){
-        String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \nRemaining Heals: %s \nHeal Amount: %s \nRoom: %s\n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed, (this.availableHeals - this.usedHeals), this.healAmount, Room.roomNumber);
+        // String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \nRemaining Heals: %s \nHeal Amount: %s \nRoom: %s\n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed, (this.availableHeals - this.usedHeals), this.healAmount, Room.roomNumber);
 
-        Typer.typeString(str);
+        // Typer.typeString(str);
+
+        // String speedSymbol = (this.baseSpeed - this.activeSpeed) < 0 ? "" : "+";
+        String speedSymbol = "";
+        if(this.activeSpeed - this.baseSpeed > 0) {
+            speedSymbol = "+";
+        }
+
+        Typer.typeStringsNoSpace(new String[] {
+            String.format("\nClass: %s", this.playerClass),
+            String.format("Health: %s / %s", this.currenthp, this.maxhp),
+            String.format("XP: %s / %s", this.xp, this.xpRequiredForLevel),
+            String.format("Level: %s", this.level),
+            String.format("Speed: %s (%s%s)", this.baseSpeed, speedSymbol, (this.activeSpeed - this.baseSpeed)),
+            String.format("Remaining Heals: %s / %s", (this.availableHeals - this.usedHeals), this.availableHeals),
+            String.format("Heal Amount: %s", this.healAmount),
+            String.format("Room: %s", Room.roomNumber)
+        },100);
     }
 
     
@@ -267,6 +338,10 @@ public class Player {
 
     public void calculateDodgeChance(Enemy enemy) {
         int result = 0;
+        if(this.getHideActive()) {
+            this.dodgeChance = 80;
+            return;
+        }
         if(enemy.getSpeed() >= this.activeSpeed) {
             result = 0;
         } else {
@@ -287,6 +362,10 @@ public class Player {
      */
     public void attackEnemy(Enemy enemy, Player plr) {
 
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
         Random random = new Random();
         int critChance = random.nextInt(this.critChanceCap) + 1;
         boolean crit = false;
@@ -302,6 +381,10 @@ public class Player {
 
     public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance) {
         
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
 
         Random random = new Random();
 
@@ -326,7 +409,11 @@ public class Player {
 
     public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
         
-
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+        
         Random random = new Random();
 
         Typer.typeStringln(String.format("You attack %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
@@ -344,6 +431,10 @@ public class Player {
 
     public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance) {
         
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
 
         Random random = new Random();
 
@@ -367,6 +458,10 @@ public class Player {
 
     public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
         
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
 
         Random random = new Random();
 
@@ -388,6 +483,22 @@ public class Player {
         }
     }
 
+    public boolean attackEnemyNoDodge(Enemy enemy, Player plr, int dmg) {
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+        Random random = new Random();
+        int critChance = random.nextInt(this.critChanceCap) + 1;
+        boolean crit = false;
+        if(critChance == 1) {
+            crit = true;
+        }
+        enemy.takeRawDamage(dmg, plr, crit);
+        resetWeaponDamage();
+        return true;
+    }
+
     public boolean heal() {
         if(usedHeals < availableHeals) {
             this.currenthp += this.healAmount;
@@ -395,10 +506,11 @@ public class Player {
                 this.currenthp = this.maxhp;
             }
             usedHeals++;
+            String heal = (availableHeals - usedHeals == 1) ? "heal" : "heals";
             Typer.typeStrings(new String[] {
                 "\nYou healed for " + this.healAmount + "HP!",
                 "Remaining HP: " + this.currenthp + " / " + this.maxhp,
-                "You have " + (availableHeals - usedHeals) + " heals remaining!\n"
+                "You have " + (availableHeals - usedHeals) + " " + heal + " remaining!\n"
             }, 500);
             return true;
         } else {

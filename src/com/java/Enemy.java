@@ -10,29 +10,34 @@ public class Enemy {
     protected String race;
     protected int maxHealth;
     protected int currentHealth;
-    protected int speed;
+    protected int baseSpeed;
+    protected int activeSpeed;
     protected double xpValue;
     protected String type;
     protected boolean hit;
     protected boolean hitPlayer;
     protected int dodgeChance;
+    protected double defense;
+    protected double defenseReduction;
+    protected boolean stunned;
+    protected int unstunAttempts;
 
 
-    public Enemy(String name, Weapon weapon, String race, int maxHealth, int speed, double xpValue, String type, Player plr) {
+    public Enemy(String name, Weapon weapon, String race, int maxHealth, int baseSpeed, double xpValue, String type, Player plr) {
         this.name = name;
         this.weapon = weapon;
         this.race = race;
         this.maxHealth = maxHealth;
         this.currentHealth = this.maxHealth;
-        if(speed - this.weapon.getSpeedPenalty() < 0) {
-            this.speed = 0;
-        } else {
-            this.speed = speed - this.weapon.getSpeedPenalty();
-        }
+        this.baseSpeed = baseSpeed;
         this.xpValue = xpValue;
         this.type = type;
         this.hit = false;
+        this.defense = 1;
+        this.defenseReduction = 0;
         calculateDodgeChance(plr);
+        calculateActiveSpeed();
+        this.stunned = false;
     }
 
     public Weapon getWeapon() {
@@ -47,7 +52,11 @@ public class Enemy {
     }
 
     public int getSpeed() {
-        return this.speed;
+        return this.activeSpeed;
+    }
+
+    public int getBaseSpeed() {
+        return this.baseSpeed;
     }
 
     public int getDodgeChance() {
@@ -58,15 +67,65 @@ public class Enemy {
         return this.type;
     }
 
-    public void setSpeed(int x) {
-        this.speed = x;
+    public void setBaseSpeed(int x) {
+        this.baseSpeed = x;
+        calculateActiveSpeed();
+    }
+
+    public void reduceActiveSpeed(int x) {
+        this.activeSpeed -= x;
+    }
+
+    public void setDefense(double x) {
+        this.defense = x;
+    }
+
+    public void reduceDefense(double x) {
+        this.defenseReduction = x;
+        this.defense -= this.defenseReduction;
+        if(this.defense < 0.25) {
+            this.defense = 0.25;
+        }
+    }
+
+    public void resetDefenseReduction() {
+        this.defenseReduction = 0;
+        this.defense = 1;
+    }
+
+    public double getDefense() {
+        return this.defense;
+    }
+
+    public void setStunned(boolean x) {
+        this.stunned = x;
+    }
+
+    public boolean getStunned() {
+        return this.stunned;
+    }
+
+    public boolean attemptUnstun(Player plr) {
+        this.unstunAttempts += 1;
+        Random random = new Random();
+        int unstunDecider = random.nextInt(100) + 1;
+        if(unstunDecider <= (25*unstunAttempts)) {
+            this.stunned = false;
+            Typer.typeStringln(String.format("%s recovered from being stunned!", this.name));
+            this.unstunAttempts = 0;
+            return true;
+        } else {
+            Typer.typeStringln(String.format("%s is still stunned!", this.name));
+            return false;
+        }
+
     }
 
     public void calculateDodgeChance(Player plr) {
-        if (plr.getSpeed() >= this.speed) {
+        if (plr.getSpeed() >= this.activeSpeed) {
             this.dodgeChance = 0;
         } else {
-            int difference = this.speed-plr.getSpeed();
+            int difference = this.activeSpeed-plr.getSpeed();
             this.dodgeChance = (int)(difference/2);
             if(this.dodgeChance > 80) {
                 this.dodgeChance = 80;
@@ -74,16 +133,30 @@ public class Enemy {
         }
     }
 
-    /**
-     * Enemy damages the player.
-     * @param plr
-     */
-    public void attackPlayer(Player plr) {
-        Typer.typeStringln(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
-
-        plr.takeDamage(this.weapon.getDmg());
-        this.hitPlayer = true;
+    public void calculateActiveSpeed() {
+        if(baseSpeed - this.weapon.getSpeedPenalty() < 0) {
+            this.activeSpeed = 0;
+        } else {
+            this.activeSpeed = baseSpeed - this.weapon.getSpeedPenalty();
+        }
     }
+
+    // public void attackPlayer(Player plr) {
+    //     Typer.typeStringln(String.format("%s attacked you with its %s!\n", this.name, this.weapon.getName()));
+
+    //     if(plr.getRetaliation()) {
+    //         plr.setHitInRetaliation(this);
+    //     }
+
+    //     if(plr.getWeapon().getRiposte()) {
+    //         if(plr.getWeapon().getRiposte()){
+    //             return;
+    //         }
+    //     }
+        
+    //     plr.takeDamage(this.weapon.getDmg());
+    //     this.hitPlayer = true;
+    // }
 
     /**
      * Enemy attempts to damage the player, taking into account the player's dodge chance.
@@ -94,34 +167,49 @@ public class Enemy {
 
         Typer.typeStringln(String.format("%s attacks you with its %s!\n", this.name, this.weapon.getName()));
 
-        if(plr.getRiposte()) {
-            plr.setRiposte(false);
-            Random random = new Random();
-            int riposteDecider = random.nextInt(100) + 1;
-            if(riposteDecider <= 75) {
-                Typer.typeStringln(String.format("%s's %s is deflected by your %s!", this.name, this.weapon.getName(), plr.getWeapon().getName()));
-                Typer.wait(200);
-                plr.setDamageMultiplier(2.0);
-                plr.attackEnemy(this, plr, this.dodgeChance);
-                return;
-            } else {
-                Typer.typeStringln(String.format("%s's %s avoided your %s!", this.name, this.getWeapon().getName(), plr.getWeapon().getName()));
-            }
-        }
         Random random = new Random();
         int dodgeDecider = random.nextInt(100) + 1;
         Main.wait(500);
+        if(plr.getWeapon().getRiposte()) {
+            if(plr.getWeapon().riposte(plr, this, this.dodgeChance)) {
+                return;
+            }
+        }
         if(dodgeDecider <= dodgeChance) {
             Typer.typeStringln(String.format("You jumped out of the way of %s's attack!\n", this.name));
+            if(plr.getRetaliation()) {
+                Typer.typeStringln(String.format("Your retaliation failed because %s missed its attack!", this.name));
+                plr.setRetaliation(false);
+            }
             return;
         } else {
             Typer.typeStringln(String.format("You were hit by %s's %s!\n", this.name, this.weapon.getName()));
+            if(plr.getHideActive()) {
+                plr.setHideActive(false, this);
+                Typer.typeStringln("You are no longer hidden!");
+                plr.calculateDodgeChance(this);
+            }
             this.hitPlayer = true;
+            if(plr.getRetaliation()) {
+                plr.setHitInRetaliation(this);
+            }
             plr.takeDamage(this.weapon.getDmg());
         }
     }
 
-    public void inspect() {
+    public void inspect(Player plr) {
+        if(plr.getKeenEyedActive()) {
+            Typer.typeStringsNoSpace(new String[] {
+                String.format("Name: %s", this.name),
+                String.format("Health: %s / %s", this.currentHealth, this.maxHealth),
+                String.format("Speed: %s", this.baseSpeed),
+                String.format("Race: %s", this.race),
+                String.format("\nWeapon: %s", this.weapon.getName()),
+                String.format("Damage: %s", this.weapon.getDmg()),
+                String.format("Speed Reduction: %s", this.weapon.getSpeedPenalty())
+            }, 100);
+            return;
+        }
         if(this.hit) {
             Typer.typeStringsNoSpace(new String[] {
                 String.format("Name: %s", this.name),
@@ -173,6 +261,13 @@ public class Enemy {
             Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
         } else {
             Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.setKeenEyedActive(false);
+            plr.setHideActive(false, this);
+            plr.setBattlecry(false);
+            plr.setAdrenalineRushActive(false);
+            plr.setRetaliation(false);
+            plr.setTurnsToSkip(0);
+            plr.resetAbilityActiveLength(this);
             plr.gainXp(this.xpValue);
         }
         
@@ -187,6 +282,13 @@ public class Enemy {
             Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
         } else {
             Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.setKeenEyedActive(false);
+            plr.setHideActive(false, this);
+            plr.setBattlecry(false);
+            plr.setAdrenalineRushActive(false);
+            plr.setRetaliation(false);
+            plr.setTurnsToSkip(0);
+            plr.resetAbilityActiveLength(this);
             plr.gainXp(this.xpValue);
         }
     }
@@ -204,6 +306,13 @@ public class Enemy {
             Typer.typeStringln(String.format("%s's remaining HP: %s / %s\n", this.name, this.currentHealth, this.maxHealth));
         } else {
             Typer.typeStringln(String.format("%s has been defeated!", this.name));
+            plr.setKeenEyedActive(false);
+            plr.setHideActive(false, this);
+            plr.setBattlecry(false);
+            plr.setAdrenalineRushActive(false);
+            plr.setRetaliation(false);
+            plr.setTurnsToSkip(0);
+            plr.resetAbilityActiveLength(this);
             plr.gainXp(this.xpValue);
         }
     }

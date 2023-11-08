@@ -6,10 +6,12 @@ import java.util.Scanner;
 import src.com.java.Axes.*;
 import src.com.java.Daggers.*;
 import src.com.java.Swords.*;
+import src.com.java.PlayerClasses.*;
 
 import java.util.ArrayList;
 import java.lang.Thread;
-class Main {
+
+public class Main {
 
     public static final String[][] swordNames  = {
         {"Rusty Longsword", "Bronze Longsword", "Steel Longsword"},
@@ -40,6 +42,7 @@ class Main {
 
     public static Boss boss;
     public static int enemyDiffLevel = 0;
+    public static boolean devMode = false;
     
     public static void main(String args[]) {
 
@@ -50,18 +53,172 @@ class Main {
 
         do {
             choosing = true;
+            Typer.clearConsole();
             Typer.typeStringln("Classes:");
             Typer.typeString("\n1. Warrior\n2. Barbarian\n3. Rogue\n\nChoose your class: ", 10);
             
         
             int input = scanner.nextInt()-1;
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //Clears the console.
+            Typer.clearConsole(); //Clears the console.
+
+            if(input == 1336) {
+                devMode = !devMode;
+                if(devMode) {
+                    Typer.typeStringln("Dev mode activated.");
+                } else {
+                    Typer.typeStringln("Dev mode deactivated.");
+                }
+                wait(1000);
+            }
 
             if(input >= 0 && input < plrClasses.length) {
 
                 String plrClass = plrClasses[input];
 
-                plr = new Player(plrClass);
+                boolean choosingAbility = true;
+                boolean confirming = false;
+                int abilChoice = 999;
+                Typer.typeStringln("Class Abilities:");
+                switch(plrClass) {
+                    case "Warrior":
+                    String[] warriorAbilities = {"Retaliation", "Adrenaline Rush"};
+                    String[] warriorAbilityDescriptions = {
+                        "When hit while active, deal the same amount of damage that was done to you plus your weapon damage to your opponent.",
+                        "When activated, gain a speed boost for a few turns."
+                    };
+                    int[] warriorAbilityCooldowns = {3, 4};
+                    while(choosingAbility) {
+                        Typer.typeString("1. Retaliation\n2. Adrenaline Rush\n\nChoose an ability: ");
+                        try {
+                            String inputAbil = scanner.next();
+                            Typer.clearConsole();
+                            abilChoice = Integer.parseInt(inputAbil)-1;
+                            if(abilChoice >= 0 && abilChoice < warriorAbilities.length) {
+                                confirming = true;
+                                Typer.clearConsole();
+                                while(confirming) {
+                                    Typer.typeStringsNoSpace(new String[] {
+                                        String.format("Ability: %s", warriorAbilities[abilChoice]),
+                                        String.format("Description: %s", warriorAbilityDescriptions[abilChoice])
+                                    }, 200);
+                                    Typer.typeString(String.format("\nAre you sure you want to equip the ability: %s? (Y/N)\n> ", warriorAbilities[abilChoice]));
+                                    String confirmation = scanner.next().toLowerCase();
+                                    Typer.clearConsole();
+                                    if(confirmation.equals("y")) {
+                                        confirming = false;
+                                        choosingAbility = false;
+                                        
+                                    } else if (confirmation.equals("n")) {
+                                        confirming = false;
+                                        choosingAbility = true;
+                                    } else {
+                                        Typer.typeStringln("Please enter Y or N for \"Yes\" or \"No\".");
+                                    }
+
+                                }
+                            } else {
+                                throw new Exception();
+                            }
+                        } catch (Exception e) {
+                            Typer.typeStringln("Please enter the number next to your desired choice.");
+                        }
+                    }
+                    plr = new Warrior(warriorAbilities[abilChoice], warriorAbilityCooldowns[abilChoice], warriorAbilityDescriptions[abilChoice]);
+                        
+                    break;
+                    case "Barbarian":
+                        String[] barbarianAbilities = {"Battlecry", "Savage Charge"};
+                        String[] barbarianAbilityDescriptions = {
+                            "Shout out with absolute power in your voice, decreasing your opponent's speed and defense for a few turns, while increasing your own damage dealt.",
+                            "Charge head-on at your opponent with great force, dealing a large sum of damage in addition to potentially stunning them for a few turns."
+                            };
+                        int[] barbarianAbilityCooldowns = {4, 5};
+                        while(choosingAbility) {
+                            Typer.typeString("1. Battlecry\n2. Savage Charge\n\nChoose an ability: ");
+                            try {
+                                String inputAbil = scanner.next();
+                                Typer.clearConsole();
+                                abilChoice = Integer.parseInt(inputAbil)-1;
+                                if(abilChoice >= 0 && abilChoice < barbarianAbilities.length) {
+                                    confirming = true;
+                                    Typer.clearConsole();
+                                    while(confirming) {
+                                        Typer.typeStringsNoSpace(new String[] {
+                                            String.format("Ability: %s", barbarianAbilities[abilChoice]),
+                                            String.format("Description: %s", barbarianAbilityDescriptions[abilChoice])
+                                        }, 200);
+                                        Typer.typeString(String.format("\nAre you sure you want to equip the ability: %s? (Y/N)\n> ", barbarianAbilities[abilChoice]));
+                                        String confirmation = scanner.next().toLowerCase();
+                                        Typer.clearConsole();
+                                        if(confirmation.equals("y")) {
+                                            confirming = false;
+                                            choosingAbility = false;
+                                            
+                                        } else if (confirmation.equals("n")) {
+                                            confirming = false;
+                                            choosingAbility = true;
+                                        } else {
+                                            Typer.typeStringln("Please enter Y or N for \"Yes\" or \"No\".");
+                                        }
+
+                                    }
+                                } else {
+                                    throw new Exception();
+                                }
+                            } catch (Exception e) {
+                                Typer.typeStringln("Please enter the number next to your desired choice.");
+                            }
+                        }
+                        plr = new Barbarian(barbarianAbilities[abilChoice], barbarianAbilityCooldowns[abilChoice], barbarianAbilityDescriptions[abilChoice]);
+                    break;
+                    case "Rogue":
+                        String[] rogueAbilities = {"Keen Eyed", "Hide"};
+                        String[] rogueAbilityDescriptions = {
+                            "When used, discover all of your opponent's stats, including ones that would normally be hidden.",
+                            "Utilize your light-footedness and agility to attempt to hide from the enemy, greatly increasing your chance to dodge.\nEffects wear off once you are hit or attempt to attack the opponent."
+                        };
+                        int[] rogueAbilityCooldowns = {0, 3};
+                        while(choosingAbility) {
+                            Typer.typeString("1. Keen Eyed\n2. Hide\n\nChoose an ability: ");
+                            try {
+                                String inputAbil = scanner.next();
+                                Typer.clearConsole();
+                                abilChoice = Integer.parseInt(inputAbil)-1;
+                                if(abilChoice >= 0 && abilChoice < rogueAbilities.length) {
+                                    confirming = true;
+                                    Typer.clearConsole();
+                                    while(confirming) {
+                                        Typer.typeStringsNoSpace(new String[] {
+                                            String.format("Ability: %s", rogueAbilities[abilChoice]),
+                                            String.format("Description: %s", rogueAbilityDescriptions[abilChoice])
+                                        }, 200);
+                                        Typer.typeString(String.format("\nAre you sure you want to equip the ability: %s? (Y/N)\n> ", rogueAbilities[abilChoice]));
+                                        String confirmation = scanner.next().toLowerCase();
+                                        Typer.clearConsole();
+                                        if(confirmation.equals("y")) {
+                                            confirming = false;
+                                            choosingAbility = false;
+                                            
+                                        } else if (confirmation.equals("n")) {
+                                            confirming = false;
+                                            choosingAbility = true;
+                                        } else {
+                                            Typer.typeStringln("Please enter Y or N for \"Yes\" or \"No\".");
+                                        }
+
+                                    }
+                                } else {
+                                    throw new Exception();
+                                }
+                            } catch (Exception e) {
+                                Typer.typeStringln("Please enter the number next to your desired choice.");
+                            }
+                        }
+                        plr = new Rogue(rogueAbilities[abilChoice], rogueAbilityCooldowns[abilChoice], rogueAbilityDescriptions[abilChoice]);
+                    break;
+                    default:
+                        plr = null;
+                }
                 Typer.typeStringln("Class selected: " + plrClass);
                 choosing = false;
 
@@ -89,7 +246,7 @@ class Main {
                 String restRoomDescs[] = new String[3];
                 String dungeonName = dungeons[input];
                 Room[] rooms = null;
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 Typer.typeStringln("Selected dungeon: " + dungeonName);
 
                 choosing = false;
@@ -108,7 +265,7 @@ class Main {
                     Move bossMove2 = new Move("Bonematter Rejuvination", "heal", 50, "Casts Bonematter Rejuvination, absorbing nearby bonemass!");
                     Move bossMove3 = new Move("Summon Undead Army", "power", 50, "Summons an Undead Army, and you are assaulted by multiple skeletons!");
                     Move bossMove4 = new Move("Sacrificial Slash", "damage", bossWeapon.getDmg(), "Rushes you with its Sacrificial Dagger!");
-                    boss = new Boss("The Necromancer", bossWeapon, "skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue, plr);
+                    boss = new Boss("The Necromancer", bossWeapon, "Skeleton", 300, 125, 1000.00, bossMove1, bossMove2, bossMove3, bossMove4, 3, 3, powerMoveChargedDialogue, powerMoveStillChargedDialogue, powerMoveChargeUsedDialogue, plr);
                 break;
                 default:
                     dungeonName = null;
@@ -127,7 +284,7 @@ class Main {
                             String mapSize = mapSizes[mapSizeChoice];
                             choosing = false;
                             Random random = new Random();
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             Typer.typeStringln("Selected size: " + mapSize);
                             switch(mapSize) {
                                 case "Small":
@@ -145,7 +302,7 @@ class Main {
                                         customChoosing = true;
                                         Typer.typeString("Input the number of rooms you want:\n> ");
                                         int customSize = scanner.nextInt();
-                                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                        Typer.clearConsole();
                                         if(customSize >= 2) {
                                             rooms = new Room[customSize];
                                             customChoosing = false;
@@ -187,6 +344,9 @@ class Main {
                 } while(choosing);
 
                 Dungeon dungeon = new Dungeon(rooms, dungeonName);
+                if(devMode) {
+                    startEncounter(createRandomSkeleton(enemyDiffLevel, plr), plr);
+                }
                 Typer.typeStrings(new String[] {"You are now entering the " + dungeonName + ".", startRoomDesc});
                 choosing = false;
                 boolean gameActive = true;
@@ -228,7 +388,11 @@ class Main {
                             int numChoice = 999;
                             try {
                                 numChoice = Integer.parseInt(scanner.next())-1;
-                                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                if(devMode) {
+                                    System.out.println(numChoice);
+                                    wait(2000);
+                                }
+                                Typer.clearConsole();
                             } catch (NumberFormatException e) {
                                 numChoice = 999;
                             }
@@ -274,6 +438,10 @@ class Main {
                             }
                         
                         } catch (Exception e) {
+                            if(devMode) {
+                                e.printStackTrace();
+                                System.out.println(e.getMessage());
+                            }
                             Typer.typeStringln("Please enter the number next to your desired choice.");
                         }
                     }
@@ -281,7 +449,7 @@ class Main {
                     
                 }
             } else {
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 Typer.typeStringln("Please input then number next to the dungeon you wish to enter!");
             }
 
@@ -296,31 +464,40 @@ class Main {
      */
     public static void startEncounter(Enemy enemy, Player plr) {
 
-        boolean usedAbilityThisTurn = false;
+        boolean usedWeaponAbilityThisTurn = false;
+        boolean usedClassAbilityThisTurn = false;
         Typer.typeStringln(String.format("%s approaches you!", enemy.getName()));
-        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
+        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "Class Ability", "View Stats", "Inspect Enemy"};
             //Enemy moves first if speed in greater than player's
         if(plr.getSpeed() < enemy.getSpeed()) { 
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                plr.calculateDodgeChance(boss);
+                plr.calculateActiveSpeed();
+                plr.calculateDodgeChance(enemy);
+                enemy.calculateActiveSpeed();
                 enemy.calculateDodgeChance(plr);
-                enemy.attackPlayer(plr, plr.getDodgeChance());
+                if(enemy.getStunned()) {
+                    enemy.attemptUnstun(plr);
+                }
+                if(!enemy.getStunned()) {
+                    enemy.attackPlayer(plr, plr.getDodgeChance());
+                }
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
                     System.exit(0);
                 }
-                usedAbilityThisTurn = false;
-                if(plr.getTurnsToSkip() <= 0) {
+                usedWeaponAbilityThisTurn = false;
+                usedClassAbilityThisTurn = false;
+                if(plr.getTurnsToSkip() <= 0 && !plr.getHitInRetaliation()) {
                     plr.calculateActiveSpeed();
                     choosing = true;
                     while(choosing) {
-                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. View Stats\n5. Inspect Enemy\nChoose your next move: ", 10);
+                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. Use Class Ability\n5. View Stats\n6. Inspect Enemy\nChoose your next move: ", 10);
 
                         try {
                             String in = scanner.next();
                             int choice = Integer.parseInt(in)-1;
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             if(choice >= 0 && choice < battleChoices.length) {
                                 switch(battleChoices[choice]) {
                                     case "Attack":
@@ -339,7 +516,15 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
-                                            usedAbilityThisTurn = true;
+                                            usedWeaponAbilityThisTurn = true;
+                                        } else {
+                                            choosing = true;
+                                        }
+                                    break;
+                                    case "Class Ability":
+                                        if(plr.useAbility(enemy)) {
+                                            choosing = false;
+                                            usedClassAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -349,7 +534,7 @@ class Main {
                                         plr.inspectWeapon();
                                     break;
                                     case "Inspect Enemy":
-                                        enemy.inspect();
+                                        enemy.inspect(plr);
                                     break;
                                     default: 
                                         System.out.println("\n\nIf you see this I'm a bad programmer :D");
@@ -361,10 +546,16 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                             }
                         } catch (Exception e) {
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
+                            if(devMode) {
+                                e.printStackTrace();
+                                System.out.println(e.getMessage());
+                            }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
+                } else if (plr.getHitInRetaliation()) {
+                    plr.triggerRetaliation(enemy);
                 } else {
                     String turn = "";
                     if(plr.getTurnsToSkip() == 1) {
@@ -375,8 +566,11 @@ class Main {
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
-                if(!usedAbilityThisTurn) {
+                if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
+                }
+                if(!usedClassAbilityThisTurn) {
+                    plr.reduceCooldown();
                 }
                 if(enemy.getHp() <= 0) {
                     Typer.typeStringln("You won the fight!");
@@ -389,23 +583,29 @@ class Main {
                         }, 500);
                         plr.setUsedHeals(plr.getUsedHeals()-1);
                     }
+                    plr.resetRetaliation();
                     break;
                 }
             }
             //Player moves first if speed is greater than enemy's or equal
         } else {
             while(plr.getHp() > 0 && enemy.getHp() > 0) {
-                usedAbilityThisTurn = false;
-                if(plr.getTurnsToSkip() <= 0) {
+                plr.calculateActiveSpeed();
+                plr.calculateDodgeChance(enemy);
+                enemy.calculateActiveSpeed();
+                enemy.calculateDodgeChance(plr);
+                usedWeaponAbilityThisTurn = false;
+                usedClassAbilityThisTurn = false;
+                if(plr.getTurnsToSkip() <= 0 && !plr.getHitInRetaliation()) {
                     choosing = true;
                     plr.calculateActiveSpeed();
                     while(choosing) {
-                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. View Stats\n5. Inspect Enemy\nChoose your next move: ", 10);
+                        Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. Use Class Ability\n5. View Stats\n6. Inspect Enemy\nChoose your next move: ", 10);
 
                         try {
                             String in = scanner.next();
                             int choice = Integer.parseInt(in)-1;
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             if(choice >= 0 && choice < battleChoices.length) {
                                 switch(battleChoices[choice]) {
                                     case "Attack":
@@ -424,7 +624,15 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(enemy);
                                             enemy.calculateDodgeChance(plr);
-                                            usedAbilityThisTurn = true;
+                                            usedWeaponAbilityThisTurn = true;
+                                        } else {
+                                            choosing = true;
+                                        }
+                                    break;
+                                    case "Class Ability":
+                                        if(plr.useAbility(enemy)) {
+                                            choosing = false;
+                                            usedClassAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -434,7 +642,7 @@ class Main {
                                         plr.inspectWeapon();
                                     break;
                                     case "Inspect Enemy":
-                                        enemy.inspect();
+                                        enemy.inspect(plr);
                                     break;
                                     default: 
                                         System.out.println("\n\nIf you see this I'm a bad programmer :D");
@@ -446,10 +654,16 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                             }
                         } catch (Exception e) {
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
+                            if(devMode) {
+                                e.printStackTrace();
+                                System.out.println(e.getMessage());
+                            }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
+                } else if(plr.getHitInRetaliation()) {
+                    plr.triggerRetaliation(enemy);
                 } else {
                     String turn = "";
                     if(plr.getTurnsToSkip() == 1) {
@@ -460,8 +674,12 @@ class Main {
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
-                if(!usedAbilityThisTurn) {
+                if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
+                }
+                if(!usedClassAbilityThisTurn) {
+                    plr.reduceCooldown();
+                    plr.reduceAbilityActiveLength(enemy);
                 }
                 
 
@@ -476,16 +694,21 @@ class Main {
                         }, 500);
                         plr.setUsedHeals(plr.getUsedHeals()-1);
                     }
+                    plr.resetRetaliation();
                     break;
                 }
-                enemy.attackPlayer(plr, plr.getDodgeChance());
+                if(enemy.getStunned()) {
+                    enemy.attemptUnstun(plr);
+                }
+                if(!enemy.getStunned()) {
+                    enemy.attackPlayer(plr, plr.getDodgeChance());
+                }
                 if(plr.getHp() <= 0) {
                     Typer.typeStringln("You died to a " + enemy.getName() + ".");
                     scanner.next();
                     System.exit(0);
                     
                 }
-                plr.getWeapon().reduceCooldown();
             }
 
         }
@@ -497,23 +720,27 @@ class Main {
      * @param plr
      */
     public static void startBossEncounter(Player plr) {
-        boolean usedAbilityThisTurn = false;
-        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "View Stats", "Inspect Enemy"};
+        boolean usedWeaponAbilityThisTurn = false;
+        boolean usedClassAbilityThisTurn = false;
+        String battleChoices[] = {"Attack", "Heal", "Weapon Ability", "Class Ability", "View Stats", "Inspect Enemy"};
         Typer.typeStringln("\nYou have initiated a bossfight against " + boss.getName() + "!\n");
         while(plr.getHp() > 0 && boss.getHp() > 0) {
+            plr.calculateActiveSpeed();
             plr.calculateDodgeChance(boss);
+            boss.calculateActiveSpeed();
             boss.calculateDodgeChance(plr);
-            usedAbilityThisTurn = false;
+            usedWeaponAbilityThisTurn = false;
+            usedClassAbilityThisTurn = false;
             if(plr.getTurnsToSkip() <= 0) {
                 plr.calculateActiveSpeed();
                 choosing = true;
                 while(choosing) {
-                    Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. View Stats\n5. Inspect Enemy\nChoose your next move: ", 10);
+                    Typer.typeString("\n1. Attack\n2. Heal\n3. Use Weapon Ability\n4. Use Class Ability\n5. View Stats\n6. Inspect Enemy\nChoose your next move: ", 10);
 
                         try {
                             String in = scanner.next();
                             int choice = Integer.parseInt(in)-1;
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             if(choice >= 0 && choice < battleChoices.length) {
                                 switch(battleChoices[choice]) {
                                     case "Attack":
@@ -532,7 +759,15 @@ class Main {
                                             choosing = false;
                                             plr.calculateDodgeChance(boss);
                                             boss.calculateDodgeChance(plr);
-                                            usedAbilityThisTurn = true;
+                                            usedWeaponAbilityThisTurn = true;
+                                        } else {
+                                            choosing = true;
+                                        }
+                                    break;
+                                    case "Class Ability":
+                                        if(plr.useAbility(boss)) {
+                                            choosing = false;
+                                            usedClassAbilityThisTurn = true;
                                         } else {
                                             choosing = true;
                                         }
@@ -542,7 +777,7 @@ class Main {
                                         plr.inspectWeapon();
                                     break;
                                     case "Inspect Enemy":
-                                        boss.inspect();
+                                        boss.inspect(plr);
                                     break;
                                     default: 
                                         System.out.println("\n\nIf you see this I'm a bad programmer :D");
@@ -554,7 +789,7 @@ class Main {
                                 Typer.typeStringln("Please enter the number next to the option you wish to pick.");
                             }
                         } catch (Exception e) {
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            Typer.clearConsole();
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
                         }
                     }
@@ -568,24 +803,31 @@ class Main {
                     Typer.typeStringln(String.format("You are unable to attack for %s more %s!", plr.getTurnsToSkip(), turn));
                     plr.setTurnsToSkip(plr.getTurnsToSkip()-1);
                 }
-                if(!usedAbilityThisTurn) {
+                if(!usedWeaponAbilityThisTurn) {
                     plr.getWeapon().reduceCooldown();
+                }
+                if(!usedClassAbilityThisTurn) {
+                    plr.reduceCooldown();
+                    plr.reduceAbilityActiveLength(boss);
                 }
             
             if(boss.getHp() <= 0) {
-                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                Typer.clearConsole();
                 finishGame(plr);
                 break;
             }
-
-            boss.chooseMove(plr, plr.getDodgeChance());
+            if(boss.getStunned()) {
+                boss.attemptUnstun(plr);
+            }
+            if(!boss.getStunned()) {
+                boss.chooseMove(plr, plr.getDodgeChance());
+            }
             
             if(plr.getHp() <= 0) {
                 Typer.typeStringln("You died to " + boss.getName() + ".");
                 scanner.next();
                 System.exit(0);
             }
-            plr.getWeapon().reduceCooldown();
         }
     }
 
@@ -660,7 +902,7 @@ class Main {
                                 choosing = false;
                                 Typer.typeStringln("You throw The Necromancer's Dagger on the floor with all your strength, shattering it into pieces as it hits the cold stone floor.");
                             } else {
-                                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                                Typer.clearConsole();
                                 Typer.typeStringln("Please input \"Y\" or \"N\".");
                             }
                         }

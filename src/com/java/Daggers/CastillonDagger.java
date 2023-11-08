@@ -12,7 +12,7 @@ public class CastillonDagger extends Dagger {
     protected String abilityAttackDialogue;
     
     public CastillonDagger(String name, int dmg, int speedPenalty) {
-        super(name, dmg, "castillon dagger", speedPenalty, 2);
+        super(name, dmg, "castillon dagger", speedPenalty, 3);
         this.abilityName = "Relentless Slashes";
         this.abilityDescription = "Wildly swing your blade at your opponent, hitting them 2-4 times.";
         this.abilityAttackDialogue = "You begin to slash your blade around wildly.";
@@ -28,13 +28,25 @@ public class CastillonDagger extends Dagger {
             for(int i = 0; i < 2; i++) {
                 hitDecider = random.nextInt(100) + 1;
                 if(i == 0) {
-                    if(hitDecider <= 60) {
+                    if(hitDecider <= 100) {
                         hits += 1;
                     } else {
                         break;
                     }
                 } else if(i == 1) {
+                    if(hitDecider <= 60) {
+                        hits += 1;
+                    } else {
+                        break;
+                    }
+                } else if(i == 2) {
                     if(hitDecider <= 30) {
+                        hits += 1;
+                    } else {
+                        break;
+                    }
+                } else if (i == 3) {
+                    if(hitDecider <= 15) {
                         hits += 1;
                     } else {
                         break;
@@ -44,6 +56,9 @@ public class CastillonDagger extends Dagger {
 
             for(int i = 0; i < hits; i++) {
                 plr.attackEnemy(enemy, plr, enemyDodgeChance);
+                if(enemy.getHp() <= 0) {
+                    return true;
+                }
             }
             return true;
         } else {

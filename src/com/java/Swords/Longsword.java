@@ -10,6 +10,7 @@ public class Longsword extends Sword {
     protected String abilityDescription;
     protected String abilityName;
     protected String abilityAttackDialogue;
+    protected boolean riposte;
 
     public Longsword(String name, int dmg, int speedPenalty) {
         super(name, dmg, "longsword", speedPenalty, 1);
@@ -19,10 +20,20 @@ public class Longsword extends Sword {
         
     }
     
+
+
+    @Override public void setRiposte(boolean x, Player plr) {
+        this.riposte = x;
+        if(!riposte) {
+            plr.setDamageMultiplier(1);
+        }
+    }
+
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStringln(abilityAttackDialogue);
+            this.riposte = true;
             return true;
         } else {
             if(this.abilityCooldown == 1) {
@@ -34,7 +45,7 @@ public class Longsword extends Sword {
         }
     }
 
-    public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {
+    @Override public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {
         Random random = new Random();
         int riposteDecider = random.nextInt(100) + 1;
         if(riposteDecider <= 75) {
@@ -42,6 +53,9 @@ public class Longsword extends Sword {
             Typer.wait(200);
             plr.setDamageMultiplier(2.0);
             plr.attackEnemy(enemy, plr, enemyDodgeChance);
+            plr.setDamageMultiplier(1);
+            this.riposte = false;
+            plr.setRetaliation(false);
             return true;
         } else {
             return false;
