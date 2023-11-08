@@ -70,8 +70,16 @@ public class Weapon {
         }
     }
 
-    public int getCooldown() {
+    public int getCurrentCooldown() {
         return this.currentAbilityCooldown;
+    }
+
+    public void setCurrentCooldown(int x) {
+        this.currentAbilityCooldown = x;
+    }
+
+    public int getAbilityCooldown() {
+        return this.abilityCooldown;
     }
 
     protected String getAbilityDescription() {

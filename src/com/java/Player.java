@@ -210,11 +210,21 @@ public class Player {
     //All classes override methods
     public void setAbilityName(String x) {}
     public void resetAbilityEffects(Enemy enemy) {}
+    public void setAbilityActiveCooldown(int x) {};
+    public int getAbilityCooldown() {return 0;};
     public boolean useAbility(Enemy enemy) {
         Typer.typeStringln("You do not have an ability!");
         return false;
     }
     ///////////////////////////////////////////////////////////
+
+    public int getAbilityActiveCooldown() {
+        return this.activeCooldown;
+    }
+
+    public void setActiveCooldown(int x) {
+        this.activeCooldown = x;
+    }
 
     /**
      * Prints visual representation of the player's weapon's stats.

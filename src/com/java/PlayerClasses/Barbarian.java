@@ -19,6 +19,10 @@ public class Barbarian extends Player {
         this.battlecryActive = false;
     }
 
+    @Override public int getAbilityCooldown() {
+        return this.abilityCooldown;
+    }
+
     @Override public void setAbilityName(String x) {
         this.abilityName = x;
     }

@@ -20,6 +20,10 @@ public class Rogue extends Player {
         this.keenEyedActive = false;
     }
 
+    @Override public int getAbilityCooldown() {
+        return this.abilityCooldown;
+    }
+
     @Override public void setAbilityName(String x) {
         this.abilityName = x;
     }

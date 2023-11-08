@@ -1,6 +1,5 @@
 package src.com.java.Swords;
 
-import src.com.java.Main;
 import src.com.java.Enemy;
 import src.com.java.Player;
 import src.com.java.Typer;
