@@ -548,6 +548,7 @@ public class Main {
                         } catch (Exception e) {
                             Typer.clearConsole();
                             if(devMode) {
+                                e.printStackTrace();
                                 System.out.println(e.getMessage());
                             }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");
@@ -655,6 +656,7 @@ public class Main {
                         } catch (Exception e) {
                             Typer.clearConsole();
                             if(devMode) {
+                                e.printStackTrace();
                                 System.out.println(e.getMessage());
                             }
                             Typer.typeStringln("Please enter the number next to the option you wish to pick.\n");

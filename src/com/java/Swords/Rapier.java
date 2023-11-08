@@ -19,16 +19,12 @@ public class Rapier extends Sword {
     }
     
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
-        if(Main.devMode) {
-            System.out.println("Entered rapier ability");
-        }
         if(this.currentAbilityCooldown <= 0) {
-            if(Main.devMode) {System.out.println("Passed ablility cooldown!");}
             this.currentAbilityCooldown = this.abilityCooldown;
             Typer.typeStrings(new String[] {
                 this.abilityAttackDialogue,
                 String.format("Your %s hit %s for %s damage!", plr.getWeapon().getName(), enemy.getName(), plr.getWeapon().getDmg()*1.2),
-                String.format("You lowered %s's speed by 20%!", enemy.getName())
+                String.format("You lowered %s's speed by 20%%!", enemy.getName())
             }, 300);
             enemy.setBaseSpeed((int)(enemy.getSpeed()*0.8));
             enemy.calculateDodgeChance(plr);
@@ -36,7 +32,6 @@ public class Rapier extends Sword {
             enemy.takeRawDamage((int)(plr.getWeapon().getDmg()*1.2), plr);
             return true;
         } else {
-            if(Main.devMode) {System.out.println("Cooldown activated");}
             if(this.abilityCooldown == 1) {
                 Typer.typeStringln(String.format("%s is on cooldown for 1 turn!", this.abilityName));
             } else {
