@@ -3,50 +3,52 @@ package src.com.java;
 import java.util.Random;
 
 public class Player {
-    private int maxhp;
-    private int currenthp;
-    private double xp;
-    private int level;
-    private int baseSpeed;
-    private int xpRequiredForLevel;
+    protected int maxhp;
+    protected int currenthp;
+    protected double xp;
+    protected int level;
+    protected int baseSpeed;
+    protected int xpRequiredForLevel;
     protected int activeSpeed;
-    private Weapon equippedWeapon;
-    private String playerClass;
+    protected Weapon equippedWeapon;
+    protected String playerClass;
     protected int availableHeals;
     protected int usedHeals;
     protected int healAmount;
     protected int baseHealAmount;
+    protected double damageReduction;
+    protected boolean defensiveStance;
+    protected int critChanceCap;
+    protected double damageMultiplier;
+    protected int dodgeChance;
+    protected int turnsToSkip;
+    protected int activeCooldown;
+    protected int abilityActiveLength;
 
     /**
      * @param playerClass the player's class (Capitalize properly, used cosmetically)
      */
-    public Player(String playerClass) {
+    public Player(String playerClass, Weapon equippedWeapon, int baseSpeed, int maxhp, int healAmount, int classAbilityCooldown) {
         this.xp = 0;
         this.level = 0;
         this.playerClass = playerClass;
         this.xpRequiredForLevel = 100;
         this.availableHeals = 2;
         this.usedHeals = 0;
-
-        if(playerClass.toLowerCase().equals("warrior")){
-            this.equippedWeapon = new Sword("Rusty Sword", 10, "rusty sword", 20);
-            this.baseSpeed = 100;
-            this.maxhp = 100;
-            this.healAmount = 30;
-        } else if (playerClass.toLowerCase().equals("barbarian")) {
-            this.equippedWeapon = new Axe("Rusty Axe", 20, "rusty axe", 30);
-            this.baseSpeed = 75;
-            this.maxhp = 125;
-            this.healAmount = 20;
-        } else if (playerClass.toLowerCase().equals("rogue")) {
-            this.equippedWeapon = new Dagger("Rusty Dagger", 8, "rusty dagger", 0);
-            this.baseSpeed = 125;
-            this.maxhp = 75;
-            this.healAmount = 40;
-        }
-            calculateActiveSpeed();
-            this.currenthp = this.maxhp;
-            this.baseHealAmount = this.healAmount;
+        this.damageReduction = 0;
+        this.critChanceCap = 10;
+        this.damageMultiplier = 1;
+        this.dodgeChance = 0;
+        this.turnsToSkip = 0;
+        this.equippedWeapon = equippedWeapon;
+        this.baseSpeed = baseSpeed;
+        this.maxhp = maxhp;
+        this.healAmount = healAmount;
+        this.playerClass = playerClass;
+        this.abilityActiveLength = -1;
+        calculateActiveSpeed();
+        this.currenthp = this.maxhp;
+        this.baseHealAmount = this.healAmount;
     }
 
 
@@ -68,8 +70,8 @@ public class Player {
         return this.equippedWeapon;
     }
 
-    public void setWeapon(Weapon weapon) {
-        this.equippedWeapon = weapon;
+    public void setWeapon(Weapon x) {
+        this.equippedWeapon = x;
     }
 
     public int getLevel() {
@@ -95,11 +97,140 @@ public class Player {
         return this.maxhp;
     }
 
+    public void setDamageReduction(double x) {
+        this.damageReduction = x;
+        if(this.damageReduction > 1) {
+            this.damageReduction = 1;
+        }
+    }
+
+    public double getDamageReduction() {
+        return this.damageReduction;
+    }
+
+    public void setDefensiveStance(boolean x) {
+        this.defensiveStance = x;
+        if(defensiveStance) {
+            setDamageReduction(0.75);
+        }
+    }
+
+    public boolean getDefensiveStance() {
+        return this.defensiveStance;
+    }
+
+    public void setCritChanceCap(int x) {
+        this.critChanceCap = x;
+    }
+
+    public void setDamageMultiplier(double x) {
+        this.damageMultiplier = x;
+        this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
+        this.equippedWeapon.setDamage((int)(this.equippedWeapon.getDmg()*x));
+    }
+
+    protected void resetWeaponDamage() {
+        this.damageMultiplier = 1;
+        this.equippedWeapon.setDamage(this.equippedWeapon.getInitialDamage());
+    }
+
+    public int getDodgeChance() {
+        return this.dodgeChance;
+    }
+
+    public int getTurnsToSkip() {
+        return this.turnsToSkip;
+    }
+
+    public void setTurnsToSkip(int x) {
+        this.turnsToSkip = x;
+    }
+
+    public void setActiveSpeed(int x) {
+        this.activeSpeed = x;
+    }
+
+    public void setDodgeChance(int x) {
+        this.dodgeChance = x;
+        if(this.dodgeChance > 80) {
+            this.dodgeChance = 80;
+        }
+    }
+
+    public int getActiveCooldown() {
+        return this.activeCooldown;
+    }
+
+    public void reduceCooldown() {
+        this.activeCooldown -= 1;
+    }
+
+    public int getAbilityActiveLength() {
+        return this.abilityActiveLength;
+    }
+
+    public void reduceAbilityActiveLength(Enemy enemy) {
+        if(this.abilityActiveLength <= -1) {
+            this.abilityActiveLength = -1;
+        } else if(this.abilityActiveLength == 0) {
+            resetAbilityEffects(enemy);
+            this.abilityActiveLength -= 1;
+        } else {
+            this.abilityActiveLength -= 1;
+        }
+        
+    }
+
+    public void resetAbilityActiveLength(Enemy enemy) {
+        this.abilityActiveLength = -1;
+        resetAbilityEffects(enemy);
+    }
+    /* CLASS OVERRIDE METHODS */
+    // Rogue class override methods
+    public boolean getKeenEyedActive() {return false;}
+    public void setKeenEyedActive(boolean x) {}
+    public boolean getHideActive() {return false;}
+    public void setHideActive(boolean x, Enemy enemy) {}
+
+    //Barbarian class override methods
+    public void setBattlecry(boolean x) {}
+    public boolean getBattlecry() {return false;}
+
+    //Warrior class override methods
+    public boolean getAdrenalineRushActive() {return false;}
+    public void setAdrenalineRushActive(boolean x) {}
+    public boolean getRetaliation() {return false;}
+    public void setRetaliation(boolean x) {}
+    public void setRetaliationDamage(int x) {}
+    public void triggerRetaliation (Enemy enemy) {}
+    public void setHitInRetaliation (Enemy enemy) {}
+    public boolean getHitInRetaliation() {return false;}
+    public void resetRetaliation() {}
+
+    //All classes override methods
+    public void setAbilityName(String x) {}
+    public void resetAbilityEffects(Enemy enemy) {}
+    public void setAbilityActiveCooldown(int x) {};
+    public int getAbilityCooldown() {return 0;};
+    public boolean useAbility(Enemy enemy) {
+        Typer.typeStringln("You do not have an ability!");
+        return false;
+    }
+    ///////////////////////////////////////////////////////////
+
+    public int getAbilityActiveCooldown() {
+        return this.activeCooldown;
+    }
+
+    public void setActiveCooldown(int x) {
+        this.activeCooldown = x;
+    }
+
     /**
      * Prints visual representation of the player's weapon's stats.
      */
     public void inspectWeapon(){
-        String str = String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n", this.equippedWeapon.name, this.equippedWeapon.dmg, this.equippedWeapon.speedPenalty);
+        String str = String.format("\nWeapon: %s \nDamage: %s \nSpeed Reduction: %s\n%s\n", this.equippedWeapon.name, this.equippedWeapon.dmg, this.equippedWeapon.speedPenalty, this.equippedWeapon.getAbilityDescription());
 
         Typer.typeString(str);
 
@@ -109,9 +240,26 @@ public class Player {
      * Prints visual representation of the player's stats.
      */
     public void viewStats(){
-        String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \nRemaining Heals: %s \nHeal Amount: %s \nRoom: %s\n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed, (this.availableHeals - this.usedHeals), this.healAmount, Room.roomNumber);
+        // String str = String.format("\nClass: %s \nHealth: %s / %s \nXP: %s / %s \nLevel: %s \nSpeed: %s \nRemaining Heals: %s \nHeal Amount: %s \nRoom: %s\n", this.playerClass, this.currenthp, this.maxhp, this.xp, this.xpRequiredForLevel, this.level, this.activeSpeed, (this.availableHeals - this.usedHeals), this.healAmount, Room.roomNumber);
 
-        Typer.typeString(str);
+        // Typer.typeString(str);
+
+        // String speedSymbol = (this.baseSpeed - this.activeSpeed) < 0 ? "" : "+";
+        String speedSymbol = "";
+        if(this.activeSpeed - this.baseSpeed > 0) {
+            speedSymbol = "+";
+        }
+
+        Typer.typeStringsNoSpace(new String[] {
+            String.format("\nClass: %s", this.playerClass),
+            String.format("Health: %s / %s", this.currenthp, this.maxhp),
+            String.format("XP: %s / %s", this.xp, this.xpRequiredForLevel),
+            String.format("Level: %s", this.level),
+            String.format("Speed: %s (%s%s)", this.baseSpeed, speedSymbol, (this.activeSpeed - this.baseSpeed)),
+            String.format("Remaining Heals: %s / %s", (this.availableHeals - this.usedHeals), this.availableHeals),
+            String.format("Heal Amount: %s", this.healAmount),
+            String.format("Room: %s", Room.roomNumber)
+        },100);
     }
 
     
@@ -120,6 +268,9 @@ public class Player {
      * @param wpn
      */
     public void takeDamage(int dmg) {
+        dmg = ((int)((1-this.damageReduction) * dmg));
+        this.defensiveStance = false;
+        this.damageReduction = 0;
         this.currenthp -= dmg;
 
         Typer.typeStringln("You took " + dmg + " damage!");
@@ -179,10 +330,28 @@ public class Player {
 
     }
 
-    private void calculateActiveSpeed() {
+    public void calculateActiveSpeed() {
 
         this.activeSpeed = this.baseSpeed - this.equippedWeapon.getSpeedPenalty();
 
+    }
+
+    public void calculateDodgeChance(Enemy enemy) {
+        int result = 0;
+        if(this.getHideActive()) {
+            this.dodgeChance = 80;
+            return;
+        }
+        if(enemy.getSpeed() >= this.activeSpeed) {
+            result = 0;
+        } else {
+            int difference = this.activeSpeed-enemy.getSpeed();
+            result = (int)(difference/2);
+            if(result > 80) {
+                result = 80;
+            }
+        }
+        this.dodgeChance = result;
     }
 
 
@@ -193,8 +362,12 @@ public class Player {
      */
     public void attackEnemy(Enemy enemy, Player plr) {
 
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
         Random random = new Random();
-        int critChance = random.nextInt(10) + 1;
+        int critChance = random.nextInt(this.critChanceCap) + 1;
         boolean crit = false;
 
         Typer.typeStringln(String.format("\nYou attacked %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
@@ -203,10 +376,15 @@ public class Player {
             Typer.typeStringln("CRITICAL HIT!\n");
         }
         enemy.takeDamage(this.equippedWeapon, plr, crit);
+        resetWeaponDamage();
     }
 
     public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance) {
         
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
 
         Random random = new Random();
 
@@ -218,14 +396,107 @@ public class Player {
             Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
             return;
         } else {
-            int critChance = random.nextInt(10) + 1;
+            int critChance = random.nextInt(this.critChanceCap) + 1;
             boolean crit = false;
             if(critChance == 1) {
                 crit = true;
                 Typer.typeStringln("CRITICAL HIT!\n");
             }
             enemy.takeDamage(this.equippedWeapon, plr, crit);
+            resetWeaponDamage();
         }
+    }
+
+    public void attackEnemy(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
+        
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+        
+        Random random = new Random();
+
+        Typer.typeStringln(String.format("You attack %s with your %s!", enemy.getName(), this.equippedWeapon.getName()));
+
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= enemyDodgeChance) {
+            Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
+            return;
+        } else {
+            enemy.takeRawDamage(dmg, plr);
+            resetWeaponDamage();
+        }
+    }
+
+    public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance) {
+        
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+
+        Random random = new Random();
+
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= enemyDodgeChance) {
+            Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
+            return false;
+        } else {
+            int critChance = random.nextInt(this.critChanceCap) + 1;
+            boolean crit = false;
+            if(critChance == 1) {
+                crit = true;
+                Typer.typeStringln("CRITICAL HIT!\n");
+            }
+            enemy.takeDamage(this.equippedWeapon, plr, crit);
+            resetWeaponDamage();
+            return true;
+        }
+    }
+
+    public boolean attackEnemyAbility(Enemy enemy, Player plr, int enemyDodgeChance, int dmg) {
+        
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+
+        Random random = new Random();
+
+        int dodgeDecider = random.nextInt(100) + 1;
+        Main.wait(500);
+        if(dodgeDecider <= enemyDodgeChance) {
+            Typer.typeStringln(String.format("%s jumped out of the way of your attack!", enemy.getName()));
+            return false;
+        } else {
+            int critChance = random.nextInt(this.critChanceCap) + 1;
+            boolean crit = false;
+            if(critChance == 1) {
+                crit = true;
+                Typer.typeStringln("CRITICAL HIT!\n");
+            }
+            enemy.takeRawDamage(dmg, plr, crit);
+            resetWeaponDamage();
+            return true;
+        }
+    }
+
+    public boolean attackEnemyNoDodge(Enemy enemy, Player plr, int dmg) {
+        if(plr.getHideActive()) {
+            plr.setHideActive(false, enemy);
+            Typer.typeStringln("You are no longer hidden!");
+        }
+        Random random = new Random();
+        int critChance = random.nextInt(this.critChanceCap) + 1;
+        boolean crit = false;
+        if(critChance == 1) {
+            crit = true;
+        }
+        enemy.takeRawDamage(dmg, plr, crit);
+        resetWeaponDamage();
+        return true;
     }
 
     public boolean heal() {
@@ -235,10 +506,11 @@ public class Player {
                 this.currenthp = this.maxhp;
             }
             usedHeals++;
+            String heal = (availableHeals - usedHeals == 1) ? "heal" : "heals";
             Typer.typeStrings(new String[] {
                 "\nYou healed for " + this.healAmount + "HP!",
                 "Remaining HP: " + this.currenthp + " / " + this.maxhp,
-                "You have " + (availableHeals - usedHeals) + " heals remaining!\n"
+                "You have " + (availableHeals - usedHeals) + " " + heal + " remaining!\n"
             }, 500);
             return true;
         } else {

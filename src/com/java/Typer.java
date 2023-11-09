@@ -1,4 +1,6 @@
 package src.com.java;
+import java.io.IOException;
+
 
 public class Typer {
     
@@ -6,7 +8,7 @@ public class Typer {
      * Waits for a specified number of milliseconds.
      * @param millis
      */
-    private static void wait(int millis) {
+    public static void wait(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
@@ -87,6 +89,21 @@ public class Typer {
             typeString(str);
             wait(delay);
             System.out.println("");
+        }
+    }
+
+    /**
+     * Clears the windows console.
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public static void clearConsole() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (IOException e) {
+            System.out.println("uhoh");
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }

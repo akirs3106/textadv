@@ -119,10 +119,15 @@ public class Room {
     public void useRestRoom(Player plr) {
         if(this.type.equals("rest") && !this.hasRested) {
             Typer.typeStrings(new String[] {"\nYou take a seat by the campfire and light it.", "You begin to feel rejuvinated."});
+            Typer.typeStrings(new String[] {
+                "Your HP has been fully restored!",
+                "You have regained all of your heals!",
+                "Your weapon and class ability cooldowns have been restored!"
+            });
             plr.setHp(plr.getMaxHP());
-            Typer.typeStringln("Your HP has been fully restored!");
             plr.setUsedHeals(0);
-            Typer.typeStringln("You have regained all of your heals!");
+            plr.setAbilityActiveCooldown(0);
+            plr.getWeapon().setCurrentCooldown(0);
             this.hasRested = true;
             Typer.typeStringln("The embers in the campfire slowly fade out as you prepare to venture through the dungeon once again.");
         } else {
@@ -131,6 +136,7 @@ public class Room {
     }
 
     public void searchRoom(Player plr) {
+        Typer.clearConsole();
         Typer.typeStringln("\nYou begin to search the room..");
         Main.wait(2000);
         if(this.type == "generic") {
