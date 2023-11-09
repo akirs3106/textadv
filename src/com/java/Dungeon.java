@@ -52,6 +52,7 @@ public class Dungeon {
                     Typer.clearConsole();
                     if(input.equals("y")) {
                         Typer.typeStringln("\nYou enter the next room.");
+                        Typer.wait(500);
                         Typer.typeStringln(nextRoom.getDescription());
                         currentRoom.setActiveRoomStatus(false);
                         nextRoom.setActiveRoomStatus(true);
@@ -70,6 +71,7 @@ public class Dungeon {
             } else {
                 Typer.typeStringln("\nYou enter the next room.");
                 Dungeon.enemyEncounterMultiplier += 1;
+                Typer.wait(500);
                 Typer.typeStringln(nextRoom.description);
                 currentRoom.setActiveRoomStatus(false);
                 nextRoom.setActiveRoomStatus(true);
@@ -92,6 +94,7 @@ public class Dungeon {
         if(previousRoomIndex >= 0 && !currentRoom.getType().equals("start")) {
             Room previousRoom = rooms[previousRoomIndex];
             Typer.typeStringln("\nYou retreat back a room.");
+            Typer.wait(500);
             Typer.typeStringln(previousRoom.getDescription());
             currentRoom.setActiveRoomStatus(false);
             previousRoom.setActiveRoomStatus(true);

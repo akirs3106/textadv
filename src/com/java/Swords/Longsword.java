@@ -1,5 +1,6 @@
 package src.com.java.Swords;
 
+import src.com.java.Main;
 import src.com.java.Enemy;
 import src.com.java.Player;
 import src.com.java.Typer;
@@ -29,6 +30,10 @@ public class Longsword extends Sword {
         }
     }
 
+    @Override public boolean getRiposte() {
+        return this.riposte;
+    }
+
     @Override public boolean useAbility(Player plr, Enemy enemy, int enemyDodgeChance) {
         if(this.currentAbilityCooldown <= 0) {
             this.currentAbilityCooldown = this.abilityCooldown;
@@ -48,6 +53,9 @@ public class Longsword extends Sword {
     @Override public boolean riposte(Player plr, Enemy enemy, int enemyDodgeChance) {
         Random random = new Random();
         int riposteDecider = random.nextInt(100) + 1;
+        if(Main.devMode) {
+            System.out.println(String.format("riposteDecider: %s", riposteDecider));
+        }
         if(riposteDecider <= 75) {
             Typer.typeStringln(String.format("%s's %s is deflected by your %s!", enemy.getName(), enemy.getWeapon().getName(), plr.getWeapon().getName()));
             Typer.wait(200);
@@ -58,6 +66,9 @@ public class Longsword extends Sword {
             plr.setRetaliation(false);
             return true;
         } else {
+            Typer.typeStringln(String.format("You failed to block %s's attack!"));
+            this.riposte = false;
+            plr.setRetaliation(false);
             return false;
         }
     }
